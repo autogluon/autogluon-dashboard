@@ -1,5 +1,5 @@
 import panel as pn
-import hvplot.pandas
+import hvplot.pandas # noqa
 
 # Load Data
 from scripts.data import per_dataset_df, all_framework_df
@@ -61,6 +61,7 @@ top5frameworks_per_dataset = create_table(per_dataset_top5,
                                           ['framework', 'rank'])
 ag_rank_hist = create_hvplot(idf=autogluon_ranks,
                              title="Rank Frequency of AutoGluon", 
+                             rot=0,
                              xlabel="Rank") 
 framework_error = create_hvplot(idf=all_framework_idf,
                              title="Framework v/s Error Counts",
