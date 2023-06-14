@@ -2,9 +2,9 @@ import panel as pn
 import hvplot.pandas
 
 # Load Data
-from data import per_dataset_df, all_framework_df
-from widgets import create_selectwidget, create_togglewidget, create_numberwidget
-from plots import create_hvplot,create_table
+from scripts.data import per_dataset_df, all_framework_df
+from scripts.widgets import create_selectwidget, create_togglewidget, create_numberwidget
+from scripts.plots import create_hvplot,create_table
 
 #clean up framework names
 original_framework_names = all_framework_df['framework']
