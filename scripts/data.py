@@ -12,5 +12,9 @@ csv_string = body.read().decode('utf-8')
 df = pd.read_csv(StringIO(csv_string))
 """
 
-per_dataset_df = pd.read_csv('dev_data/all_data.csv')
-all_framework_df = pd.read_csv('dev_data/autogluon.csv')
+ALL_DATASETS_COMBINED_TEST_CSV = 'dev_data/all_data.csv'
+PER_DATASET_TEST_CSV = 'dev_data/autogluon.csv'
+
+
+per_dataset_df = pd.read_csv(PER_DATASET_TEST_CSV)
+all_framework_df = pd.read_csv(ALL_DATASETS_COMBINED_TEST_CSV)
