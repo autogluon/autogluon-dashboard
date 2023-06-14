@@ -12,9 +12,11 @@ from scripts.config.plots_config import METRICS_PLOT_TITLE, TOP5_PERFORMERS_TITL
 from scripts import utils
 
 #clean up framework names
-original_framework_names = all_framework_df['framework']
 dataset_list = utils.get_sorted_names_from_col(per_dataset_df, 'dataset')
 new_framework_names = per_dataset_df['framework'].str.extract(r"^(.*?)(?:_|$)")[0]
+num_frameworks = len(set(new_framework_names))
+for i in range(len(new_framework_names)):
+    new_framework_names[i] = "AutoGluon" if i%num_frameworks==0 else "framework" + f"{i%num_frameworks}"
 utils.replace_df_column(per_dataset_df, 'framework', new_framework_names)
 utils.replace_df_column(all_framework_df, 'framework', new_framework_names)
 
@@ -58,7 +60,7 @@ top5frameworks_all_datasets = create_table(all_datasets_top5,
 top5frameworks_per_dataset = create_table(per_dataset_top5, 
                                           TOP5_PERFORMERS_TITLE, 
                                           ['framework', 'rank'])
-ag_rank_hist = create_hvplot(idf=autogluon_rank_counts,
+ag_rank_counts = create_hvplot(idf=autogluon_rank_counts,
                              title=AG_RANK_COUNTS_TITLE, 
                              rot=0,
                              xlabel=RANK_LABEL) 
@@ -67,7 +69,7 @@ framework_error = create_hvplot(idf=all_framework_idf,
                              x_axis='framework', 
                              y_axis='error_count',  
                              xlabel=FRAMEWORK_LABEL)
-ag_best = create_numberwidget(AUTOGLUON_RANK1_TITLE, round(prop_ag_best*100, 2), '{value}%')
+ag_pct_rank1 = create_numberwidget(AUTOGLUON_RANK1_TITLE, round(prop_ag_best*100, 2), '{value}%')
 
 # Layout using Template
 template = pn.template.FastListTemplate(
@@ -89,7 +91,7 @@ template = pn.template.FastListTemplate(
                     metrics_plot_per_datasets.panel(), 
                     top5frameworks_per_dataset
                 ), 
-          pn.Row('# Rank Comparisons', ag_best, ag_rank_hist),
+          pn.Row('# Rank Comparisons', ag_pct_rank1, ag_rank_counts),
           pn.Row('# Error Counts', framework_error)],
     header_background=APP_HEADER_BACKGROUND,
 )
