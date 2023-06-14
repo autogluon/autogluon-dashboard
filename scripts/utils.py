@@ -22,7 +22,7 @@ def get_sorted_names_from_col(df, col_name):
     col_name: str,
         Name of Column to get names from.
     """
-    return sorted(list(set(df[col_name].to_list())))
+    return sorted(list(set(df[col_name])))
 
 def get_df_filter_by_dataset(df, dataset):
     """
