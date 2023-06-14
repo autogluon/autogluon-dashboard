@@ -36,7 +36,7 @@ idf_dataset = per_dataset_idf[(per_dataset_idf.dataset.isin([dataset_dropdown]))
 df_ag_only = per_dataset_df.loc[(per_dataset_df['framework'].isin(['AutoGluon']))]
 df_ag_only = df_ag_only.sort_values(by=['rank'])
 prop_ag_best = df_ag_only.loc[(per_dataset_df['rank'] == 1.0)].shape[0] / len(dataset_list)
-#prop_ag_best = all_framework_df[all_framework_df['framework'] == 'AutoGluon']['winrate'][0]
+# ALT METHOD: prop_ag_best = all_framework_df[all_framework_df['framework'] == 'AutoGluon']['winrate'][0]
 ag_best = create_numberwidget('% 1st Rank for AutoGluon', round(prop_ag_best*100, 2), '{value}%')
 autogluon_ranks = df_ag_only['rank'].value_counts()[df_ag_only['rank'].unique()]
 per_dataset_top5 = idf_dataset[idf_dataset['rank'] <= 5].sort_values('rank')
