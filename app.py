@@ -7,29 +7,27 @@ from scripts.data import per_dataset_df, all_framework_df
 from scripts.widgets import create_selectwidget, create_togglewidget, create_numberwidget
 from scripts.plots import create_hvplot,create_table
 from scripts.constants import METRICS_TO_PLOT, GRAPH_TYPES, FRAMEWORK_LABEL, YAXIS_LABEL, DATASETS_LABEL, GRAPH_TYPE_STR
+from scripts.utils import replace_df_column, get_sorted_names_from_col
 
 #clean up framework names
 original_framework_names = all_framework_df['framework']
-framework_names = per_dataset_df['framework'].str.extract(r"^(.*?)(?:_|$)")[0]
-per_dataset_df.framework = framework_names
-all_framework_df.framework = framework_names
-
-dataset_list = sorted(list(set(per_dataset_df['dataset'].to_list())))
+dataset_list = get_sorted_names_from_col(per_dataset_df, 'dataset')
+new_framework_names = per_dataset_df['framework'].str.extract(r"^(.*?)(?:_|$)")[0]
+replace_df_column(per_dataset_df, 'framework', new_framework_names)
+replace_df_column(all_framework_df, 'framework', new_framework_names)
 
 # Make DataFrame Pipeline Interactive
 per_dataset_idf = per_dataset_df.interactive()
 all_framework_idf = all_framework_df.interactive()
 
 # Define Panel widgets
-metrics = METRICS_TO_PLOT
-graph_types = GRAPH_TYPES
-frameworks_widget = create_selectwidget(FRAMEWORK_LABEL, options=framework_names.to_list())
-yaxis_widget =  create_selectwidget(YAXIS_LABEL, options=metrics)
-yaxis_widget2 =  create_selectwidget(YAXIS_LABEL, options=metrics)
+frameworks_widget = create_selectwidget(FRAMEWORK_LABEL, options=new_framework_names.to_list())
+yaxis_widget =  create_selectwidget(YAXIS_LABEL, options=METRICS_TO_PLOT)
+yaxis_widget2 =  create_selectwidget(YAXIS_LABEL, options=METRICS_TO_PLOT)
 datasets_widget = create_togglewidget(DATASETS_LABEL, dataset_list)
 dataset_dropdown = create_selectwidget(DATASETS_LABEL, options=dataset_list)
-graph_type = create_selectwidget(GRAPH_TYPE_STR, 'bar', graph_types)
-graph_type2 = create_selectwidget(GRAPH_TYPE_STR, 'bar', graph_types)
+graph_type = create_selectwidget(GRAPH_TYPE_STR, 'bar', GRAPH_TYPES)
+graph_type2 = create_selectwidget(GRAPH_TYPE_STR, 'bar', GRAPH_TYPES)
 
 #Some data processing
 idf_dataset = per_dataset_idf[(per_dataset_idf.dataset.isin([dataset_dropdown]))]
