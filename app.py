@@ -3,6 +3,7 @@ import hvplot.pandas # noqa
 
 # Load Data
 from scripts.data import per_dataset_df, all_framework_df
+
 # Import helpers
 from scripts.widgets import create_selectwidget, create_togglewidget, create_numberwidget
 from scripts.plots import create_hvplot,create_table
