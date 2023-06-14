@@ -7,16 +7,16 @@ from scripts.data import per_dataset_df, all_framework_df
 from scripts.widgets import create_selectwidget, create_togglewidget, create_numberwidget
 from scripts.plots import create_hvplot,create_table
 from scripts.constants import METRICS_TO_PLOT, GRAPH_TYPES, FRAMEWORK_LABEL, YAXIS_LABEL, DATASETS_LABEL, GRAPH_TYPE_STR
-from scripts.utils import replace_df_column, get_sorted_names_from_col
+from scripts import utils
 
 #clean up framework names
 original_framework_names = all_framework_df['framework']
-dataset_list = get_sorted_names_from_col(per_dataset_df, 'dataset')
+dataset_list = utils.get_sorted_names_from_col(per_dataset_df, 'dataset')
 new_framework_names = per_dataset_df['framework'].str.extract(r"^(.*?)(?:_|$)")[0]
-replace_df_column(per_dataset_df, 'framework', new_framework_names)
-replace_df_column(all_framework_df, 'framework', new_framework_names)
+utils.replace_df_column(per_dataset_df, 'framework', new_framework_names)
+utils.replace_df_column(all_framework_df, 'framework', new_framework_names)
 
-# Make DataFrame Pipeline Interactive
+# Make DataFrame Interactive
 per_dataset_idf = per_dataset_df.interactive()
 all_framework_idf = all_framework_df.interactive()
 
@@ -30,15 +30,12 @@ graph_type = create_selectwidget(GRAPH_TYPE_STR, 'bar', GRAPH_TYPES)
 graph_type2 = create_selectwidget(GRAPH_TYPE_STR, 'bar', GRAPH_TYPES)
 
 #Some data processing
-idf_dataset = per_dataset_idf[(per_dataset_idf.dataset.isin([dataset_dropdown]))]
-df_ag_only = per_dataset_df.loc[(per_dataset_df['framework'].isin(['AutoGluon']))]
-df_ag_only = df_ag_only.sort_values(by=['rank'])
-prop_ag_best = df_ag_only.loc[(per_dataset_df['rank'] == 1.0)].shape[0] / len(dataset_list)
-# ALT METHOD: prop_ag_best = all_framework_df[all_framework_df['framework'] == 'AutoGluon']['winrate'][0]
-ag_best = create_numberwidget('% 1st Rank for AutoGluon', round(prop_ag_best*100, 2), '{value}%')
-autogluon_ranks = df_ag_only['rank'].value_counts()[df_ag_only['rank'].unique()]
-per_dataset_top5 = idf_dataset[idf_dataset['rank'] <= 5].sort_values('rank')
-all_datasets_top5 = all_framework_idf.sort_values('rank').head()
+selected_dataset_df = utils.get_df_filter_by_dataset(per_dataset_idf, dataset_dropdown)
+df_ag_only = utils.get_df_filter_by_framework(per_dataset_df, 'AutoGluon')
+prop_ag_best = utils.get_proportion_framework_rank1(df_ag_only, per_dataset_df, len(dataset_list))
+autogluon_ranks = utils.get_col_metric_counts(df_ag_only, 'rank')
+per_dataset_top5 = utils.get_top5_performers(selected_dataset_df, 'rank')
+all_datasets_top5 = utils.get_top5_performers(all_framework_idf, 'rank')
 
 # Plots
 ihvplot_all = create_hvplot(idf=all_framework_idf, 
@@ -46,13 +43,13 @@ ihvplot_all = create_hvplot(idf=all_framework_idf,
                             x_axis='framework', 
                             y_axis=yaxis_widget, 
                             graph_type=graph_type, 
-                            xlabel="Framework")
-ihvplot_dataset = create_hvplot(idf=idf_dataset, 
+                            xlabel=FRAMEWORK_LABEL)
+ihvplot_dataset = create_hvplot(idf=selected_dataset_df, 
                             title="Framework v/s Loss/Training Time/Inference Time/Best Diff per Dataset", 
                             x_axis='framework', 
                             y_axis=yaxis_widget2, 
                             graph_type=graph_type2, 
-                            xlabel="Framework")
+                            xlabel=FRAMEWORK_LABEL)
 top5_all_datasets = create_table(all_datasets_top5, 
                                  "Top 5 Performers (all datasets)", 
                                  ['framework', 'rank'])
@@ -67,7 +64,8 @@ framework_error = create_hvplot(idf=all_framework_idf,
                              title="Framework v/s Error Counts",
                              x_axis='framework', 
                              y_axis='error_count',  
-                             xlabel="Framework")
+                             xlabel=FRAMEWORK_LABEL)
+ag_best = create_numberwidget('% 1st Rank for AutoGluon', round(prop_ag_best*100, 2), '{value}%')
 
 # Layout using Template
 template = pn.template.FastListTemplate(
