@@ -1,3 +1,5 @@
+.DS_Store
+
 #Venv
 .venv*/
 dev_data
