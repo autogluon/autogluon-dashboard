@@ -5,8 +5,7 @@ import hvplot.pandas # noqa
 from scripts.data import per_dataset_df, all_framework_df
 
 # Import helpers
-from scripts.widgets import create_selectwidget, create_togglewidget, create_numberwidget
-from scripts.plot import Plot
+from scripts.widget import Widget
 from plots.metrics_all_datasets import MetricsPlotAll
 from plots.metrics_per_datasets import MetricsPlotPerDataset
 from plots.top5_all_datasets import Top5AllDatasets
@@ -25,38 +24,36 @@ num_frameworks = len(set(new_framework_names))
 # dummy replacement
 for i in range(len(new_framework_names)):
     new_framework_names[i] = "AutoGluon" if i%num_frameworks==0 else "AutoGluon v" + f"0.{i%num_frameworks}"
-utils.replace_df_column(per_dataset_df, 'framework', new_framework_names)
-utils.replace_df_column(all_framework_df, 'framework', new_framework_names)
+per_dataset_df['framework'] =  new_framework_names
+all_framework_df['framework'] = new_framework_names
 
 # Make DataFrame Interactive
 per_dataset_idf = per_dataset_df.interactive()
 all_framework_idf = all_framework_df.interactive()
 
 # Define Panel widgets
-frameworks_widget = create_selectwidget(FRAMEWORK_LABEL, options=new_framework_names.to_list())
-yaxis_widget =  create_selectwidget(YAXIS_LABEL, options=METRICS_TO_PLOT)
-yaxis_widget2 =  create_selectwidget(YAXIS_LABEL, options=METRICS_TO_PLOT)
-datasets_widget = create_togglewidget(DATASETS_LABEL, dataset_list)
-dataset_dropdown = create_selectwidget(DATASETS_LABEL, options=dataset_list)
-graph_type = create_selectwidget(GRAPH_TYPE_STR, 'bar', GRAPH_TYPES)
-graph_type2 = create_selectwidget(GRAPH_TYPE_STR, 'bar', GRAPH_TYPES)
+frameworks_widget = Widget("select", name=FRAMEWORK_LABEL, options=new_framework_names.to_list()).create_widget()
+yaxis_widget =  Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
+yaxis_widget2 =  Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
+dataset_dropdown = Widget("select", name=DATASETS_LABEL, options=dataset_list).create_widget()
+graph_dropdown = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
+graph_dropdown2 = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 
-#Some data processing
 df_ag_only = utils.get_df_filter_by_framework(per_dataset_df, 'AutoGluon')
 prop_ag_best = utils.get_proportion_framework_rank1(df_ag_only, per_dataset_df, len(dataset_list))
-ag_pct_rank1 = create_numberwidget(AUTOGLUON_RANK1_TITLE, round(prop_ag_best*100, 2), '{value}%')
+ag_pct_rank1 = Widget("number", name=AUTOGLUON_RANK1_TITLE, value=round(prop_ag_best*100, 2), format='{value}%').create_widget()
 
 # Plots
 metrics_plot_all_datasets = MetricsPlotAll(METRICS_PLOT_TITLE, all_framework_idf, "hvplot",
                                  x_axis='framework', y_axis=yaxis_widget, 
-                                 graph_type=graph_type, xlabel=FRAMEWORK_LABEL)
+                                 graph_type=graph_dropdown, xlabel=FRAMEWORK_LABEL)
 top5frameworks_all_datasets = Top5AllDatasets(TOP5_PERFORMERS_TITLE+" (all datasets)", 
                                    all_framework_idf, "table", 
                                    'rank', table_cols=['framework', 'rank'])
 
 metrics_plot_per_datasets = MetricsPlotPerDataset(METRICS_PLOT_TITLE, per_dataset_idf, "hvplot",
                                  dataset_dropdown, x_axis='framework', y_axis=yaxis_widget2, 
-                                 graph_type=graph_type2, xlabel=FRAMEWORK_LABEL)
+                                 graph_type=graph_dropdown2, xlabel=FRAMEWORK_LABEL)
 
 top5frameworks_per_dataset = Top5PerDataset(TOP5_PERFORMERS_TITLE, 
                                    per_dataset_idf, "table", 
@@ -75,12 +72,12 @@ plots = [plot.plot() for plot in plots]
 template = pn.template.FastListTemplate(
     title=APP_TITLE, 
     main=[pn.Row('# All Datasets Comparison', 
-                 pn.WidgetBox(yaxis_widget, graph_type), 
+                 pn.WidgetBox(yaxis_widget, graph_dropdown), 
                     plots[0].panel(), 
                     plots[1]
                 ), 
           pn.Row('# Per Dataset Comparison\n', 
-                 pn.WidgetBox(yaxis_widget2, dataset_dropdown, graph_type2), 
+                 pn.WidgetBox(yaxis_widget2, dataset_dropdown, graph_dropdown2), 
                     plots[2].panel(), 
                     plots[3]
                 ), 
@@ -88,5 +85,4 @@ template = pn.template.FastListTemplate(
           pn.Row('# Error Counts', plots[5])],
     header_background=APP_HEADER_BACKGROUND,
 )
-
 template.servable()
