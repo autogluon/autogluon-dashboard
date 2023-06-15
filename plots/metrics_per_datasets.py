@@ -12,5 +12,3 @@ class MetricsPlotPerDataset(Plot):
     
     def _preprocess(self, *args):
         return get_df_filter_by_dataset(args[0], args[1])
-
-    
