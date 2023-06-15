@@ -86,4 +86,12 @@ def get_name_before_first_underscore(df, col_name):
         Name of Column to perform regex on.
     """
     return df[col_name].str.extract(r"^(.*?)(?:_|$)")[0]
+
+def clean_up_framework_names(df):
+    new_framework_names = get_name_before_first_underscore(df, 'framework')
+    num_frameworks = len(set(new_framework_names))
+    # dummy replacement
+    for i in range(len(new_framework_names)):
+        new_framework_names[i] = "AutoGluon" if i%num_frameworks==0 else "AutoGluon v" + f"0.{i%num_frameworks}"
+    return new_framework_names
     
