@@ -14,7 +14,7 @@ from scripts import utils
 
 #clean up framework names
 dataset_list = utils.get_sorted_names_from_col(per_dataset_df, 'dataset')
-new_framework_names = per_dataset_df['framework'].str.extract(r"^(.*?)(?:_|$)")[0]
+new_framework_names = utils.get_name_before_first_underscore(per_dataset_df, 'framework')
 num_frameworks = len(set(new_framework_names))
 for i in range(len(new_framework_names)):
     new_framework_names[i] = "AutoGluon" if i%num_frameworks==0 else "AutoGluon v" + f"0.{i%num_frameworks}"

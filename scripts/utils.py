@@ -99,4 +99,7 @@ def get_top5_performers(df, metric):
         Name of Column to get top 5 performers from.
     """
     return df.sort_values(metric).head()
+
+def get_name_before_first_underscore(df, col_name):
+    return df[col_name].str.extract(r"^(.*?)(?:_|$)")[0]
     
