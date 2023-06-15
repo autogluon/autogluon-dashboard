@@ -1,17 +1,3 @@
-def replace_df_column(df, col_name, new_col_data):
-    """
-    Replace data in a given column.
-    
-    Parameters
-    ----------
-    df: Pandas dataframe,
-    col_name: str,
-        Name of Column to get names from.
-    new_col_data: list,
-        New column data to replace old column data.
-    """
-    df[col_name] = new_col_data
-
 def get_sorted_names_from_col(df, col_name):
     """
     Get a sorted list of unique names in a given column.
@@ -48,18 +34,6 @@ def get_df_filter_by_framework(df, framework):
     """
     return df.loc[(df['framework'].isin([framework]))]
 
-def sort_df_by_col(df, col_name):
-    """
-    Sort the entire dataframe based on a given column name.
-    
-    Parameters
-    ----------
-    df: Pandas dataframe,
-    col_name: str,
-        Name of Column to sort by.
-    """
-    return df.sort_values(by=[col_name])
-
 def get_col_metric_counts(df, metric):
     """
     Get counts of different unique values in a given column.
@@ -70,8 +44,8 @@ def get_col_metric_counts(df, metric):
     metric: str,
         Name of Column to get counts from.
     """
-    df_ag_only = sort_df_by_col(df, metric)
-    return df_ag_only[metric].value_counts()[df_ag_only[metric].unique()]
+    df_sorted = df.sort_values(by=[metric])
+    return df_sorted[metric].value_counts()[df_sorted[metric].unique()]
 
 def get_proportion_framework_rank1(framework_df, datsets_df, total_runs):
     """
