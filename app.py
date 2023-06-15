@@ -42,12 +42,9 @@ graph_type = create_selectwidget(GRAPH_TYPE_STR, 'bar', GRAPH_TYPES)
 graph_type2 = create_selectwidget(GRAPH_TYPE_STR, 'bar', GRAPH_TYPES)
 
 #Some data processing
-selected_dataset_df = utils.get_df_filter_by_dataset(per_dataset_idf, dataset_dropdown)
 df_ag_only = utils.get_df_filter_by_framework(per_dataset_df, 'AutoGluon')
 prop_ag_best = utils.get_proportion_framework_rank1(df_ag_only, per_dataset_df, len(dataset_list))
-autogluon_rank_counts = utils.get_col_metric_counts(df_ag_only, 'rank')
-per_dataset_top5 = utils.get_top5_performers(selected_dataset_df, 'rank')
-all_datasets_top5 = utils.get_top5_performers(all_framework_idf, 'rank')
+ag_pct_rank1 = create_numberwidget(AUTOGLUON_RANK1_TITLE, round(prop_ag_best*100, 2), '{value}%')
 
 # Plots
 metrics_plot_all_datasets = MetricsPlotAll(METRICS_PLOT_TITLE, all_framework_idf, "hvplot",
@@ -62,14 +59,13 @@ metrics_plot_per_datasets = MetricsPlotPerDataset(METRICS_PLOT_TITLE, per_datase
                                  graph_type=graph_type2, xlabel=FRAMEWORK_LABEL)
 
 top5frameworks_per_dataset = Top5PerDataset(TOP5_PERFORMERS_TITLE, 
-                                   per_dataset_top5, "table", 
+                                   per_dataset_idf, "table", 
                                    'rank', dataset_dropdown,
                                    table_cols=['framework', 'rank'])
 ag_rank_counts = AGRankCounts(AG_RANK_COUNTS_TITLE, per_dataset_df, "hvplot",
                               'rank', 'AutoGluon', xlabel=RANK_LABEL, label_rot=0)
 framework_error = FrameworkError(ERROR_COUNTS_TITLE, all_framework_idf, "hvplot",
                        x_axis='framework', y_axis='error_count', xlabel=FRAMEWORK_LABEL)
-ag_pct_rank1 = create_numberwidget(AUTOGLUON_RANK1_TITLE, round(prop_ag_best*100, 2), '{value}%')
 
 # Layout using Template
 
