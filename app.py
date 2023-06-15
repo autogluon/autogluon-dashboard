@@ -1,10 +1,6 @@
 import panel as pn
 import hvplot.pandas # noqa
 
-# Load Data
-from scripts.data import per_dataset_df, all_framework_df
-
-# Import helpers
 from scripts.widget import Widget
 from plots.metrics_all_datasets import MetricsPlotAll
 from plots.metrics_per_datasets import MetricsPlotPerDataset
@@ -16,6 +12,9 @@ from scripts.config.widgets_config import METRICS_TO_PLOT, GRAPH_TYPES
 from scripts.config.app_layout_config import APP_HEADER_BACKGROUND, APP_TITLE
 from scripts.config.plots_config import METRICS_PLOT_TITLE, TOP5_PERFORMERS_TITLE, AG_RANK_COUNTS_TITLE, FRAMEWORK_LABEL, YAXIS_LABEL, DATASETS_LABEL, GRAPH_TYPE_STR, RANK_LABEL, ERROR_COUNTS_TITLE, AUTOGLUON_RANK1_TITLE
 from scripts import utils
+
+# Load Data
+from scripts.data import per_dataset_df, all_framework_df
 
 #clean up framework names
 dataset_list = utils.get_sorted_names_from_col(per_dataset_df, 'dataset')
@@ -44,27 +43,28 @@ prop_ag_best = utils.get_proportion_framework_rank1(df_ag_only, per_dataset_df, 
 ag_pct_rank1 = Widget("number", name=AUTOGLUON_RANK1_TITLE, value=round(prop_ag_best*100, 2), format='{value}%').create_widget()
 
 # Plots
-metrics_plot_all_datasets = MetricsPlotAll(METRICS_PLOT_TITLE, all_framework_idf, "hvplot",
-                                 x_axis='framework', y_axis=yaxis_widget, 
-                                 graph_type=graph_dropdown, xlabel=FRAMEWORK_LABEL)
+metrics_plot_all_datasets = MetricsPlotAll(METRICS_PLOT_TITLE, all_framework_idf, "hvplot", 
+                                           x_axis='framework', y_axis=yaxis_widget, 
+                                           graph_type=graph_dropdown, xlabel=FRAMEWORK_LABEL)
 top5frameworks_all_datasets = Top5AllDatasets(TOP5_PERFORMERS_TITLE+" (all datasets)", 
-                                   all_framework_idf, "table", 
-                                   'rank', table_cols=['framework', 'rank'])
+                                              all_framework_idf, "table", 
+                                              'rank', table_cols=['framework', 'rank'])
 
 metrics_plot_per_datasets = MetricsPlotPerDataset(METRICS_PLOT_TITLE, per_dataset_idf, "hvplot",
-                                 dataset_dropdown, x_axis='framework', y_axis=yaxis_widget2, 
-                                 graph_type=graph_dropdown2, xlabel=FRAMEWORK_LABEL)
+                                                  dataset_dropdown, x_axis='framework', y_axis=yaxis_widget2, 
+                                                  graph_type=graph_dropdown2, xlabel=FRAMEWORK_LABEL)
 
 top5frameworks_per_dataset = Top5PerDataset(TOP5_PERFORMERS_TITLE, 
-                                   per_dataset_idf, "table", 
-                                   'rank', dataset_dropdown,
-                                   table_cols=['framework', 'rank'])
-ag_rank_counts = AGRankCounts(AG_RANK_COUNTS_TITLE, per_dataset_df, "hvplot",
-                              'rank', 'AutoGluon', xlabel=RANK_LABEL, label_rot=0)
-framework_error = FrameworkError(ERROR_COUNTS_TITLE, all_framework_idf, "hvplot",
-                       x_axis='framework', y_axis='error_count', xlabel=FRAMEWORK_LABEL)
+                                            per_dataset_idf, "table", 
+                                            'rank', dataset_dropdown,
+                                            table_cols=['framework', 'rank'])
+ag_rank_counts = AGRankCounts(AG_RANK_COUNTS_TITLE, per_dataset_df, 
+                              "hvplot", 'rank', 'AutoGluon', 
+                              xlabel=RANK_LABEL, label_rot=0)
+framework_error = FrameworkError(ERROR_COUNTS_TITLE, all_framework_idf, 
+                                 "hvplot", x_axis='framework', 
+                                 y_axis='error_count', xlabel=FRAMEWORK_LABEL)
 
-# Layout using Template
 
 plots = [metrics_plot_all_datasets, top5frameworks_all_datasets, metrics_plot_per_datasets, top5frameworks_per_dataset, ag_rank_counts, framework_error]
 plots = [plot.plot() for plot in plots]
