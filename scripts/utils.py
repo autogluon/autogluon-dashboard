@@ -101,5 +101,15 @@ def get_top5_performers(df, metric):
     return df.sort_values(metric).head()
 
 def get_name_before_first_underscore(df, col_name):
+    """
+    Get the part of the string before the first underscore. 
+    Example: AutoGluonv0.1_gc8h8_2022 becomes AutoGluonv0.1
+
+    Parameters
+    ----------
+    df: Pandas dataframe,
+    col_name: str,
+        Name of Column to perform regex on.
+    """
     return df[col_name].str.extract(r"^(.*?)(?:_|$)")[0]
     
