@@ -15,13 +15,13 @@ class Plot:
         self.label_rot = label_rot
         self.table_cols = table_cols
 
-        self.plot = self.create_table if plot_type == "table" else self.create_hvplot
+        self.plot = self._create_table if plot_type == "table" else self._create_hvplot
 
     @abstractmethod
     def _preprocess(self, *args):
         return
 
-    def create_hvplot(self, color_scheme=["#ff6f69", "#ffcc5c", "#88d8b0"],
+    def _create_hvplot(self, color_scheme=["#ff6f69", "#ffcc5c", "#88d8b0"],
                     line_width=6, height=500):
         """
         Create a plot of a given type leveraging the hvplot library, 
@@ -61,7 +61,7 @@ class Plot:
                               line_width=line_width, height=height, 
                               rot=self.label_rot, xlabel=self.plot_x_label)
 
-    def create_table(self, width=800):
+    def _create_table(self, width=800):
         """
         Create a table leveraging the hvplot library, 
         and using data from a pandas interactive dataframe.
