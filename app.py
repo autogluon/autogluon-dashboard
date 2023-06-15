@@ -61,7 +61,7 @@ framework_error = FrameworkError(ERROR_COUNTS_TITLE, all_framework_idf,
                                  "hvplot", x_axis='framework', 
                                  y_axis='error_count', xlabel=FRAMEWORK_LABEL)
 
-
+#Order matters here!
 plots = [metrics_plot_all_datasets, top5frameworks_all_datasets, metrics_plot_per_datasets, top5frameworks_per_dataset, ag_rank_counts, framework_error]
 plots = [plot.plot() for plot in plots]
 plot_ctr = iter(range(len(plots)))
