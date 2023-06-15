@@ -64,21 +64,21 @@ framework_error = FrameworkError(ERROR_COUNTS_TITLE, all_framework_idf,
 
 plots = [metrics_plot_all_datasets, top5frameworks_all_datasets, metrics_plot_per_datasets, top5frameworks_per_dataset, ag_rank_counts, framework_error]
 plots = [plot.plot() for plot in plots]
-
+plot_ctr = iter(range(len(plots)))
 template = pn.template.FastListTemplate(
     title=APP_TITLE, 
     main=[pn.Row(ALL_DATA_COMP, 
                  pn.WidgetBox(yaxis_widget, graph_dropdown), 
-                    plots[0].panel(), 
-                    plots[1]
+                    plots[next(plot_ctr)].panel(), 
+                    plots[next(plot_ctr)]
                 ), 
           pn.Row(PER_DATA_COMP, 
                  pn.WidgetBox(yaxis_widget2, dataset_dropdown, graph_dropdown2), 
-                    plots[2].panel(), 
-                    plots[3]
+                    plots[next(plot_ctr)].panel(), 
+                    plots[next(plot_ctr)]
                 ), 
-          pn.Row(NO_RANK_COMP, ag_pct_rank1, plots[4]),
-          pn.Row(NO_ERROR_CNTS, plots[5])],
+          pn.Row(NO_RANK_COMP, ag_pct_rank1, plots[next(plot_ctr)]),
+          pn.Row(NO_ERROR_CNTS, plots[next(plot_ctr)])],
     header_background=APP_HEADER_BACKGROUND,
 )
 template.servable()
