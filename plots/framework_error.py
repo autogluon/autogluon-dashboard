@@ -8,5 +8,5 @@ class FrameworkError(Plot):
                          y_axis, graph_type, xlabel, ylabel, 
                          label_rot, table_cols)
     
-    def preprocess(**kwargs):
-        return super().preprocess()
+    def _preprocess(**kwargs):
+        return super()._preprocess()

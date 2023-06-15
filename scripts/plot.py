@@ -18,7 +18,7 @@ class Plot:
         self.plot = self.create_table if plot_type == "table" else self.create_hvplot
 
     @abstractmethod
-    def preprocess(self, *args):
+    def _preprocess(self, *args):
         return
 
     def create_hvplot(self, color_scheme=["#ff6f69", "#ffcc5c", "#88d8b0"],
