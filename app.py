@@ -9,7 +9,7 @@ from plots.top5_per_dataset import Top5PerDataset
 from plots.ag_rank_counts import AGRankCounts
 from plots.framework_error import FrameworkError
 from scripts.config.widgets_config import METRICS_TO_PLOT, GRAPH_TYPES
-from scripts.config.app_layout_config import APP_HEADER_BACKGROUND, APP_TITLE
+from scripts.config.app_layout_config import APP_HEADER_BACKGROUND, APP_TITLE, ALL_DATA_COMP, PER_DATA_COMP, NO_RANK_COMP, NO_ERROR_CNTS
 from scripts.config.plots_config import METRICS_PLOT_TITLE, TOP5_PERFORMERS_TITLE, AG_RANK_COUNTS_TITLE, FRAMEWORK_LABEL, YAXIS_LABEL, DATASETS_LABEL, GRAPH_TYPE_STR, RANK_LABEL, ERROR_COUNTS_TITLE, AUTOGLUON_RANK1_TITLE
 from scripts import utils
 
@@ -67,18 +67,18 @@ plots = [plot.plot() for plot in plots]
 
 template = pn.template.FastListTemplate(
     title=APP_TITLE, 
-    main=[pn.Row('# All Datasets Comparison', 
+    main=[pn.Row(ALL_DATA_COMP, 
                  pn.WidgetBox(yaxis_widget, graph_dropdown), 
                     plots[0].panel(), 
                     plots[1]
                 ), 
-          pn.Row('# Per Dataset Comparison\n', 
+          pn.Row(PER_DATA_COMP, 
                  pn.WidgetBox(yaxis_widget2, dataset_dropdown, graph_dropdown2), 
                     plots[2].panel(), 
                     plots[3]
                 ), 
-          pn.Row('# Rank Comparisons', ag_pct_rank1, plots[4]),
-          pn.Row('# Error Counts', plots[5])],
+          pn.Row(NO_RANK_COMP, ag_pct_rank1, plots[4]),
+          pn.Row(NO_ERROR_CNTS, plots[5])],
     header_background=APP_HEADER_BACKGROUND,
 )
 template.servable()
