@@ -15,7 +15,6 @@ class TestWidget(unittest.TestCase):
         self.assertEqual(test_select_widget2.value, 5) 
         self.assertEqual(test_select_widget2.options, [0, 5, 10]) 
         self.assertEqual(test_select_widget2.format, 'format')
-        print("Init Test PASSED")
     
     @mock.patch('scripts.widget.Widget._create_selectwidget')
     def run_test_create_selectwidget(self, mock_create_widget):
@@ -24,7 +23,6 @@ class TestWidget(unittest.TestCase):
         widget = test_widget.create_widget()
         mock_create_widget.assert_called_once()
         self.assertEqual(widget, mock_create_widget.return_value)
-        print("Create Select Test PASSED")
     
     @mock.patch('scripts.widget.Widget._create_numberwidget')
     def run_test_create_numberwidget(self, mock_create_widget):
@@ -33,7 +31,6 @@ class TestWidget(unittest.TestCase):
         widget = test_widget.create_widget()
         mock_create_widget.assert_called_once()
         self.assertEqual(widget, mock_create_widget.return_value)
-        print("Create Number Test PASSED")
     
     @mock.patch('scripts.widget.Widget._create_togglewidget')
     def run_test_create_togglewidget(self, mock_create_widget):
@@ -42,7 +39,6 @@ class TestWidget(unittest.TestCase):
         widget = test_widget.create_widget()
         mock_create_widget.assert_called_once()
         self.assertEqual(widget, mock_create_widget.return_value)
-        print("Create Toggle Test PASSED")
     
     def test_widgets(self):
         self.run_test_create_selectwidget()
