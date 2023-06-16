@@ -8,5 +8,5 @@ class MetricsPlotAll(Plot):
                          y_axis, graph_type, xlabel, ylabel, 
                          label_rot, table_cols)
     
-    def _preprocess(**kwargs):
-        return super()._preprocess()
+    def _preprocess(*args):
+        return Plot._preprocess(*args)
