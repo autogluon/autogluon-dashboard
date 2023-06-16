@@ -1,6 +1,4 @@
-from scripts.widget import Widget
 import unittest
-from unittest import mock
 import pandas as pd
 from scripts.utils import *
 
