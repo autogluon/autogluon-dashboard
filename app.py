@@ -1,5 +1,9 @@
 import panel as pn
 import hvplot.pandas # noqa
+import sys
+import subprocess
+from multiprocessing import set_start_method, Process
+
 
 from scripts.widget import Widget
 from plots.metrics_all_datasets import MetricsPlotAll
@@ -8,15 +12,17 @@ from plots.top5_all_datasets import Top5AllDatasets
 from plots.top5_per_dataset import Top5PerDataset
 from plots.ag_rank_counts import AGRankCounts
 from plots.framework_error import FrameworkError
-from scripts.config.widgets_config import METRICS_TO_PLOT, GRAPH_TYPES
-from scripts.config.app_layout_config import APP_HEADER_BACKGROUND, APP_TITLE, ALL_DATA_COMP, PER_DATA_COMP, NO_RANK_COMP, NO_ERROR_CNTS
-from scripts.config.plots_config import METRICS_PLOT_TITLE, TOP5_PERFORMERS_TITLE, AG_RANK_COUNTS_TITLE, FRAMEWORK_LABEL, YAXIS_LABEL, DATASETS_LABEL, GRAPH_TYPE_STR, RANK_LABEL, ERROR_COUNTS_TITLE, AUTOGLUON_RANK1_TITLE
+from scripts.constants.widgets_constants import METRICS_TO_PLOT, GRAPH_TYPES
+from scripts.constants.app_layout_constants import APP_HEADER_BACKGROUND, APP_TITLE, ALL_DATA_COMP, PER_DATA_COMP, NO_RANK_COMP, NO_ERROR_CNTS
+from scripts.constants.plots_constants import METRICS_PLOT_TITLE, TOP5_PERFORMERS_TITLE, AG_RANK_COUNTS_TITLE, FRAMEWORK_LABEL, YAXIS_LABEL, DATASETS_LABEL, GRAPH_TYPE_STR, RANK_LABEL, ERROR_COUNTS_TITLE, AUTOGLUON_RANK1_TITLE
 from scripts import utils
 
 # Load Data
-from scripts.data import per_dataset_df, all_framework_df
+from scripts.data import get_dataframes
+dataset_file, aggregated_file = sys.argv[1], sys.argv[2]
 
 #clean up framework names
+per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
 dataset_list = utils.get_sorted_names_from_col(per_dataset_df, 'dataset')
 new_framework_names = utils.clean_up_framework_names(per_dataset_df)
 per_dataset_df['framework'] =  new_framework_names
@@ -82,3 +88,4 @@ template = pn.template.FastListTemplate(
     header_background=APP_HEADER_BACKGROUND,
 )
 template.servable()
+    
