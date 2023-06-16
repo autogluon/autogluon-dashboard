@@ -9,4 +9,4 @@ class FrameworkError(Plot):
                          label_rot, table_cols)
     
     def _preprocess(*args):
-        return Plot._preprocess()
+        return Plot._preprocess(*args)
