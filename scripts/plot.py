@@ -1,10 +1,11 @@
 import hvplot.pandas
 from abc import abstractmethod
+from typing import Union
 
 class Plot:
-    def __init__(self, plot_title, dataset_to_plot, plot_type, 
-                 x_axis=None, y_axis=None, graph_type='bar', 
-                 xlabel='', ylabel='', label_rot=90, table_cols=[]):
+    def __init__(self, plot_title: str, dataset_to_plot: hvplot.Interactive, plot_type: str, 
+                 x_axis: Union[str, list]=None, y_axis: Union[str, list]=None, graph_type: str='bar', 
+                 xlabel: str='', ylabel: str='', label_rot: int=90, table_cols: list=[]) -> None:
         self.plot_title = plot_title
         self.df = dataset_to_plot
         self.plot_x = x_axis
@@ -21,8 +22,8 @@ class Plot:
     def _preprocess(self, *args):
         return
 
-    def _create_hvplot(self, color_scheme=["#ff6f69", "#ffcc5c", "#88d8b0"],
-                    line_width=6, height=500):
+    def _create_hvplot(self, color_scheme:list=["#ff6f69", "#ffcc5c", "#88d8b0"],
+                    line_width:Union[int, float]=6, height:Union[int, float]=500) -> hvplot.hvPlot:
         """
         Create a plot of a given type leveraging the hvplot library, 
         and using data from a pandas interactive dataframe.
@@ -61,7 +62,7 @@ class Plot:
                               line_width=line_width, height=height, 
                               rot=self.label_rot, xlabel=self.plot_x_label)
 
-    def _create_table(self, width=800):
+    def _create_table(self, width:Union[int, float]=800) -> hvplot.hvPlot.table:
         """
         Create a table leveraging the hvplot library, 
         and using data from a pandas interactive dataframe.

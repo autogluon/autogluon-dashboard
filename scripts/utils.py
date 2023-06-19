@@ -1,4 +1,6 @@
-def get_sorted_names_from_col(df, col_name):
+import pandas
+
+def get_sorted_names_from_col(df: pandas.DataFrame, col_name: str) -> list:
     """
     Get a sorted list of unique names in a given column.
     
@@ -10,7 +12,7 @@ def get_sorted_names_from_col(df, col_name):
     """
     return sorted(list(set(df[col_name])))
 
-def get_df_filter_by_dataset(df, dataset):
+def get_df_filter_by_dataset(df: pandas.DataFrame, dataset: str) -> pandas.DataFrame:
     """
     Get rows from dataframe pertaining to a particular dataset.
     
@@ -22,7 +24,7 @@ def get_df_filter_by_dataset(df, dataset):
     """
     return df[(df.dataset.isin([dataset]))]
 
-def get_df_filter_by_framework(df, framework):
+def get_df_filter_by_framework(df: pandas.DataFrame, framework: str) -> pandas.DataFrame:
     """
     Get rows from dataframe pertaining to a particular framework.
     
@@ -34,7 +36,7 @@ def get_df_filter_by_framework(df, framework):
     """
     return df.loc[(df['framework'].isin([framework]))]
 
-def get_col_metric_counts(df, metric):
+def get_col_metric_counts(df: pandas.DataFrame, metric: str) -> pandas.Series:
     """
     Get counts of different unique values in a given column.
     
@@ -47,7 +49,7 @@ def get_col_metric_counts(df, metric):
     df_sorted = df.sort_values(by=[metric])
     return df_sorted[metric].value_counts()[df_sorted[metric].unique()]
 
-def get_proportion_framework_rank1(framework_df, datsets_df, total_runs):
+def get_proportion_framework_rank1(framework_df: pandas.DataFrame, datsets_df: pandas.DataFrame, total_runs: int) -> float:
     """
     Get proportion of #1 ranks for a given framework across all runs.
     
@@ -62,7 +64,7 @@ def get_proportion_framework_rank1(framework_df, datsets_df, total_runs):
     """
     return framework_df.loc[(datsets_df['rank'] == 1.0)].shape[0] / total_runs
 
-def get_top5_performers(df, metric):
+def get_top5_performers(df: pandas.DataFrame, metric: str) -> pandas.DataFrame:
     """
     Get top 5 performers for a given metric
     
@@ -74,7 +76,7 @@ def get_top5_performers(df, metric):
     """
     return df.sort_values(metric).head()
 
-def get_name_before_first_underscore(df, col_name):
+def get_name_before_first_underscore(df: pandas.DataFrame, col_name: str) -> pandas.DataFrame:
     """
     Get the part of the string before the first underscore. 
     Example: AutoGluonv0.1_gc8h8_2022 becomes AutoGluonv0.1
@@ -87,7 +89,7 @@ def get_name_before_first_underscore(df, col_name):
     """
     return df[col_name].str.extract(r"^(.*?)(?:_|$)")[0]
 
-def clean_up_framework_names(df):
+def clean_up_framework_names(df: pandas.DataFrame) -> list:
     new_framework_names = get_name_before_first_underscore(df, 'framework')
     num_frameworks = len(set(new_framework_names))
     # dummy framework replacement
