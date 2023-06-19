@@ -1,5 +1,4 @@
 import panel as pn
-import hvplot.pandas # noqa
 import sys
 
 from scripts.widget import Widget
