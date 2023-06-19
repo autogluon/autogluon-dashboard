@@ -1,9 +1,6 @@
 import panel as pn
 import hvplot.pandas # noqa
 import sys
-import subprocess
-from multiprocessing import set_start_method, Process
-
 
 from scripts.widget import Widget
 from plots.metrics_all_datasets import MetricsPlotAll
@@ -20,9 +17,9 @@ from scripts import utils
 # Load Data
 from scripts.data import get_dataframes
 dataset_file, aggregated_file = sys.argv[1], sys.argv[2]
+per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
 
 #clean up framework names
-per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
 dataset_list = utils.get_sorted_names_from_col(per_dataset_df, 'dataset')
 new_framework_names = utils.clean_up_framework_names(per_dataset_df)
 per_dataset_df['framework'] =  new_framework_names
