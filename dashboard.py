@@ -1,6 +1,5 @@
 import sys
 import subprocess
-from multiprocessing import set_start_method
 
 if __name__ == '__main__':
     csv1 = sys.argv[2]
