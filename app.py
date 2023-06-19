@@ -2,12 +2,12 @@ import panel as pn
 import sys
 
 from scripts.widget import Widget
-from plots.metrics_all_datasets import MetricsPlotAll
-from plots.metrics_per_datasets import MetricsPlotPerDataset
-from plots.top5_all_datasets import Top5AllDatasets
-from plots.top5_per_dataset import Top5PerDataset
-from plots.ag_rank_counts import AGRankCounts
-from plots.framework_error import FrameworkError
+from plotting.metrics_all_datasets import MetricsPlotAll
+from plotting.metrics_per_datasets import MetricsPlotPerDataset
+from plotting.top5_all_datasets import Top5AllDatasets
+from plotting.top5_per_dataset import Top5PerDataset
+from plotting.ag_rank_counts import AGRankCounts
+from plotting.framework_error import FrameworkError
 from scripts.constants.widgets_constants import METRICS_TO_PLOT, GRAPH_TYPES
 from scripts.constants.app_layout_constants import APP_HEADER_BACKGROUND, APP_TITLE, ALL_DATA_COMP, PER_DATA_COMP, NO_RANK_COMP, NO_ERROR_CNTS
 from scripts.constants.plots_constants import METRICS_PLOT_TITLE, TOP5_PERFORMERS_TITLE, AG_RANK_COUNTS_TITLE, FRAMEWORK_LABEL, YAXIS_LABEL, DATASETS_LABEL, GRAPH_TYPE_STR, RANK_LABEL, ERROR_COUNTS_TITLE, AUTOGLUON_RANK1_TITLE

@@ -1,7 +1,9 @@
 import unittest
 from unittest import mock
 from unittest.mock import call
-from scripts.data import get_dataframes, PER_DATASET_TEST_CSV_PATH, ALL_DATASETS_COMBINED_TEST_CSV_PATH
+from scripts.data import get_dataframes
+PER_DATASET_TEST_CSV_PATH = 'random_csv.csv'
+ALL_DATASETS_COMBINED_TEST_CSV_PATH = 'random_csv2.csv'
 
 class TestDataLoad(unittest.TestCase):
     @mock.patch('autogluon.common.loaders.load_pd.load')

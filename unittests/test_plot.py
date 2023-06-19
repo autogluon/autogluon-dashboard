@@ -1,9 +1,9 @@
-from plots.metrics_all_datasets import MetricsPlotAll
-from plots.metrics_per_datasets import MetricsPlotPerDataset
-from plots.top5_per_dataset import Top5PerDataset
-from plots.top5_all_datasets import Top5AllDatasets
-from plots.framework_error import FrameworkError
-from plots.ag_rank_counts import AGRankCounts
+from plotting.metrics_all_datasets import MetricsPlotAll
+from plotting.metrics_per_datasets import MetricsPlotPerDataset
+from plotting.top5_per_dataset import Top5PerDataset
+from plotting.top5_all_datasets import Top5AllDatasets
+from plotting.framework_error import FrameworkError
+from plotting.ag_rank_counts import AGRankCounts
 import unittest
 from unittest import mock
 from unittest.mock import MagicMock
@@ -80,7 +80,7 @@ class TestTop5AllDatasets(unittest.TestCase):
         plot_df = plot.df.reset_index().drop(columns=['index'])
         assert plot_df.equals(expected_df)
     
-    @mock.patch("scripts.plot.Plot._create_table")
+    @mock.patch("plotting.plot.Plot._create_table")
     def test_plot(self, mock_plot):
         mock_plot.return_value = MagicMock()
         plot_obj = Top5AllDatasets("title", mock_df, "table", col_name='rank')
@@ -101,7 +101,7 @@ class TestTop5PerDataset(unittest.TestCase):
         plot_df = plot.df.reset_index().drop(columns=['index'])
         assert plot_df.equals(expected_df)
     
-    @mock.patch("scripts.plot.Plot._create_table")
+    @mock.patch("plotting.plot.Plot._create_table")
     def test_plot(self, mock_plot):
         mock_plot.return_value = "plot"
         plot_obj = Top5PerDataset("title", mock_df, "table", col_name='rank', dataset='A')
@@ -139,7 +139,7 @@ class TestAGRankCounts(unittest.TestCase):
         plot_df = plot.df.reset_index().drop(columns=['index'])
         assert plot_df.equals(expected_df)
     
-    @mock.patch("scripts.plot.Plot._create_hvplot")
+    @mock.patch("plotting.plot.Plot._create_hvplot")
     def test_plot(self, mock_plot):
         mock_plot.return_value = "plot"
         plot_obj = AGRankCounts("title", mock_df, "hvplot", col_name='rank', framework='')
