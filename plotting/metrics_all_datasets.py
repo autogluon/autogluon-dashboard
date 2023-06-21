@@ -1,4 +1,4 @@
-from plotting.plot import Plot
+from plotting.all_plots import Plot
 import hvplot
 from typing import Union
 

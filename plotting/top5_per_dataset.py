@@ -1,4 +1,4 @@
-from plotting.plot import Plot
+from plotting.all_plots import Plot
 from scripts.utils import get_top5_performers, get_df_filter_by_dataset
 import pandas
 import hvplot
