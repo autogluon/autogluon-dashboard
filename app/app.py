@@ -7,28 +7,20 @@ from plotting.rank_counts_ag import AGRankCounts
 from plotting.top5_all_datasets import Top5AllDatasets
 from plotting.top5_per_dataset import Top5PerDataset
 from scripts import utils
-from scripts.constants.app_layout_constants import (
-    ALL_DATA_COMP,
-    APP_HEADER_BACKGROUND,
-    APP_TITLE,
-    NO_ERROR_CNTS,
-    NO_RANK_COMP,
-    PER_DATA_COMP,
-)
-from scripts.constants.plots_constants import (
-    AG_RANK_COUNTS_TITLE,
-    AUTOGLUON_RANK1_TITLE,
-    DATASETS_LABEL,
-    ERROR_COUNTS_TITLE,
-    FRAMEWORK_LABEL,
-    GRAPH_TYPE_STR,
-    METRICS_PLOT_TITLE,
-    RANK_LABEL,
-    TOP5_PERFORMERS_TITLE,
-    YAXIS_LABEL,
-)
+from scripts.constants.app_layout_constants import (ALL_DATA_COMP,
+                                                    APP_HEADER_BACKGROUND,
+                                                    APP_TITLE, NO_ERROR_CNTS,
+                                                    NO_RANK_COMP,
+                                                    PER_DATA_COMP)
+from scripts.constants.plots_constants import (AG_RANK_COUNTS_TITLE,
+                                               AUTOGLUON_RANK1_TITLE,
+                                               DATASETS_LABEL,
+                                               ERROR_COUNTS_TITLE,
+                                               FRAMEWORK_LABEL, GRAPH_TYPE_STR,
+                                               METRICS_PLOT_TITLE, RANK_LABEL,
+                                               TOP5_PERFORMERS_TITLE,
+                                               YAXIS_LABEL)
 from scripts.constants.widgets_constants import GRAPH_TYPES, METRICS_TO_PLOT
-
 # Load Data
 from scripts.data import get_dataframes
 from scripts.widget import Widget
