@@ -1,9 +1,10 @@
 import pandas
 
+
 def get_sorted_names_from_col(df: pandas.DataFrame, col_name: str) -> list:
     """
     Get a sorted list of unique names in a given column.
-    
+
     Parameters
     ----------
     df: Pandas dataframe,
@@ -12,10 +13,11 @@ def get_sorted_names_from_col(df: pandas.DataFrame, col_name: str) -> list:
     """
     return sorted(list(set(df[col_name])))
 
+
 def get_df_filter_by_dataset(df: pandas.DataFrame, dataset: str) -> pandas.DataFrame:
     """
     Get rows from dataframe pertaining to a particular dataset.
-    
+
     Parameters
     ----------
     df: Pandas dataframe,
@@ -24,22 +26,26 @@ def get_df_filter_by_dataset(df: pandas.DataFrame, dataset: str) -> pandas.DataF
     """
     return df[(df.dataset.isin([dataset]))]
 
-def get_df_filter_by_framework(df: pandas.DataFrame, framework: str) -> pandas.DataFrame:
+
+def get_df_filter_by_framework(
+    df: pandas.DataFrame, framework: str
+) -> pandas.DataFrame:
     """
     Get rows from dataframe pertaining to a particular framework.
-    
+
     Parameters
     ----------
     df: Pandas dataframe,
     framework: str,
         Name of dataset to filter by.
     """
-    return df.loc[(df['framework'].isin([framework]))]
+    return df.loc[(df["framework"].isin([framework]))]
+
 
 def get_col_metric_counts(df: pandas.DataFrame, metric: str) -> pandas.Series:
     """
     Get counts of different unique values in a given column.
-    
+
     Parameters
     ----------
     df: Pandas dataframe,
@@ -49,10 +55,13 @@ def get_col_metric_counts(df: pandas.DataFrame, metric: str) -> pandas.Series:
     df_sorted = df.sort_values(by=[metric])
     return df_sorted[metric].value_counts()[df_sorted[metric].unique()]
 
-def get_proportion_framework_rank1(framework_df: pandas.DataFrame, datsets_df: pandas.DataFrame, total_runs: int) -> float:
+
+def get_proportion_framework_rank1(
+    framework_df: pandas.DataFrame, datsets_df: pandas.DataFrame, total_runs: int
+) -> float:
     """
     Get proportion of #1 ranks for a given framework across all runs.
-    
+
     Parameters
     ----------
     framework_df: Pandas dataframe,
@@ -62,12 +71,13 @@ def get_proportion_framework_rank1(framework_df: pandas.DataFrame, datsets_df: p
     total_runs: int,
         Total #runs for a given framework = Total number of datasets.
     """
-    return framework_df.loc[(datsets_df['rank'] == 1.0)].shape[0] / total_runs
+    return framework_df.loc[(datsets_df["rank"] == 1.0)].shape[0] / total_runs
+
 
 def get_top5_performers(df: pandas.DataFrame, metric: str) -> pandas.DataFrame:
     """
     Get top 5 performers for a given metric
-    
+
     Parameters
     ----------
     df: Pandas dataframe,
@@ -76,9 +86,12 @@ def get_top5_performers(df: pandas.DataFrame, metric: str) -> pandas.DataFrame:
     """
     return df.sort_values(metric).head()
 
-def get_name_before_first_underscore(df: pandas.DataFrame, col_name: str) -> pandas.DataFrame:
+
+def get_name_before_first_underscore(
+    df: pandas.DataFrame, col_name: str
+) -> pandas.DataFrame:
     """
-    Get the part of the string before the first underscore. 
+    Get the part of the string before the first underscore.
     Example: AutoGluonv0.1_gc8h8_2022 becomes AutoGluonv0.1
 
     Parameters
@@ -89,11 +102,15 @@ def get_name_before_first_underscore(df: pandas.DataFrame, col_name: str) -> pan
     """
     return df[col_name].str.extract(r"^(.*?)(?:_|$)")[0]
 
+
 def clean_up_framework_names(df: pandas.DataFrame) -> list:
-    new_framework_names = get_name_before_first_underscore(df, 'framework')
+    new_framework_names = get_name_before_first_underscore(df, "framework")
     num_frameworks = len(set(new_framework_names))
     # dummy framework replacement
     for i in range(len(new_framework_names)):
-        new_framework_names[i] = "AutoGluon" if i%num_frameworks==0 or new_framework_names[i] == "AutoGluon" else "AutoGluon v" + f"0.{i%num_frameworks}"
+        new_framework_names[i] = (
+            "AutoGluon"
+            if i % num_frameworks == 0 or new_framework_names[i] == "AutoGluon"
+            else "AutoGluon v" + f"0.{i%num_frameworks}"
+        )
     return new_framework_names
-    
