@@ -6,7 +6,8 @@ PER_DATASET_TEST_CSV_PATH = 'random_csv.csv'
 ALL_DATASETS_COMBINED_TEST_CSV_PATH = 'random_csv2.csv'
 
 class TestDataLoad(unittest.TestCase):
-    @mock.patch('autogluon.common.loaders.load_pd.load')
+    #@mock.patch('autogluon.common.loaders.load_pd.load')
+    @mock.patch('pandas.read_csv')
     def test_data_load(self, mock_data):
         mock_data.return_value = "some data" 
         df1, df2 = get_dataframes(PER_DATASET_TEST_CSV_PATH, ALL_DATASETS_COMBINED_TEST_CSV_PATH)
