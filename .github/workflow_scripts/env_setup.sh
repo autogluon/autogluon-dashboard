@@ -4,6 +4,6 @@ function setup_lint_env {
     python3 -m pip install "isort>=5.10"
 }
 
-function install_bench_test {
-    python3 -m pip install --upgrade -e "./[unittests]"
+function install_dashboard_test {
+    python3 -m pip install --upgrade -e "./[tests]"
 }
