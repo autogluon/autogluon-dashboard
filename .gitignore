@@ -1,3 +1,12 @@
+.DS_Store
+data_config.py
+pyodide
+out.py
+
+#Venv
+.venv*/
+dev_data
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
