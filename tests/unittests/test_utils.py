@@ -24,9 +24,7 @@ class TestUtils(unittest.TestCase):
             "framework": ["C", "A", "A"],
         }
         expected_df = pd.DataFrame(data)
-        filtered_df = (
-            get_df_filter_by_dataset(mock_df, "A").reset_index().drop(columns=["index"])
-        )
+        filtered_df = get_df_filter_by_dataset(mock_df, "A").reset_index().drop(columns=["index"])
         assert filtered_df.equals(expected_df)
 
     def test_get_df_filter_by_framework(self):
@@ -36,20 +34,14 @@ class TestUtils(unittest.TestCase):
             "framework": ["A", "A", "A"],
         }
         expected_df = pd.DataFrame(data)
-        filtered_df = (
-            get_df_filter_by_framework(mock_df, "A")
-            .reset_index()
-            .drop(columns=["index"])
-        )
+        filtered_df = get_df_filter_by_framework(mock_df, "A").reset_index().drop(columns=["index"])
         assert filtered_df.equals(expected_df)
 
     def test_get_col_metric_counts(self):
 
         data = {"rank": [2, 1, 2, 1, 2]}
         expected = pd.DataFrame(data)
-        counts = (
-            get_col_metric_counts(mock_df, "rank").reset_index().drop(columns=["index"])
-        )
+        counts = get_col_metric_counts(mock_df, "rank").reset_index().drop(columns=["index"])
         assert expected.equals(counts)
 
     def test_get_proportion_framework_rank1(self):
@@ -64,9 +56,7 @@ class TestUtils(unittest.TestCase):
             "framework": ["D", "A", "B", "C", "A"],
         }
         expected_df = pd.DataFrame(data)
-        top5 = (
-            get_top5_performers(mock_df, "rank").reset_index().drop(columns=["index"])
-        )
+        top5 = get_top5_performers(mock_df, "rank").reset_index().drop(columns=["index"])
         assert top5.equals(expected_df)
 
     def test_get_name_before_first_underscore(self):

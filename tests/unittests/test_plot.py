@@ -96,9 +96,7 @@ class TestTop5AllDatasets(unittest.TestCase):
         plot_test.plot_init_test(plot)
 
     def test_preprocess(self):
-        plot = Top5AllDatasets(
-            "title", mock_df, "table", col_name="rank", table_cols=["framework", "rank"]
-        )
+        plot = Top5AllDatasets("title", mock_df, "table", col_name="rank", table_cols=["framework", "rank"])
         data = {
             "rank": [1, 1, 2, 3, 3],
             "dataset": ["B", "A", "C", "A", "A"],
@@ -136,9 +134,7 @@ class TestTop5PerDataset(unittest.TestCase):
     @mock.patch("plotting.all_plots.Plot._create_table")
     def test_plot(self, mock_plot):
         mock_plot.return_value = "plot"
-        plot_obj = Top5PerDataset(
-            "title", mock_df, "table", col_name="rank", dataset="A"
-        )
+        plot_obj = Top5PerDataset("title", mock_df, "table", col_name="rank", dataset="A")
         plot = plot_obj.plot()
         self.assertEqual(plot, mock_plot.return_value)
 
@@ -178,9 +174,7 @@ class TestAGRankCounts(unittest.TestCase):
     @mock.patch("plotting.all_plots.Plot._create_hvplot")
     def test_plot(self, mock_plot):
         mock_plot.return_value = "plot"
-        plot_obj = AGRankCounts(
-            "title", mock_df, "hvplot", col_name="rank", framework=""
-        )
+        plot_obj = AGRankCounts("title", mock_df, "hvplot", col_name="rank", framework="")
         plot = plot_obj.plot()
         self.assertEqual(plot, mock_plot.return_value)
 

@@ -13,9 +13,7 @@ class TestDataLoad(unittest.TestCase):
     @mock.patch("pandas.read_csv")
     def test_data_load(self, mock_data):
         mock_data.return_value = "some data"
-        df1, df2 = get_dataframes(
-            PER_DATASET_TEST_CSV_PATH, ALL_DATASETS_COMBINED_TEST_CSV_PATH
-        )
+        df1, df2 = get_dataframes(PER_DATASET_TEST_CSV_PATH, ALL_DATASETS_COMBINED_TEST_CSV_PATH)
         self.assertEqual(df1, mock_data.return_value)
         self.assertEqual(df2, mock_data.return_value)
         calls = [

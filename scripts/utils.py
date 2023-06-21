@@ -27,9 +27,7 @@ def get_df_filter_by_dataset(df: pandas.DataFrame, dataset: str) -> pandas.DataF
     return df[(df.dataset.isin([dataset]))]
 
 
-def get_df_filter_by_framework(
-    df: pandas.DataFrame, framework: str
-) -> pandas.DataFrame:
+def get_df_filter_by_framework(df: pandas.DataFrame, framework: str) -> pandas.DataFrame:
     """
     Get rows from dataframe pertaining to a particular framework.
 
@@ -87,9 +85,7 @@ def get_top5_performers(df: pandas.DataFrame, metric: str) -> pandas.DataFrame:
     return df.sort_values(metric).head()
 
 
-def get_name_before_first_underscore(
-    df: pandas.DataFrame, col_name: str
-) -> pandas.DataFrame:
+def get_name_before_first_underscore(df: pandas.DataFrame, col_name: str) -> pandas.DataFrame:
     """
     Get the part of the string before the first underscore.
     Example: AutoGluonv0.1_gc8h8_2022 becomes AutoGluonv0.1

@@ -47,29 +47,15 @@ per_dataset_idf = per_dataset_df.interactive()
 all_framework_idf = all_framework_df.interactive()
 
 # Define Panel widgets
-frameworks_widget = Widget(
-    "select", name=FRAMEWORK_LABEL, options=new_framework_names.to_list()
-).create_widget()
-yaxis_widget = Widget(
-    "select", name=YAXIS_LABEL, options=METRICS_TO_PLOT
-).create_widget()
-yaxis_widget2 = Widget(
-    "select", name=YAXIS_LABEL, options=METRICS_TO_PLOT
-).create_widget()
-dataset_dropdown = Widget(
-    "select", name=DATASETS_LABEL, options=dataset_list
-).create_widget()
-graph_dropdown = Widget(
-    "select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES
-).create_widget()
-graph_dropdown2 = Widget(
-    "select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES
-).create_widget()
+frameworks_widget = Widget("select", name=FRAMEWORK_LABEL, options=new_framework_names.to_list()).create_widget()
+yaxis_widget = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
+yaxis_widget2 = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
+dataset_dropdown = Widget("select", name=DATASETS_LABEL, options=dataset_list).create_widget()
+graph_dropdown = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
+graph_dropdown2 = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 
 df_ag_only = utils.get_df_filter_by_framework(per_dataset_df, "AutoGluon")
-prop_ag_best = utils.get_proportion_framework_rank1(
-    df_ag_only, per_dataset_df, len(dataset_list)
-)
+prop_ag_best = utils.get_proportion_framework_rank1(df_ag_only, per_dataset_df, len(dataset_list))
 ag_pct_rank1 = Widget(
     "number",
     name=AUTOGLUON_RANK1_TITLE,

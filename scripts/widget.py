@@ -27,11 +27,7 @@ class Widget:
         return pn.widgets.Select(name=self.name, options=self.options)
 
     def _create_togglewidget(self) -> pn.widgets.ToggleGroup:
-        return pn.widgets.ToggleGroup(
-            name=self.name, options=self.options, button_type="success"
-        )
+        return pn.widgets.ToggleGroup(name=self.name, options=self.options, button_type="success")
 
     def _create_numberwidget(self) -> pn.indicators.Number:
-        return pn.indicators.Number(
-            name=self.name, value=self.value, format=self.format
-        )
+        return pn.indicators.Number(name=self.name, value=self.value, format=self.format)

@@ -107,6 +107,4 @@ class Plot:
         width: int, default=800,
             Width of the table.
         """
-        return self.df.hvplot.table(
-            title=self.plot_title, columns=self.table_cols, width=width
-        )
+        return self.df.hvplot.table(title=self.plot_title, columns=self.table_cols, width=width)
