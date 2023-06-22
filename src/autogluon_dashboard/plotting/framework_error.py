@@ -2,7 +2,7 @@ from typing import Union
 
 import hvplot
 
-from src.autogluon_dashboard.plotting.all_plots import Plot
+from .all_plots import Plot
 
 
 class FrameworkError(Plot):

@@ -3,8 +3,8 @@ from typing import Union
 import hvplot
 import pandas
 
-from src.autogluon_dashboard.plotting.all_plots import Plot
-from src.autogluon_dashboard.scripts.utils import get_df_filter_by_dataset
+from .all_plots import Plot
+from scripts.utils import get_df_filter_by_dataset
 
 
 class MetricsPlotPerDataset(Plot):
