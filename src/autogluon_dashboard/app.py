@@ -1,13 +1,13 @@
 import panel as pn
 
-from src.autogluon_dashboard.plotting.framework_error import FrameworkError
-from src.autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
-from src.autogluon_dashboard.plotting.metrics_per_datasets import MetricsPlotPerDataset
-from src.autogluon_dashboard.plotting.rank_counts_ag import AGRankCounts
-from src.autogluon_dashboard.plotting.top5_all_datasets import Top5AllDatasets
-from src.autogluon_dashboard.plotting.top5_per_dataset import Top5PerDataset
-from src.autogluon_dashboard.scripts import utils
-from src.autogluon_dashboard.scripts.constants.app_layout_constants import (
+from autogluon_dashboard.plotting.framework_error import FrameworkError
+from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
+from autogluon_dashboard.plotting.metrics_per_datasets import MetricsPlotPerDataset
+from autogluon_dashboard.plotting.rank_counts_ag import AGRankCounts
+from autogluon_dashboard.plotting.top5_all_datasets import Top5AllDatasets
+from autogluon_dashboard.plotting.top5_per_dataset import Top5PerDataset
+from autogluon_dashboard.scripts import utils
+from autogluon_dashboard.scripts.constants.app_layout_constants import (
     ALL_DATA_COMP,
     APP_HEADER_BACKGROUND,
     APP_TITLE,
@@ -15,7 +15,7 @@ from src.autogluon_dashboard.scripts.constants.app_layout_constants import (
     NO_RANK_COMP,
     PER_DATA_COMP,
 )
-from src.autogluon_dashboard.scripts.constants.plots_constants import (
+from autogluon_dashboard.scripts.constants.plots_constants import (
     AG_RANK_COUNTS_TITLE,
     AUTOGLUON_RANK1_TITLE,
     DATASETS_LABEL,
@@ -30,8 +30,8 @@ from src.autogluon_dashboard.scripts.constants.plots_constants import (
 from autogluon_dashboard.scripts.constants.widgets_constants import GRAPH_TYPES, METRICS_TO_PLOT
 
 # Load Data
-from src.autogluon_dashboard.scripts.data import get_dataframes
-from src.autogluon_dashboard.scripts.widget import Widget
+from autogluon_dashboard.scripts.data import get_dataframes
+from autogluon_dashboard.scripts.widget import Widget
 
 dataset_file, aggregated_file = "dev_data/all_data.csv", "dev_data/autogluon.csv"
 per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
