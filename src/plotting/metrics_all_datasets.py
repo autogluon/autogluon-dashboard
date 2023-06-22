@@ -2,7 +2,7 @@ from typing import Union
 
 import hvplot
 
-from plotting.all_plots import Plot
+from src.plotting.all_plots import Plot
 
 
 class MetricsPlotAll(Plot):

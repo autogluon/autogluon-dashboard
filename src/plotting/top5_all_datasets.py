@@ -3,8 +3,8 @@ from typing import Union
 import hvplot
 import pandas
 
-from plotting.all_plots import Plot
-from scripts.utils import get_top5_performers
+from src.plotting.all_plots import Plot
+from src.scripts.utils import get_top5_performers
 
 
 class Top5AllDatasets(Plot):

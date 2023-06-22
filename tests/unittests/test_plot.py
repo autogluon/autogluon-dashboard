@@ -4,12 +4,12 @@ from unittest.mock import MagicMock
 
 import pandas as pd
 
-from plotting.framework_error import FrameworkError
-from plotting.metrics_all_datasets import MetricsPlotAll
-from plotting.metrics_per_datasets import MetricsPlotPerDataset
-from plotting.rank_counts_ag import AGRankCounts
-from plotting.top5_all_datasets import Top5AllDatasets
-from plotting.top5_per_dataset import Top5PerDataset
+from src.plotting.framework_error import FrameworkError
+from src.plotting.metrics_all_datasets import MetricsPlotAll
+from src.plotting.metrics_per_datasets import MetricsPlotPerDataset
+from src.plotting.rank_counts_ag import AGRankCounts
+from src.plotting.top5_all_datasets import Top5AllDatasets
+from src.plotting.top5_per_dataset import Top5PerDataset
 
 d = {
     "rank": [5, 2, 3, 1, 3, 4, 5, 1],
@@ -106,7 +106,7 @@ class TestTop5AllDatasets(unittest.TestCase):
         plot_df = plot.df.reset_index().drop(columns=["index"])
         assert plot_df.equals(expected_df)
 
-    @mock.patch("plotting.all_plots.Plot._create_table")
+    @mock.patch("src.plotting.all_plots.Plot._create_table")
     def test_plot(self, mock_plot):
         mock_plot.return_value = MagicMock()
         plot_obj = Top5AllDatasets("title", mock_df, "table", col_name="rank")
@@ -131,7 +131,7 @@ class TestTop5PerDataset(unittest.TestCase):
         plot_df = plot.df.reset_index().drop(columns=["index"])
         assert plot_df.equals(expected_df)
 
-    @mock.patch("plotting.all_plots.Plot._create_table")
+    @mock.patch("src.plotting.all_plots.Plot._create_table")
     def test_plot(self, mock_plot):
         mock_plot.return_value = "plot"
         plot_obj = Top5PerDataset("title", mock_df, "table", col_name="rank", dataset="A")
@@ -171,7 +171,7 @@ class TestAGRankCounts(unittest.TestCase):
         plot_df = plot.df.reset_index().drop(columns=["index"])
         assert plot_df.equals(expected_df)
 
-    @mock.patch("plotting.all_plots.Plot._create_hvplot")
+    @mock.patch("src.plotting.all_plots.Plot._create_hvplot")
     def test_plot(self, mock_plot):
         mock_plot.return_value = "plot"
         plot_obj = AGRankCounts("title", mock_df, "hvplot", col_name="rank", framework="")

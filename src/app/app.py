@@ -1,13 +1,13 @@
 import panel as pn
 
-from plotting.framework_error import FrameworkError
-from plotting.metrics_all_datasets import MetricsPlotAll
-from plotting.metrics_per_datasets import MetricsPlotPerDataset
-from plotting.rank_counts_ag import AGRankCounts
-from plotting.top5_all_datasets import Top5AllDatasets
-from plotting.top5_per_dataset import Top5PerDataset
-from scripts import utils
-from scripts.constants.app_layout_constants import (
+from src.plotting.framework_error import FrameworkError
+from src.plotting.metrics_all_datasets import MetricsPlotAll
+from src.plotting.metrics_per_datasets import MetricsPlotPerDataset
+from src.plotting.rank_counts_ag import AGRankCounts
+from src.plotting.top5_all_datasets import Top5AllDatasets
+from src.plotting.top5_per_dataset import Top5PerDataset
+from src.scripts import utils
+from src.scripts.constants.app_layout_constants import (
     ALL_DATA_COMP,
     APP_HEADER_BACKGROUND,
     APP_TITLE,
@@ -15,7 +15,7 @@ from scripts.constants.app_layout_constants import (
     NO_RANK_COMP,
     PER_DATA_COMP,
 )
-from scripts.constants.plots_constants import (
+from src.scripts.constants.plots_constants import (
     AG_RANK_COUNTS_TITLE,
     AUTOGLUON_RANK1_TITLE,
     DATASETS_LABEL,
@@ -27,11 +27,11 @@ from scripts.constants.plots_constants import (
     TOP5_PERFORMERS_TITLE,
     YAXIS_LABEL,
 )
-from scripts.constants.widgets_constants import GRAPH_TYPES, METRICS_TO_PLOT
+from src.scripts.constants.widgets_constants import GRAPH_TYPES, METRICS_TO_PLOT
 
 # Load Data
-from scripts.data import get_dataframes
-from scripts.widget import Widget
+from src.scripts.data import get_dataframes
+from src.scripts.widget import Widget
 
 dataset_file, aggregated_file = "dev_data/all_data.csv", "dev_data/autogluon.csv"
 per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
