@@ -1,16 +1,20 @@
 from typing import Union
 
 import hvplot
+import pandas
 
-from src.plotting.all_plots import Plot
+from src.autogluon_dashboard.plotting.all_plots import Plot
+from src.autogluon_dashboard.scripts.utils import get_df_filter_by_dataset, get_top5_performers
 
 
-class FrameworkError(Plot):
+class Top5PerDataset(Plot):
     def __init__(
         self,
         plot_title: str,
-        dataset_to_plot: hvplot.Interactive,
+        df_process: hvplot.Interactive,
         plot_type: str,
+        col_name: str,
+        dataset: str,
         x_axis: Union[str, list] = None,
         y_axis: Union[str, list] = None,
         graph_type: str = "bar",
@@ -19,6 +23,7 @@ class FrameworkError(Plot):
         label_rot: int = 90,
         table_cols: list = ...,
     ) -> None:
+        dataset_to_plot = self._preprocess(df_process, dataset, col_name)
         super().__init__(
             plot_title,
             dataset_to_plot,
@@ -32,5 +37,6 @@ class FrameworkError(Plot):
             table_cols,
         )
 
-    def _preprocess(*args) -> None:
-        return Plot._preprocess(*args)
+    def _preprocess(self, *args) -> pandas.DataFrame:
+        df_filtered_by_dataset = get_df_filter_by_dataset(args[0], args[1])
+        return get_top5_performers(df_filtered_by_dataset, args[2])

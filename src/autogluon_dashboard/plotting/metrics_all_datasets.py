@@ -2,7 +2,7 @@ from typing import Union
 
 import hvplot
 
-from src.plotting.all_plots import Plot
+from src.autogluon_dashboard.plotting.all_plots import Plot
 
 
 class MetricsPlotAll(Plot):

@@ -3,18 +3,17 @@ from typing import Union
 import hvplot
 import pandas
 
-from src.plotting.all_plots import Plot
-from src.scripts.utils import get_df_filter_by_dataset, get_top5_performers
+from src.autogluon_dashboard.plotting.all_plots import Plot
+from src.autogluon_dashboard.scripts.utils import get_top5_performers
 
 
-class Top5PerDataset(Plot):
+class Top5AllDatasets(Plot):
     def __init__(
         self,
         plot_title: str,
         df_process: hvplot.Interactive,
         plot_type: str,
         col_name: str,
-        dataset: str,
         x_axis: Union[str, list] = None,
         y_axis: Union[str, list] = None,
         graph_type: str = "bar",
@@ -23,7 +22,7 @@ class Top5PerDataset(Plot):
         label_rot: int = 90,
         table_cols: list = ...,
     ) -> None:
-        dataset_to_plot = self._preprocess(df_process, dataset, col_name)
+        dataset_to_plot = self._preprocess(df_process, col_name)
         super().__init__(
             plot_title,
             dataset_to_plot,
@@ -38,5 +37,4 @@ class Top5PerDataset(Plot):
         )
 
     def _preprocess(self, *args) -> pandas.DataFrame:
-        df_filtered_by_dataset = get_df_filter_by_dataset(args[0], args[1])
-        return get_top5_performers(df_filtered_by_dataset, args[2])
+        return get_top5_performers(args[0], args[1])
