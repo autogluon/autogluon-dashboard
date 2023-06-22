@@ -2,9 +2,9 @@ from typing import Union
 
 import hvplot
 import pandas
+from scripts.utils import get_top5_performers
 
 from .all_plots import Plot
-from scripts.utils import get_top5_performers
 
 
 class Top5AllDatasets(Plot):
