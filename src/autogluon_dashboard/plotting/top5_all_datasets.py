@@ -2,8 +2,8 @@ from typing import Union
 
 import hvplot
 import pandas
-from ..scripts.utils import get_top5_performers
 
+from ..scripts.utils import get_top5_performers
 from .all_plots import Plot
 
 
