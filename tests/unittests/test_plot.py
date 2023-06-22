@@ -4,12 +4,13 @@ from unittest.mock import MagicMock
 
 import pandas as pd
 
-from src.autogluon_dashboard.plotting.framework_error import FrameworkError
-from src.autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
-from src.autogluon_dashboard.plotting.metrics_per_datasets import MetricsPlotPerDataset
-from src.autogluon_dashboard.plotting.rank_counts_ag import AGRankCounts
-from src.autogluon_dashboard.plotting.top5_all_datasets import Top5AllDatasets
-from src.autogluon_dashboard.plotting.top5_per_dataset import Top5PerDataset
+import autogluon_dashboard
+from autogluon_dashboard.plotting.framework_error import FrameworkError
+from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
+from autogluon_dashboard.plotting.metrics_per_datasets import MetricsPlotPerDataset
+from autogluon_dashboard.plotting.rank_counts_ag import AGRankCounts
+from autogluon_dashboard.plotting.top5_all_datasets import Top5AllDatasets
+from autogluon_dashboard.plotting.top5_per_dataset import Top5PerDataset
 
 d = {
     "rank": [5, 2, 3, 1, 3, 4, 5, 1],
@@ -106,9 +107,9 @@ class TestTop5AllDatasets(unittest.TestCase):
         plot_df = plot.df.reset_index().drop(columns=["index"])
         assert plot_df.equals(expected_df)
 
-    @mock.patch("src.autogluon_dashboard.plotting.all_plots.Plot._create_table")
+    @mock.patch("hvplot.plotting.core.hvPlotTabular.table")
     def test_plot(self, mock_plot):
-        mock_plot.return_value = MagicMock()
+        mock_plot.return_value = "plot"
         plot_obj = Top5AllDatasets("title", mock_df, "table", col_name="rank")
         plot = plot_obj.plot()
         self.assertEqual(plot, mock_plot.return_value)
@@ -131,10 +132,10 @@ class TestTop5PerDataset(unittest.TestCase):
         plot_df = plot.df.reset_index().drop(columns=["index"])
         assert plot_df.equals(expected_df)
 
-    @mock.patch("src.autogluon_dashboard.plotting.all_plots.Plot._create_table")
+    @mock.patch("hvplot.plotting.core.hvPlotTabular.table")
     def test_plot(self, mock_plot):
         mock_plot.return_value = "plot"
-        plot_obj = Top5PerDataset("title", mock_df, "table", col_name="rank", dataset="A")
+        plot_obj = Top5PerDataset("title", mock_df, "table", col_name="rank", dataset="A", table_cols=["framework"])
         plot = plot_obj.plot()
         self.assertEqual(plot, mock_plot.return_value)
 
@@ -171,10 +172,10 @@ class TestAGRankCounts(unittest.TestCase):
         plot_df = plot.df.reset_index().drop(columns=["index"])
         assert plot_df.equals(expected_df)
 
-    @mock.patch("src.autogluon_dashboard.plotting.all_plots.Plot._create_hvplot")
+    @mock.patch("hvplot.plotting.core.hvPlotTabular.table")
     def test_plot(self, mock_plot):
         mock_plot.return_value = "plot"
-        plot_obj = AGRankCounts("title", mock_df, "hvplot", col_name="rank", framework="")
+        plot_obj = AGRankCounts("title", mock_df, "table", col_name="rank", framework="A")
         plot = plot_obj.plot()
         self.assertEqual(plot, mock_plot.return_value)
 
