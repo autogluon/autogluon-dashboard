@@ -2,7 +2,7 @@ from typing import Union
 
 import hvplot
 import pandas
-from scripts.utils import get_df_filter_by_dataset
+from ..scripts.utils import get_df_filter_by_dataset
 
 from .all_plots import Plot
 
