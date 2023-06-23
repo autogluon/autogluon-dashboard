@@ -1,16 +1,19 @@
 from typing import Union
 
 import hvplot
+import pandas
 
-from src.plotting.all_plots import Plot
+from ..scripts.utils import get_df_filter_by_dataset
+from .all_plots import Plot
 
 
-class MetricsPlotAll(Plot):
+class MetricsPlotPerDataset(Plot):
     def __init__(
         self,
         plot_title: str,
-        dataset_to_plot: hvplot.Interactive,
+        df_process: hvplot.Interactive,
         plot_type: str,
+        dataset: str,
         x_axis: Union[str, list] = None,
         y_axis: Union[str, list] = None,
         graph_type: str = "bar",
@@ -19,6 +22,7 @@ class MetricsPlotAll(Plot):
         label_rot: int = 90,
         table_cols: list = ...,
     ) -> None:
+        dataset_to_plot = self._preprocess(df_process, dataset)
         super().__init__(
             plot_title,
             dataset_to_plot,
@@ -32,5 +36,5 @@ class MetricsPlotAll(Plot):
             table_cols,
         )
 
-    def _preprocess(*args) -> None:
-        return Plot._preprocess(*args)
+    def _preprocess(self, *args) -> pandas.DataFrame:
+        return get_df_filter_by_dataset(args[0], args[1])

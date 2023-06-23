@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from src.scripts.utils import *
+from autogluon_dashboard.scripts.utils import *
 
 d = {
     "rank": [5, 2, 3, 1, 3, 4, 5, 1],

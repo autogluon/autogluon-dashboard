@@ -3,17 +3,17 @@ from typing import Union
 import hvplot
 import pandas
 
-from src.plotting.all_plots import Plot
-from src.scripts.utils import get_df_filter_by_dataset
+from ..scripts.utils import get_top5_performers
+from .all_plots import Plot
 
 
-class MetricsPlotPerDataset(Plot):
+class Top5AllDatasets(Plot):
     def __init__(
         self,
         plot_title: str,
         df_process: hvplot.Interactive,
         plot_type: str,
-        dataset: str,
+        col_name: str,
         x_axis: Union[str, list] = None,
         y_axis: Union[str, list] = None,
         graph_type: str = "bar",
@@ -22,7 +22,7 @@ class MetricsPlotPerDataset(Plot):
         label_rot: int = 90,
         table_cols: list = ...,
     ) -> None:
-        dataset_to_plot = self._preprocess(df_process, dataset)
+        dataset_to_plot = self._preprocess(df_process, col_name)
         super().__init__(
             plot_title,
             dataset_to_plot,
@@ -37,4 +37,4 @@ class MetricsPlotPerDataset(Plot):
         )
 
     def _preprocess(self, *args) -> pandas.DataFrame:
-        return get_df_filter_by_dataset(args[0], args[1])
+        return get_top5_performers(args[0], args[1])

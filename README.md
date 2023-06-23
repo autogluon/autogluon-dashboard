@@ -1,4 +1,4 @@
-# autogluon-dashboard
+# autogluon_dashboard
 
 To view the dashboards in a local browser:
 1. Create a virtual environment by running: 
@@ -13,4 +13,4 @@ source .venv_dash/bin/activate
 To convert a Panel app to WebAssemly,  Panel provides a script that will convert the code in `app.py` into an HTML file and JS file. This can be done in one line of code as: `panel convert app.py --to pyodide-worker --out docs/app`
 The generated HTML and JS files will be found in the `docs/app` folder. These can be uploaded to the desired hosting service (eg: GitHub Pages).
 
-To run all unittests, use the following command: `python3 -m unittest discover -s unittests -p 'test_*.py'`
+To run all unittests, run the following command in the root directory: `python3 -m unittest discover -s unittests -p 'test_*.py'`

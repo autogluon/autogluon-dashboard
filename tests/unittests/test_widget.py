@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock
 
-from src.scripts.widget import Widget
+from autogluon_dashboard.scripts.widget import Widget
 
 
 class TestWidget(unittest.TestCase):
@@ -18,7 +18,7 @@ class TestWidget(unittest.TestCase):
         self.assertEqual(test_select_widget2.options, [0, 5, 10])
         self.assertEqual(test_select_widget2.format, "format")
 
-    @mock.patch("src.scripts.widget.Widget._create_selectwidget")
+    @mock.patch("autogluon_dashboard.scripts.widget.Widget._create_selectwidget")
     def run_test_create_selectwidget(self, mock_create_widget):
         mock_create_widget.return_value = "select widget created"
         test_widget = Widget("select", "test_create", 2, [0, 1, 2, 3], "format")
@@ -26,7 +26,7 @@ class TestWidget(unittest.TestCase):
         mock_create_widget.assert_called_once()
         self.assertEqual(widget, mock_create_widget.return_value)
 
-    @mock.patch("src.scripts.widget.Widget._create_numberwidget")
+    @mock.patch("autogluon_dashboard.scripts.widget.Widget._create_numberwidget")
     def run_test_create_numberwidget(self, mock_create_widget):
         mock_create_widget.return_value = "select number created"
         test_widget = Widget("number", "test_create", 2, [0, 1, 2, 3], "format")
@@ -34,7 +34,7 @@ class TestWidget(unittest.TestCase):
         mock_create_widget.assert_called_once()
         self.assertEqual(widget, mock_create_widget.return_value)
 
-    @mock.patch("src.scripts.widget.Widget._create_togglewidget")
+    @mock.patch("autogluon_dashboard.scripts.widget.Widget._create_togglewidget")
     def run_test_create_togglewidget(self, mock_create_widget):
         mock_create_widget.return_value = "toggle widget created"
         test_widget = Widget(

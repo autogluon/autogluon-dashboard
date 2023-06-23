@@ -14,3 +14,50 @@ known_third_party = [
 ]
 line_length = 119
 profile = "black"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autogluon_dashboard"
+version = "0.0.1"
+authors = [
+  { name="AutoGluon Community"},
+]
+description = "A dashboard package to view AutoGluon evaluation and benchmark metrics"
+readme = "README.md"
+requires-python = ">=3.8, <3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Customer Service",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Telecommunications Industry",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Software Development",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+]
+license = {file = "LICENSE"}
+dynamic = ["dependencies"]
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+"Source" = "https://github.com/autogluon/autogluon-dashboard"
+"Bug Reports" = "https://github.com/autogluon/autogluon-dashboard/issues"
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-mock", "tox"]

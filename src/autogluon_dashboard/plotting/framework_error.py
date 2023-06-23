@@ -1,19 +1,16 @@
 from typing import Union
 
 import hvplot
-import pandas
 
-from src.plotting.all_plots import Plot
-from src.scripts.utils import get_top5_performers
+from .all_plots import Plot
 
 
-class Top5AllDatasets(Plot):
+class FrameworkError(Plot):
     def __init__(
         self,
         plot_title: str,
-        df_process: hvplot.Interactive,
+        dataset_to_plot: hvplot.Interactive,
         plot_type: str,
-        col_name: str,
         x_axis: Union[str, list] = None,
         y_axis: Union[str, list] = None,
         graph_type: str = "bar",
@@ -22,7 +19,6 @@ class Top5AllDatasets(Plot):
         label_rot: int = 90,
         table_cols: list = ...,
     ) -> None:
-        dataset_to_plot = self._preprocess(df_process, col_name)
         super().__init__(
             plot_title,
             dataset_to_plot,
@@ -36,5 +32,5 @@ class Top5AllDatasets(Plot):
             table_cols,
         )
 
-    def _preprocess(self, *args) -> pandas.DataFrame:
-        return get_top5_performers(args[0], args[1])
+    def _preprocess(*args) -> None:
+        return Plot._preprocess(*args)

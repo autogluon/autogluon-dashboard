@@ -3,8 +3,8 @@ from typing import Union
 import hvplot
 import pandas
 
-from src.plotting.all_plots import Plot
-from src.scripts.utils import get_col_metric_counts, get_df_filter_by_framework
+from ..scripts.utils import get_col_metric_counts, get_df_filter_by_framework
+from .all_plots import Plot
 
 
 class AGRankCounts(Plot):
