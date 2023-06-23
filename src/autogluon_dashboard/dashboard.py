@@ -1,6 +1,6 @@
+import os
 import subprocess
 import sys
-import os
 
 if __name__ == "__main__":
     csv1 = sys.argv[2]
