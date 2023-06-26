@@ -4,7 +4,7 @@ import re
 from collections import namedtuple
 
 
-def get_imports(path):
+def get_import_tuples(path):
     Import = namedtuple("Import", ["module", "name", "alias"])
     with open(path) as fh:
         root = ast.parse(fh.read(), path)
@@ -19,6 +19,51 @@ def get_imports(path):
 
         for n in node.names:
             yield Import(module, n.name.split("."), n.asname)
+
+
+def get_imports(filepath, imports):
+    imps = [import_lib for import_lib in get_import_tuples(filepath)]
+    # Extract imports
+    for imported in imps:
+        module = imported.module
+        alias = imported.alias
+        name = imported.name
+        # import statments with from keyword
+        if module:
+            if len(module) == 1:
+                if alias:
+                    imports.add(f"from {module[0]} import {name[0]} as {alias}")
+                else:
+                    imports.add(f"from {module[0]} import {name[0]}")
+
+            else:
+                module_str = ""
+                for sub_module in module:
+                    module_str += f"{sub_module}."
+                module_str = module_str[:-1]
+                if alias:
+                    imports.add(f"from {module_str} import {name[0]} as {alias}")
+                else:
+                    imports.add(f"from {module_str} import {name[0]}")
+
+        # direct imports
+        else:
+            if len(name) == 1:
+                if alias:
+                    imports.add(f"import {name[0]} as {alias}")
+                else:
+                    imports.add(f"import {name[0]}")
+
+            else:
+                name_str = ""
+                for sub_module in name:
+                    name_str += f"{sub_module}."
+                name_str = name_str[:-1]
+
+                if alias:
+                    imports.add(f"import {name_str} as {alias}")
+                else:
+                    imports.add(f"import {name_str}")
 
 
 def extract_code(filepath):
@@ -63,49 +108,9 @@ def create_merged_file(directory, output_file):
         else:
             # Extract code from other files
             code.append(extract_code(filepath))
-            imps = [import_lib for import_lib in get_imports(filepath)]
-            # Extract imports
-            for imported in imps:
-                module = imported.module
-                alias = imported.alias
-                name = imported.name
-                # import statments with from keyword
-                if module:
-                    if len(module) == 1:
-                        if alias:
-                            imports.add(f"from {module[0]} import {name[0]} as {alias}")
-                        else:
-                            imports.add(f"from {module[0]} import {name[0]}")
+            get_imports(filepath, imports)
 
-                    else:
-                        module_str = ""
-                        for sub_module in module:
-                            module_str += f"{sub_module}."
-                        module_str = module_str[:-1]
-                        if alias:
-                            imports.add(f"from {module_str} import {name[0]} as {alias}")
-                        else:
-                            imports.add(f"from {module_str} import {name[0]}")
-
-                # direct imports
-                else:
-                    if len(name) == 1:
-                        if alias:
-                            imports.add(f"import {name[0]} as {alias}")
-                        else:
-                            imports.add(f"import {name[0]}")
-
-                    else:
-                        name_str = ""
-                        for sub_module in name:
-                            name_str += f"{sub_module}."
-                        name_str = name_str[:-1]
-
-                        if alias:
-                            imports.add(f"import {name_str} as {alias}")
-                        else:
-                            imports.add(f"import {name_str}")
-
+    imports = sorted(imports)
     imports = list(filter(lambda imp: not re.search(r"plotting|scripts|utils|Plot", imp), imports))
     # Combine all code and imports
     merged_code = "\n".join(imports) + "\n\n" + "\n".join(code)
