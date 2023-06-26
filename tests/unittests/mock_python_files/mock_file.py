@@ -13,4 +13,4 @@ from module.sub_module import pkg as name
 def code():
     a = 1
     b = 2
-    return lambda x: x + a*b
+    return lambda x: x + a * b
