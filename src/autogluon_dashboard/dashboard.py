@@ -6,8 +6,19 @@ import boto3
 s3 = boto3.client('s3')
 BUCKET = "dashboard-test-yash"
 
-def upload_to_s3(file_name, object_name):
+def upload_to_s3(file_name: str, object_name: str):
+    """
+    Uploads a file from local filesystem to a specified S3 bucket
+    
+    Parameters
+    ----------
+    file_name: str,
+        Name of local file to upload to S3
+    object_name: str,
+        Name of object to store file contents in S3 bucket
+    """
     global s3
+    global BUCKET
     with open(file_name, "rb") as f:
         s3.upload_fileobj(f, BUCKET, object_name)
 
