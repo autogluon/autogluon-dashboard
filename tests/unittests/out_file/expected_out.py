@@ -8,6 +8,7 @@ import pkg.sub_pkg
 import pkg.sub_pkg as name
 
 
+
 def func():
     sum = 0
     for i in range(10):
@@ -16,11 +17,13 @@ def func():
 # This file is only consumed by test_aggregate.py to test the aggregation functions from the aggregate_file.py script.
 
 
+
 def code():
     a = 1
     b = 2
     return lambda x: x + a*b
 import itertools
+
 
 
 def iter_primes():
