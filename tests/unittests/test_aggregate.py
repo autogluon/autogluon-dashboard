@@ -43,5 +43,17 @@ def code():
         create_merged_file(TEST_DIR_PATH+"/sub_folder", AGG_OUT_FILE_PATH)
         assert filecmp.cmp(out_file, 'tests/unittests/out_file/expected_out.py')
 
+    def test_right_paran(self):
+        code = extract_code("tests/unittests/mock_import.py")
+        expected_code = """    abc,
+    defg,
+    hij,
+
+    here,
+    there,
+    everywhere,
+"""
+        self.assertEqual(code, expected_code)
+
 if __name__ == "__main__":
     unittest.main()
