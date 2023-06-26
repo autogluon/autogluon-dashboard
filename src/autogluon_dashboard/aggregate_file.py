@@ -121,9 +121,10 @@ def extract_code(filepath: str) -> str:
             if "utils." in line:
                 line = line.replace("utils.", "")
             # handle unnecessary trailing paranthesis
-            if right_paran and ")" in line:
+            if right_paran: 
                 line = ""
-                right_paran = False
+                if ")" in line:
+                    right_paran = False
             code_lines.append(line)
         elif "import (" in line:
             # set flag to handle trailing paranthesis

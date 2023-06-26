@@ -46,25 +46,7 @@ def code():
 
     def test_trailing_paran(self):
         code = extract_code("tests/unittests/mock_python_files/mock_import.py")
-        expected_code = """    abc,
-    abc2,
-    abc3,
-    defg,
-    defg2,
-    defg3,
-    hij,
-    hij2,
-    hij3,
-    abc,
-    abc3,
-    defg,
-    defg3,
-    hij,
-    hij3,
-    something,
-    that,
-    this,
-"""
+        expected_code = ""
         self.assertEqual(code, expected_code)
 
 
