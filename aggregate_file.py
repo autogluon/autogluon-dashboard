@@ -108,7 +108,7 @@ def create_merged_file(directory, output_file):
         else:
             # Extract code from other files
             code.append(extract_code(filepath))
-            imports = get_imports(filepath)
+            imports = sorted(get_imports(filepath))
 
     imports = list(filter(lambda imp: not re.search(r"plotting|scripts|utils|Plot", imp), imports))
     # Combine all code and imports
