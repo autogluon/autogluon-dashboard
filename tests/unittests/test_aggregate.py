@@ -20,7 +20,7 @@ def code():
     b = 2
     return lambda x: x + a*b
 """
-        #self.assertEqual(code, expected_code)
+        self.assertEqual(code, expected_code)
     
     def test_get_imports(self):
         imports = set()
