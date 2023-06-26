@@ -43,8 +43,8 @@ def code():
         create_merged_file(TEST_DIR_PATH+"/sub_folder", AGG_OUT_FILE_PATH)
         assert filecmp.cmp(out_file, 'tests/unittests/out_file/expected_out.py')
 
-    def test_right_paran(self):
-        code = extract_code("tests/unittests/mock_import.py")
+    def test_trailing_paran(self):
+        code = extract_code("tests/unittests/mock_python_files/mock_import.py")
         expected_code = """    abc,
     defg,
     hij,

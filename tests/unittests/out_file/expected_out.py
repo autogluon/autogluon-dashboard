@@ -1,6 +1,12 @@
 from module import pkg
 from module import pkg as name
 from module.sub_module import pkg as name
+from something import abc
+from something import defg
+from something import hij
+from something_else import everywhere
+from something_else import here
+from something_else import there
 import pandas
 import pandas as pd
 import panel
@@ -22,6 +28,14 @@ def code():
     a = 1
     b = 2
     return lambda x: x + a*b
+
+    abc,
+    defg,
+    hij,
+
+    here,
+    there,
+    everywhere,
 import itertools
 
 
