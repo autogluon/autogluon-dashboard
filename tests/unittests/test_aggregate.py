@@ -8,6 +8,7 @@ TEST_FILE_PATH = "tests/unittests/mock_python_files/mock_file.py"
 TEST_DIR_PATH = "tests/unittests/mock_python_files"
 AGG_OUT_FILE_PATH = "tests/unittests/out_file/out.py"
 
+
 class TestAggregate(unittest.TestCase):
     def test_get_code(self):
         code = extract_code(TEST_FILE_PATH)
@@ -18,10 +19,10 @@ class TestAggregate(unittest.TestCase):
 def code():
     a = 1
     b = 2
-    return lambda x: x + a*b
+    return lambda x: x + a * b
 """
         self.assertEqual(code, expected_code)
-    
+
     def test_get_imports(self):
         imports = set()
         get_imports(TEST_FILE_PATH, imports)
@@ -34,26 +35,38 @@ def code():
         self.assertEqual(imports[5], "import panel")
         self.assertEqual(imports[6], "import pkg.sub_pkg")
         self.assertEqual(imports[7], "import pkg.sub_pkg as name")
-        
+
     def test_aggregation(self):
         out_file = AGG_OUT_FILE_PATH
-        with open(os.path.join("tests/unittests/out_file", "out.py"), 'w') as fp:
+        with open(os.path.join("tests/unittests/out_file", "out.py"), "w") as fp:
             pass
         create_merged_file(TEST_DIR_PATH, AGG_OUT_FILE_PATH)
-        create_merged_file(TEST_DIR_PATH+"/sub_folder", AGG_OUT_FILE_PATH)
-        assert filecmp.cmp(out_file, 'tests/unittests/out_file/expected_out.py')
+        create_merged_file(TEST_DIR_PATH + "/sub_folder", AGG_OUT_FILE_PATH)
+        assert filecmp.cmp(out_file, "tests/unittests/out_file/expected_out.py")
 
     def test_trailing_paran(self):
         code = extract_code("tests/unittests/mock_python_files/mock_import.py")
         expected_code = """    abc,
+    abc2,
+    abc3,
     defg,
+    defg2,
+    defg3,
     hij,
-
-    here,
-    there,
-    everywhere,
+    hij2,
+    hij3,
+    abc,
+    abc3,
+    defg,
+    defg3,
+    hij,
+    hij3,
+    something,
+    that,
+    this,
 """
         self.assertEqual(code, expected_code)
+
 
 if __name__ == "__main__":
     unittest.main()
