@@ -2,7 +2,7 @@ import os
 import subprocess
 import sys
 
-if __name__ == "__main__":
+def run_dashboard():
     csv1 = sys.argv[2]
     csv2 = sys.argv[4]
     wrapper_dir = os.path.dirname(__file__)
@@ -22,3 +22,7 @@ if __name__ == "__main__":
             "hvplot",
         ]
     )
+
+
+if __name__ == "__main__":
+    run_dashboard()

@@ -27,7 +27,7 @@ authors = [
 ]
 description = "A dashboard package to view AutoGluon evaluation and benchmark metrics"
 readme = "README.md"
-requires-python = ">=3.8, <3.10"
+requires-python = ">=3.8, <3.11"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Education",
@@ -54,6 +54,9 @@ license = {file = "LICENSE"}
 dynamic = ["dependencies"]
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
+
+[project.scripts]
+agdash = "autogluon_dashboard.dashboard:run_dashboard"
 
 [project.urls]
 "Source" = "https://github.com/autogluon/autogluon-dashboard"
