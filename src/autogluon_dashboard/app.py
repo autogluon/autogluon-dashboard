@@ -33,7 +33,7 @@ from autogluon_dashboard.scripts.constants.widgets_constants import GRAPH_TYPES,
 from autogluon_dashboard.scripts.data import get_dataframes
 from autogluon_dashboard.scripts.widget import Widget
 
-dataset_file = ("https://dashboard-test-yash.s3.us-west-2.amazonaws.com/dev_data/all_data.csv",)
+dataset_file = "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/dev_data/all_data.csv"
 aggregated_file = "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/dev_data/autogluon.csv"
 per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
 
