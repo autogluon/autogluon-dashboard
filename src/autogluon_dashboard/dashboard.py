@@ -1,15 +1,17 @@
 import os
 import subprocess
 import sys
+
 import boto3
 
-s3 = boto3.client('s3')
+s3 = boto3.client("s3")
 BUCKET = "dashboard-test-yash"
+
 
 def upload_to_s3(file_name: str, object_name: str):
     """
     Uploads a file from local filesystem to a specified S3 bucket
-    
+
     Parameters
     ----------
     file_name: str,
@@ -26,8 +28,8 @@ def upload_to_s3(file_name: str, object_name: str):
 def run_dashboard():
     per_dataset_csv_path = sys.argv[2]
     aggregated_csv_path = sys.argv[4]
-    upload_to_s3(per_dataset_csv_path, 'dev_data/all_data.csv')
-    upload_to_s3(aggregated_csv_path, 'dev_data/autogluon.csv')
+    upload_to_s3(per_dataset_csv_path, "dev_data/all_data.csv")
+    upload_to_s3(aggregated_csv_path, "dev_data/autogluon.csv")
     wrapper_dir = os.path.dirname(__file__)
     app_location = os.path.join(wrapper_dir, "app.py")
     subprocess.run(
@@ -45,8 +47,8 @@ def run_dashboard():
             "hvplot",
         ]
     )
-    upload_to_s3('web_files/app.html', 'app.html')
-    upload_to_s3('web_files/app.html', 'app.js')
+    upload_to_s3("web_files/app.html", "app.html")
+    upload_to_s3("web_files/app.html", "app.js")
 
 
 if __name__ == "__main__":
