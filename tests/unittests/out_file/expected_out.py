@@ -1,12 +1,24 @@
 from module import pkg
 from module import pkg as name
 from module.sub_module import pkg as name
-from something import abc
-from something import defg
-from something import hij
-from something_else import everywhere
-from something_else import here
-from something_else import there
+from some_new_module.new_sub_module.constants.plots_constants2 import abc
+from some_new_module.new_sub_module.constants.plots_constants2 import abc2
+from some_new_module.new_sub_module.constants.plots_constants2 import abc3
+from some_new_module.new_sub_module.constants.plots_constants2 import defg
+from some_new_module.new_sub_module.constants.plots_constants2 import defg2
+from some_new_module.new_sub_module.constants.plots_constants2 import defg3
+from some_new_module.new_sub_module.constants.plots_constants2 import hij
+from some_new_module.new_sub_module.constants.plots_constants2 import hij2
+from some_new_module.new_sub_module.constants.plots_constants2 import hij3
+from some_other_module.sub_module.constants.plots_constants2 import abc
+from some_other_module.sub_module.constants.plots_constants2 import abc3
+from some_other_module.sub_module.constants.plots_constants2 import defg
+from some_other_module.sub_module.constants.plots_constants2 import defg3
+from some_other_module.sub_module.constants.plots_constants2 import hij
+from some_other_module.sub_module.constants.plots_constants2 import hij3
+from some_other_module.sub_module.constants.plots_constants2 import something
+from some_other_module.sub_module.constants.plots_constants2 import that
+from some_other_module.sub_module.constants.plots_constants2 import this
 import pandas
 import pandas as pd
 import panel
@@ -20,6 +32,7 @@ def func():
     for i in range(10):
         i += 10
     return sum
+
 # This file is only consumed by test_aggregate.py to test the aggregation functions from the aggregate_file.py script.
 
 
@@ -27,28 +40,40 @@ def func():
 def code():
     a = 1
     b = 2
-    return lambda x: x + a*b
+    return lambda x: x + a * b
 
     abc,
+    abc2,
+    abc3,
     defg,
+    defg2,
+    defg3,
     hij,
-
-    here,
-    there,
-    everywhere,
+    hij2,
+    hij3,
+    abc,
+    abc3,
+    defg,
+    defg3,
+    hij,
+    hij3,
+    something,
+    that,
+    this,
 import itertools
 
 
 
 def iter_primes():
-     numbers = itertools.count(2)
+    numbers = itertools.count(2)
 
-     while True:
-         prime = next(numbers)
-         yield prime
-         numbers = filter(prime.__rmod__, numbers)
+    while True:
+        prime = next(numbers)
+        yield prime
+        numbers = filter(prime.__rmod__, numbers)
+
 
 for p in iter_primes():
     if p > 1000:
         break
-    print (p)
+    print(p)
