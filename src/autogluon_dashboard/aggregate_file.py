@@ -193,3 +193,4 @@ if __name__ == "__main__":
     create_merged_file("src/autogluon_dashboard/scripts", out_file_path)
     create_merged_file("src/autogluon_dashboard/plotting", out_file_path)
     create_merged_file("src/autogluon_dashboard", out_file_path)
+
