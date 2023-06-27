@@ -6,6 +6,7 @@ import boto3
 
 s3 = boto3.client("s3")
 BUCKET = "dashboard-test-yash"
+s3_url = "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/"
 
 
 def upload_to_s3(file_name: str, object_name: str):
@@ -28,13 +29,13 @@ def upload_to_s3(file_name: str, object_name: str):
 def run_dashboard():
     per_dataset_csv_path = sys.argv[2]
     aggregated_csv_path = sys.argv[4]
-    per_dataset_s3_name = "dev_data/all_data.csv"
-    aggregated_s3_name = "dev_data/autogluon.csv"
-    s3_url = "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/"
-    os.environ["PER_DATASET_PATH"] = s3_url + per_dataset_s3_name
-    os.environ["AGG_DATASET_PATH"] = s3_url + aggregated_s3_name
-    upload_to_s3(per_dataset_csv_path, per_dataset_s3_name)
-    upload_to_s3(aggregated_csv_path, aggregated_s3_name)
+    per_dataset_s3_loc = "dev_data/all_data.csv"
+    aggregated_s3_loc = "dev_data/autogluon.csv"
+    global s3_url
+    os.environ["PER_DATASET_PATH"] = s3_url + per_dataset_s3_loc
+    os.environ["AGG_DATASET_PATH"] = s3_url + aggregated_s3_loc
+    upload_to_s3(per_dataset_csv_path, per_dataset_s3_loc)
+    upload_to_s3(aggregated_csv_path, aggregated_s3_loc)
     wrapper_dir = os.path.dirname(__file__)
     app_location = os.path.join(wrapper_dir, "app.py")
     subprocess.run(
