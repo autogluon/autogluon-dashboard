@@ -2,7 +2,7 @@ import filecmp
 import os
 import unittest
 
-from aggregate_file import create_merged_file, extract_code, get_imports
+from autogluon_dashboard.aggregate_file import create_merged_file, extract_code, get_imports
 
 TEST_FILE_PATH = "tests/unittests/mock_python_files/mock_file.py"
 TEST_DIR_PATH = "tests/unittests/mock_python_files"
@@ -46,25 +46,7 @@ def code():
 
     def test_trailing_paran(self):
         code = extract_code("tests/unittests/mock_python_files/mock_import.py")
-        expected_code = """    abc,
-    abc2,
-    abc3,
-    defg,
-    defg2,
-    defg3,
-    hij,
-    hij2,
-    hij3,
-    abc,
-    abc3,
-    defg,
-    defg3,
-    hij,
-    hij3,
-    something,
-    that,
-    this,
-"""
+        expected_code = ""
         self.assertEqual(code, expected_code)
 
 

@@ -42,24 +42,6 @@ def code():
     b = 2
     return lambda x: x + a * b
 
-    abc,
-    abc2,
-    abc3,
-    defg,
-    defg2,
-    defg3,
-    hij,
-    hij2,
-    hij3,
-    abc,
-    abc3,
-    defg,
-    defg3,
-    hij,
-    hij3,
-    something,
-    that,
-    this,
 import itertools
 
 
