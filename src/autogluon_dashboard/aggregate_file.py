@@ -122,9 +122,9 @@ def extract_code(filepath: str) -> str:
                 line = line.replace("utils.", "")
             # handle unnecessary trailing paranthesis
             if right_paran:
-                line = ""
                 if ")" in line:
                     right_paran = False
+                line = ""
             code_lines.append(line)
         elif "import (" in line:
             # set flag to handle trailing paranthesis
@@ -157,9 +157,10 @@ def create_merged_file(directory: str, output_file: str) -> None:
         # Check if the file is the central file (app.py)
         if filename == "app.py":
             code.append(extract_code(filepath))
+            get_imports(filepath, imports)
 
         # dashboard is the wrapper file so we don't need it in the aggregated file
-        elif filename == "dashboard.py":
+        elif filename == "dashboard.py" or filename == "aggregate_file.py":
             continue
 
         else:
@@ -189,7 +190,7 @@ if __name__ == "__main__":
     with open(out_file_path, "w") as fp:
         pass
 
-    create_merged_file("src/autogluon_dashboard/scripts/constants", "out.py")
-    create_merged_file("src/autogluon_dashboard/scripts", "out.py")
-    create_merged_file("src/autogluon_dashboard/plotting", "out.py")
-    create_merged_file("src/autogluon_dashboard", "out.py")
+    create_merged_file("src/autogluon_dashboard/scripts/constants", out_file_path)
+    create_merged_file("src/autogluon_dashboard/scripts", out_file_path)
+    create_merged_file("src/autogluon_dashboard/plotting", out_file_path)
+    create_merged_file("src/autogluon_dashboard", out_file_path)
