@@ -189,7 +189,7 @@ if __name__ == "__main__":
     with open(out_file_path, "w") as fp:
         pass
 
-    create_merged_file("src/autogluon_dashboard/scripts/constants", "out.py")
-    create_merged_file("src/autogluon_dashboard/scripts", "out.py")
-    create_merged_file("src/autogluon_dashboard/plotting", "out.py")
-    create_merged_file("src/autogluon_dashboard", "out.py")
+    create_merged_file("src/autogluon_dashboard/scripts/constants", out_file_path)
+    create_merged_file("src/autogluon_dashboard/scripts", out_file_path)
+    create_merged_file("src/autogluon_dashboard/plotting", out_file_path)
+    create_merged_file("src/autogluon_dashboard", out_file_path)

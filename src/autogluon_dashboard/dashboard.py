@@ -39,12 +39,14 @@ def run_dashboard():
     upload_to_s3(s3_client, per_dataset_csv_path, per_dataset_s3_loc)
     upload_to_s3(s3_client, aggregated_csv_path, aggregated_s3_loc)
     wrapper_dir = os.path.dirname(__file__)
-    app_location = os.path.join(wrapper_dir, "app.py")
+    agg_script_location = os.path.join(wrapper_dir, "aggregate_file.py")
+    agg_file_location = os.path.join(wrapper_dir, "out.py")
+    subprocess.run(["python3", f"{agg_script_location}"])
     subprocess.run(
         [
             "panel",
             "convert",
-            f"{app_location}",
+            f"{agg_file_location}",
             "--to",
             "pyodide-worker",
             "--out",
