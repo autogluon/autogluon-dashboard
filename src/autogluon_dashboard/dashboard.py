@@ -34,8 +34,8 @@ def run_dashboard():
     aggregated_s3_loc = "dev_data/autogluon.csv"
     global s3_url
     s3_client = boto3.client("s3")
-    os.environ["PER_DATASET_PATH"] = s3_url + per_dataset_s3_loc
-    os.environ["AGG_DATASET_PATH"] = s3_url + aggregated_s3_loc
+    os.environ["PER_DATASET_S3_PATH"] = s3_url + per_dataset_s3_loc
+    os.environ["AGG_DATASET_S3_PATH"] = s3_url + aggregated_s3_loc
     upload_to_s3(s3_client, per_dataset_csv_path, per_dataset_s3_loc)
     upload_to_s3(s3_client, aggregated_csv_path, aggregated_s3_loc)
     wrapper_dir = os.path.dirname(__file__)
