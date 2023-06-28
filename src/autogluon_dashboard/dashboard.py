@@ -20,7 +20,7 @@ def upload_to_s3(s3_client: botocore.client, file_name: str, object_name: str, b
         Name of object to store file contents in S3 bucket
     """
     with open(file_name, "rb") as f:
-        s3_client.upload_fileobj(f, BUCKET, object_name, ExtraArgs=args)
+        s3_client.upload_fileobj(f, bucket_name, object_name, ExtraArgs=args)
 
 
 def get_args() -> argparse.Namespace:
