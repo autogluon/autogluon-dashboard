@@ -167,9 +167,9 @@ class TestAGRankCounts(unittest.TestCase):
 
     def test_preprocess(self):
         plot = AGRankCounts("title", mock_df, "hvplot", col_name="rank", framework="A")
-        data = {"rank": [1, 1, 1]}
+        data = {"count": [1, 1, 1]}
         expected_df = pd.DataFrame(data)
-        plot_df = plot.df.reset_index().drop(columns=["index"])
+        plot_df = plot.df.reset_index().drop(columns=["rank"])
         assert plot_df.equals(expected_df)
 
     @mock.patch("hvplot.plotting.core.hvPlotTabular.table")

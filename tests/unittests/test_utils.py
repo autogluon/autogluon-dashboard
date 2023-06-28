@@ -39,9 +39,9 @@ class TestUtils(unittest.TestCase):
 
     def test_get_col_metric_counts(self):
 
-        data = {"rank": [2, 1, 2, 1, 2]}
+        data = {"count": [2, 1, 2, 1, 2]}
         expected = pd.DataFrame(data)
-        counts = get_col_metric_counts(mock_df, "rank").reset_index().drop(columns=["index"])
+        counts = get_col_metric_counts(mock_df, "rank").reset_index().drop(columns=["rank"])
         assert expected.equals(counts)
 
     def test_get_proportion_framework_rank1(self):
