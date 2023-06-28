@@ -67,10 +67,8 @@ def run_dashboard():
     aggregated_csv_path = args.all_dataset_csv
     per_dataset_s3_loc = args.per_dataset_s3
     aggregated_s3_loc = args.all_dataset_s3
-    global BUCKET
-    BUCKET = args.s3_bucket
-    global s3_url
-    s3_url = f"https://{BUCKET}.s3.us-west-2.amazonaws.com/"
+    bucket_name = args.s3_bucket
+    s3_url = f"https://{bucket_name}.s3.us-west-2.amazonaws.com/"
     s3_url = s3_url if s3_url.endswith("/") else s3_url + "/"
 
     s3_client = boto3.client("s3")
@@ -80,8 +78,8 @@ def run_dashboard():
     os.environ["AGG_DATASET_S3_PATH"] = s3_url + aggregated_s3_loc
 
     # Upload CSV files to S3
-    upload_to_s3(s3_client, per_dataset_csv_path, per_dataset_s3_loc, BUCKET)
-    upload_to_s3(s3_client, aggregated_csv_path, aggregated_s3_loc, BUCKET)
+    upload_to_s3(s3_client, per_dataset_csv_path, per_dataset_s3_loc, bucket_name)
+    upload_to_s3(s3_client, aggregated_csv_path, aggregated_s3_loc, bucket_name)
 
     wrapper_dir = os.path.dirname(__file__)
     agg_script_location = os.path.join(wrapper_dir, "aggregate_file.py")
@@ -108,9 +106,9 @@ def run_dashboard():
     )
     # Upload WebAssembly to S3 bucket
     upload_to_s3(
-        s3_client, os.path.join(web_files_dir, "out.html"), "out.html", BUCKET, args={"ContentType": "text/html"}
+        s3_client, os.path.join(web_files_dir, "out.html"), "out.html", bucket_name, args={"ContentType": "text/html"}
     )
-    upload_to_s3(s3_client, os.path.join(web_files_dir, "out.js"), "out.js", BUCKET)
+    upload_to_s3(s3_client, os.path.join(web_files_dir, "out.js"), "out.js", bucket_name)
 
 
 if __name__ == "__main__":
