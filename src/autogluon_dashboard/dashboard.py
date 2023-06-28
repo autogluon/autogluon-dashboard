@@ -5,12 +5,8 @@ import subprocess
 import boto3
 import botocore
 
-# TODO: Dynamically generate s3 bucket and prefix
-BUCKET = None
-s3_url = None
 
-
-def upload_to_s3(s3_client: botocore.client, file_name: str, object_name: str, args: dict = None):
+def upload_to_s3(s3_client: botocore.client, file_name: str, object_name: str, bucket_name: str, args: dict = None):
     """
     Uploads a file from local filesystem to a specified S3 bucket
 
@@ -84,8 +80,8 @@ def run_dashboard():
     os.environ["AGG_DATASET_S3_PATH"] = s3_url + aggregated_s3_loc
 
     # Upload CSV files to S3
-    upload_to_s3(s3_client, per_dataset_csv_path, per_dataset_s3_loc)
-    upload_to_s3(s3_client, aggregated_csv_path, aggregated_s3_loc)
+    upload_to_s3(s3_client, per_dataset_csv_path, per_dataset_s3_loc, BUCKET)
+    upload_to_s3(s3_client, aggregated_csv_path, aggregated_s3_loc, BUCKET)
 
     wrapper_dir = os.path.dirname(__file__)
     agg_script_location = os.path.join(wrapper_dir, "aggregate_file.py")
@@ -111,8 +107,8 @@ def run_dashboard():
         ]
     )
     # Upload WebAssembly to S3 bucket
-    upload_to_s3(s3_client, os.path.join(web_files_dir, "out.html"), "out.html", args={"ContentType": "text/html"})
-    upload_to_s3(s3_client, os.path.join(web_files_dir, "out.js"), "out.js")
+    upload_to_s3(s3_client, os.path.join(web_files_dir, "out.html"), "out.html", BUCKET, args={"ContentType": "text/html"})
+    upload_to_s3(s3_client, os.path.join(web_files_dir, "out.js"), "out.js", BUCKET)
 
 
 if __name__ == "__main__":
