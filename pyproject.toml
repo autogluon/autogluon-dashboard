@@ -55,6 +55,9 @@ dynamic = ["dependencies"]
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 
+[project.scripts]
+agdash = "autogluon_dashboard.dashboard:run_dashboard"
+
 [project.urls]
 "Source" = "https://github.com/autogluon/autogluon-dashboard"
 "Bug Reports" = "https://github.com/autogluon/autogluon-dashboard/issues"
