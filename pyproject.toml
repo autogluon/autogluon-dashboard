@@ -63,4 +63,4 @@ agdash = "autogluon_dashboard.dashboard:run_dashboard"
 "Bug Reports" = "https://github.com/autogluon/autogluon-dashboard/issues"
 
 [project.optional-dependencies]
-test = ["pytest", "pytest-mock", "tox"]
+tests = ["pytest", "pytest-mock", "tox"]
