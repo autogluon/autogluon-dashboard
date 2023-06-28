@@ -107,7 +107,9 @@ def run_dashboard():
         ]
     )
     # Upload WebAssembly to S3 bucket
-    upload_to_s3(s3_client, os.path.join(web_files_dir, "out.html"), "out.html", BUCKET, args={"ContentType": "text/html"})
+    upload_to_s3(
+        s3_client, os.path.join(web_files_dir, "out.html"), "out.html", BUCKET, args={"ContentType": "text/html"}
+    )
     upload_to_s3(s3_client, os.path.join(web_files_dir, "out.js"), "out.js", BUCKET)
 
 
