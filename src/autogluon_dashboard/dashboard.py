@@ -79,7 +79,7 @@ def run_dashboard():
                 "Cannot specify region if no bucket has been provded. Defaulting to AutoGluon bucket and region (%s)",
                 S3_REGION,
             )
-        else:    
+        else:
             logger.warning(
                 "No bucket or region has been provided. Defaulting to AutoGluon bucket and region (%s)",
                 S3_REGION,
@@ -93,7 +93,6 @@ def run_dashboard():
     # Set s3 public urls to CSVs as environment variables
     s3_url = f"https://{bucket_name}.s3.{region}.amazonaws.com/"
     s3_url = s3_url if s3_url.endswith("/") else s3_url + "/"
-    print(s3_url + per_dataset_s3_loc)
     os.environ["PER_DATASET_S3_PATH"] = s3_url + per_dataset_s3_loc
     os.environ["AGG_DATASET_S3_PATH"] = s3_url + aggregated_s3_loc
 
