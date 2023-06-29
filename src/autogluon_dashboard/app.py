@@ -148,7 +148,6 @@ plot_ctr = iter(range(len(plots)))
 template = pn.template.FastListTemplate(
     title=APP_TITLE,
     main=[
-        pn.Row(ALL_FRAMEWORKS_IDF, per_framework_dfi),
         pn.Row(
             ALL_DATA_COMP,
             pn.WidgetBox(yaxis_widget, graph_dropdown),
@@ -163,6 +162,7 @@ template = pn.template.FastListTemplate(
         ),
         pn.Row(NO_RANK_COMP, ag_pct_rank1, plots[next(plot_ctr)]),
         pn.Row(NO_ERROR_CNTS, plots[next(plot_ctr)]),
+        pn.Card(per_framework_dfi, title=ALL_FRAMEWORKS_IDF[1:], collapsed=True),
     ],
     header_background=APP_HEADER_BACKGROUND,
 )
