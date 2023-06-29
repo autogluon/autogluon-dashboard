@@ -70,9 +70,12 @@ def run_dashboard():
     aggregated_csv_path = args.all_dataset_csv
     per_dataset_s3_loc = args.per_dataset_s3
     aggregated_s3_loc = args.all_dataset_s3
-    logger = logging.getLogger("dashboard-logger")
     bucket_name = args.s3_bucket
     region = args.s3_region
+    prefix = args.s3_prefix
+
+    logger = logging.getLogger("dashboard-logger")
+
     if not bucket_name:
         if region:
             logger.warning(
@@ -91,7 +94,9 @@ def run_dashboard():
             raise ValueError("You must specify a region if you provide a bucket")
 
     # Set s3 public urls to CSVs as environment variables
-    s3_url = f"https://{bucket_name}.s3.{region}.amazonaws.com/"
+    prefix = prefix if prefix.startswith("/") else "/" + prefix
+    prefix = prefix if prefix.endswith("/") else prefix + "/"
+    s3_url = f"https://{bucket_name}{prefix}.s3.{region}.amazonaws.com/"
     s3_url = s3_url if s3_url.endswith("/") else s3_url + "/"
     os.environ["PER_DATASET_S3_PATH"] = s3_url + per_dataset_s3_loc
     os.environ["AGG_DATASET_S3_PATH"] = s3_url + aggregated_s3_loc
