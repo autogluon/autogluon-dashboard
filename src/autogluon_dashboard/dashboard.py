@@ -137,7 +137,7 @@ def run_dashboard():
     upload_to_s3(s3_client, os.path.join(web_files_dir, "out.js"), "out.js", bucket_name)
     logger.info("WebAssembly files have been successfully uploaded to bucket - %s", bucket_name)
 
-    logger.info("The dashboard website is: " + f"https://{bucket_name}.s3-website-{region}.amazonaws.com/")
+    logger.info("The dashboard website is: " + f"https://{bucket_name}{prefix}.s3-website-{region}.amazonaws.com/")
 
 
 if __name__ == "__main__":
