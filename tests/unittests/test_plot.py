@@ -6,6 +6,7 @@ import pandas as pd
 
 import autogluon_dashboard
 from autogluon_dashboard.plotting.framework_error import FrameworkError
+from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
 from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
 from autogluon_dashboard.plotting.metrics_per_datasets import MetricsPlotPerDataset
 from autogluon_dashboard.plotting.rank_counts_ag import AGRankCounts
@@ -179,6 +180,28 @@ class TestAGRankCounts(unittest.TestCase):
         plot_obj = AGRankCounts("title", mock_df, "table", col_name="rank", framework="A")
         plot = plot_obj.plot()
         self.assertEqual(plot, mock_plot.return_value)
+
+
+class TestInteractiveDataframe(unittest.TestCase):
+    def test_init(self):
+        plot = InteractiveDataframe(mock_df, "D", width=3000)
+        assert plot.dataset_to_plot.equals(mock_df)
+        self.assertEqual(plot.framework, "D")
+        self.assertEqual(plot.table_width, 3000)
+
+    def test_preprocess(self):
+        plot = InteractiveDataframe(mock_df, "D", width=3000)
+        data = {"rank": [1], "dataset": ["B"], "framework": ["D"]}
+        expected_df = pd.DataFrame(data)
+        plot_df = plot._preprocess("D").reset_index().drop(columns=["index"])
+        assert plot_df.equals(expected_df)
+
+    @mock.patch("pandas.DataFrame.interactive")
+    def test_plot(self, mock_plot):
+        mock_plot.return_value = "plot"
+        plot = InteractiveDataframe(mock_df, "D", width=3000)
+        idf = plot.get_interactive_df()
+        self.assertEqual(idf, mock_plot.return_value)
 
 
 if __name__ == "__main__":
