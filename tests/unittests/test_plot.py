@@ -43,6 +43,7 @@ class TestPlot(unittest.TestCase):
             rot=90,
             xlabel="",
             ylabel="",
+            grid=True,
         )
 
 

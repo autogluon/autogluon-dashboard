@@ -77,6 +77,7 @@ class Plot:
                 rot=self.label_rot,
                 xlabel=self.plot_x_label,
                 ylabel=self.plot_y_label,
+                grid=True,
             )
         return self.df.hvplot(
             title=self.plot_title,
@@ -88,6 +89,7 @@ class Plot:
             height=height,
             rot=self.label_rot,
             xlabel=self.plot_x_label,
+            grid=True,
         )
 
     def _create_table(self, width: Union[int, float] = 800) -> hvplot.hvPlot.table:
