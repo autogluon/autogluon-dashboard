@@ -40,18 +40,6 @@ def get_args() -> argparse.Namespace:
         required=True,
         help="Location of csv file in local filesystem to upload to S3 bucket. Example: sub_folder/file_name.csv",
     )
-    parser.add_argument(
-        "--per_dataset_s3",
-        type=str,
-        help="Location in S3 bucket to save csv file. Example: sub_folder/file_name.csv",
-        default=CSV_FILES_DIR + "all_data.csv",  # TODO: Add commit ID (if applicable) to S3 file path
-    )
-    parser.add_argument(
-        "--all_dataset_s3",
-        type=str,
-        help="Location in S3 bucket to save csv file. Example: sub_folder/file_name.csv",
-        default=CSV_FILES_DIR + "autogluon.csv",  # TODO: Add commit ID (if applicable) to S3 file path
-    )
 
     parser.add_argument(
         "--s3_bucket", type=str, help="Name of S3 bucket that results to aggregate get outputted to", nargs="?"
@@ -68,8 +56,6 @@ def run_dashboard():
     # Set variables to corrensponding command line args
     per_dataset_csv_path = args.per_dataset_csv
     aggregated_csv_path = args.all_dataset_csv
-    per_dataset_s3_loc = args.per_dataset_s3
-    aggregated_s3_loc = args.all_dataset_s3
     bucket_name = args.s3_bucket
     region = args.s3_region
     prefix = args.s3_prefix
@@ -83,7 +69,7 @@ def run_dashboard():
                 S3_REGION,
             )
         else:
-            logger.warning(
+            logger.info(
                 "No bucket or region has been provided. Defaulting to AutoGluon bucket and region (%s)",
                 S3_REGION,
             )
@@ -95,19 +81,25 @@ def run_dashboard():
         else:
             logger.info(f"You have specified Bucket {bucket_name} and Region {region}.")
 
-    # Set s3 public urls to CSVs as environment variables
-    prefix = prefix if prefix.startswith("/") else "/" + prefix
-    prefix = prefix if prefix.endswith("/") else prefix + "/"
-    s3_url = f"https://{bucket_name}{prefix}.s3.{region}.amazonaws.com/"
+    # Set S3 URL with appropriate bucket, region, and prefix
+    if prefix:
+        prefix = prefix if prefix.endswith("/") else prefix + "/"
+    s3_url = f"https://{bucket_name}.s3.{region}.amazonaws.com/{prefix}"
     s3_url = s3_url if s3_url.endswith("/") else s3_url + "/"
+
+    # Set s3 public urls to CSVs as environment variables
+    global CSV_FILES_DIR
+    CSV_FILES_DIR = CSV_FILES_DIR if CSV_FILES_DIR.endswith("/") else CSV_FILES_DIR + "/"
+    per_dataset_s3_loc = CSV_FILES_DIR + "all_data.csv"
+    aggregated_s3_loc = CSV_FILES_DIR + "autogluon.csv"
     os.environ["PER_DATASET_S3_PATH"] = s3_url + per_dataset_s3_loc
     os.environ["AGG_DATASET_S3_PATH"] = s3_url + aggregated_s3_loc
 
     s3_client = boto3.client("s3")
 
     # Upload CSV files to S3
-    upload_to_s3(s3_client, per_dataset_csv_path, per_dataset_s3_loc, bucket_name)
-    upload_to_s3(s3_client, aggregated_csv_path, aggregated_s3_loc, bucket_name)
+    upload_to_s3(s3_client, per_dataset_csv_path, prefix + per_dataset_s3_loc, bucket_name)
+    upload_to_s3(s3_client, aggregated_csv_path, prefix + aggregated_s3_loc, bucket_name)
     logger.info(
         f"Evaluation CSV files have been successfully uploaded to bucket - {bucket_name}, at location {s3_url + per_dataset_s3_loc} and {s3_url + aggregated_s3_loc}.",
     )
@@ -137,12 +129,18 @@ def run_dashboard():
     )
     # Upload WebAssembly to S3 bucket
     upload_to_s3(
-        s3_client, os.path.join(web_files_dir, "out.html"), "out.html", bucket_name, args={"ContentType": "text/html"}
+        s3_client,
+        os.path.join(web_files_dir, "out.html"),
+        prefix + "out.html",
+        bucket_name,
+        args={"ContentType": "text/html"},
     )
-    upload_to_s3(s3_client, os.path.join(web_files_dir, "out.js"), "out.js", bucket_name)
+    upload_to_s3(s3_client, os.path.join(web_files_dir, "out.js"), prefix + "out.js", bucket_name)
     logger.info("WebAssembly files have been successfully uploaded to bucket - %s", bucket_name)
 
-    logger.info("The dashboard website is: " + f"https://{bucket_name}{prefix}.s3-website-{region}.amazonaws.com/")
+    logger.info(
+        "The dashboard website is: " + f"https://{bucket_name}.s3-website-{region}.amazonaws.com/{prefix}/out.html"
+    )
 
 
 if __name__ == "__main__":
