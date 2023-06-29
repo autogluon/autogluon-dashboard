@@ -3,6 +3,7 @@ import os
 import panel as pn
 
 from autogluon_dashboard.plotting.framework_error import FrameworkError
+from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
 from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
 from autogluon_dashboard.plotting.metrics_per_datasets import MetricsPlotPerDataset
 from autogluon_dashboard.plotting.rank_counts_ag import AGRankCounts
@@ -11,6 +12,7 @@ from autogluon_dashboard.plotting.top5_per_dataset import Top5PerDataset
 from autogluon_dashboard.scripts import utils
 from autogluon_dashboard.scripts.constants.app_layout_constants import (
     ALL_DATA_COMP,
+    ALL_FRAMEWORKS_IDF,
     APP_HEADER_BACKGROUND,
     APP_TITLE,
     NO_ERROR_CNTS,
@@ -36,12 +38,8 @@ from autogluon_dashboard.scripts.data import get_dataframes
 from autogluon_dashboard.scripts.widget import Widget
 
 # TODO: Remove hardcoded default csv path
-dataset_file = os.environ.get(
-    "PER_DATASET_S3_PATH", "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/dev_data/all_data.csv"
-)
-aggregated_file = os.environ.get(
-    "AGG_DATASET_S3_PATH", "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/dev_data/autogluon.csv"
-)
+dataset_file = os.environ.get("PER_DATASET_S3_PATH", "dev_data/all_data.csv")
+aggregated_file = os.environ.get("AGG_DATASET_S3_PATH", "dev_data/autogluon.csv")
 per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
 
 # clean up framework names
@@ -49,18 +47,21 @@ dataset_list = utils.get_sorted_names_from_col(per_dataset_df, "dataset")
 new_framework_names = utils.clean_up_framework_names(per_dataset_df)
 per_dataset_df["framework"] = new_framework_names
 all_framework_df["framework"] = new_framework_names
+frameworks_list = utils.get_sorted_names_from_col(per_dataset_df, "framework")
+frameworks_list.insert(0, "All Frameworks")
 
 # Make DataFrame Interactive
 per_dataset_idf = per_dataset_df.interactive()
 all_framework_idf = all_framework_df.interactive()
 
 # Define Panel widgets
-frameworks_widget = Widget("select", name=FRAMEWORK_LABEL, options=new_framework_names.to_list()).create_widget()
+frameworks_widget = Widget("select", name=FRAMEWORK_LABEL, options=frameworks_list).create_widget()
 yaxis_widget = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
 yaxis_widget2 = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
 dataset_dropdown = Widget("select", name=DATASETS_LABEL, options=dataset_list).create_widget()
 graph_dropdown = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 graph_dropdown2 = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
+nrows = Widget("slider", name="Framework", start=1, end=len(frameworks_list) - 1, value=10).create_widget()
 
 df_ag_only = utils.get_df_filter_by_framework(per_dataset_df, "AutoGluon")
 prop_ag_best = utils.get_proportion_framework_rank1(df_ag_only, per_dataset_df, len(dataset_list))
@@ -126,6 +127,9 @@ framework_error = FrameworkError(
     xlabel=FRAMEWORK_LABEL,
 )
 
+interactive_df = InteractiveDataframe(all_framework_df, frameworks_widget, width=3000)
+per_framework_dfi = interactive_df.get_interactive_df().head(nrows)
+
 # Order matters here!
 plots = [
     metrics_plot_all_datasets,
@@ -140,6 +144,7 @@ plot_ctr = iter(range(len(plots)))
 template = pn.template.FastListTemplate(
     title=APP_TITLE,
     main=[
+        pn.Row(ALL_FRAMEWORKS_IDF, per_framework_dfi),
         pn.Row(
             ALL_DATA_COMP,
             pn.WidgetBox(yaxis_widget, graph_dropdown),

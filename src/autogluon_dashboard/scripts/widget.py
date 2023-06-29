@@ -11,6 +11,8 @@ class Widget:
         value: Union[int, str] = "",
         options: Union[str, list] = [],
         format: str = "",
+        start: int = 0,
+        end: int = 15,
     ):
         if widget_type == "select":
             self.create_widget = self._create_selectwidget
@@ -18,6 +20,11 @@ class Widget:
             self.create_widget = self._create_togglewidget
         elif widget_type == "number":
             self.create_widget = self._create_numberwidget
+        elif widget_type == "slider":
+            self.create_widget = self._create_sliderwidget
+            self.start = start
+            self.end = end
+
         self.name = name
         self.value = value
         self.options = options
@@ -31,3 +38,6 @@ class Widget:
 
     def _create_numberwidget(self) -> pn.indicators.Number:
         return pn.indicators.Number(name=self.name, value=self.value, format=self.format)
+
+    def _create_sliderwidget(self) -> pn.widgets.IntSlider:
+        return pn.widgets.IntSlider(start=self.start, end=self.end, value=self.value)
