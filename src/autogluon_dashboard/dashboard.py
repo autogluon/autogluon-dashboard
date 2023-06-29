@@ -92,6 +92,8 @@ def run_dashboard():
     else:
         if not region:
             raise ValueError("You must specify a region if you provide a bucket")
+        else: 
+            logger.info(f"You have specified Bucket {bucket_name} and Region {region}.")
 
     # Set s3 public urls to CSVs as environment variables
     prefix = prefix if prefix.startswith("/") else "/" + prefix
@@ -106,6 +108,8 @@ def run_dashboard():
     # Upload CSV files to S3
     upload_to_s3(s3_client, per_dataset_csv_path, per_dataset_s3_loc, bucket_name)
     upload_to_s3(s3_client, aggregated_csv_path, aggregated_s3_loc, bucket_name)
+    logger.info(f"Evaluation CSV files have been successfully uploaded to bucket - {bucket_name}, at location {s3_url + per_dataset_s3_loc} and {s3_url + aggregated_s3_loc}.", )
+
 
     wrapper_dir = os.path.dirname(__file__)
     agg_script_location = os.path.join(wrapper_dir, "aggregate_file.py")
