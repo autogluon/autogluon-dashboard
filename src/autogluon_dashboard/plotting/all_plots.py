@@ -39,7 +39,6 @@ class Plot:
         color_scheme: list = ["#ff6f69", "#ffcc5c", "#88d8b0"],
         line_width: Union[int, float] = 6,
         height: Union[int, float] = 500,
-        by=None,
     ) -> hvplot.hvPlot:
         """
         Create a plot of a given type leveraging the hvplot library,
