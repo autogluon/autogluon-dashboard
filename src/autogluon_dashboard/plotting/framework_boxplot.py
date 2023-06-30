@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List, Optional
 
 import hvplot
 
@@ -10,14 +10,14 @@ class FrameworkBoxPlot(Plot):
         self,
         plot_title: str,
         dataset_to_plot: hvplot.Interactive,
+        x_axis: Optional[Union[str, List[str]]],
+        y_axis: Optional[Union[str, List[str]]],
         plot_type: str = "hvplot",
-        x_axis: Union[str, list] = None,
-        y_axis: Union[str, list] = None,
         graph_type: str = "box",
         xlabel: str = "",
         ylabel: str = "",
         label_rot: int = 90,
-        table_cols: list = ...,
+        table_cols: list = [],
     ) -> None:
         super(FrameworkBoxPlot, self).__init__(
             plot_title,
