@@ -31,7 +31,7 @@ class TestPlot(unittest.TestCase):
         self.assertEqual(plot.plot_x_label, "")
         self.assertEqual(plot.plot_y_label, "")
         self.assertEqual(plot.label_rot, 90)
-        self.assertEqual(plot.table_cols, Ellipsis)
+        self.assertEqual(plot.table_cols, [])
 
     def plot_test(self, plot_obj, mock_plot):
         plot = plot_obj.plot()

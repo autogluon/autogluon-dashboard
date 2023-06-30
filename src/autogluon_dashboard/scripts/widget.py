@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Optional, Union
 
 import panel as pn
 
