@@ -207,7 +207,7 @@ class TestInteractiveDataframe(unittest.TestCase):
 
 class TestFrameworkBoxPlot(unittest.TestCase):
     def test_init(self):
-        plot = FrameworkBoxPlot("title", mock_df, "hvplot", y_axis="dataset")
+        plot = FrameworkBoxPlot("title", mock_df, y_axis="dataset")
         self.assertEqual(plot.plot_title, "title")
         self.assertEqual(plot.graph_type, "box")
         self.assertIsNone(plot.plot_x)
@@ -215,17 +215,17 @@ class TestFrameworkBoxPlot(unittest.TestCase):
         self.assertEqual(plot.plot_x_label, "")
         self.assertEqual(plot.plot_y_label, "")
         self.assertEqual(plot.label_rot, 90)
-        self.assertEqual(plot.table_cols, Ellipsis)
+        self.assertEqual(plot.table_cols, [])
 
     def test_preprocess(self):
-        plot = FrameworkBoxPlot("title", mock_df, "hvplot", y_axis="dataset")
+        plot = FrameworkBoxPlot("title", mock_df, y_axis="dataset")
         plot._preprocess()
         assert plot.df.equals(mock_df)
 
     @mock.patch("hvplot.plotting.core.hvPlotTabular.box")
     def test_plot(self, mock_plot):
         mock_plot.return_value = "box plot"
-        plot_obj = FrameworkBoxPlot("title", mock_df, "hvplot", y_axis="dataset")
+        plot_obj = FrameworkBoxPlot("title", mock_df, y_axis="dataset")
         plot = plot_obj.plot()
         self.assertEqual(plot, mock_plot.return_value)
 
