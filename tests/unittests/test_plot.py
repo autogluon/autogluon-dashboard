@@ -5,6 +5,7 @@ from unittest.mock import MagicMock
 import pandas as pd
 
 import autogluon_dashboard
+from autogluon_dashboard.plotting.framework_boxplot import FrameworkBoxPlot
 from autogluon_dashboard.plotting.framework_error import FrameworkError
 from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
 from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
@@ -202,6 +203,31 @@ class TestInteractiveDataframe(unittest.TestCase):
         plot = InteractiveDataframe(mock_df, "D", width=3000)
         idf = plot.get_interactive_df()
         self.assertEqual(idf, mock_plot.return_value)
+
+
+class TestFrameworkBoxPlot(unittest.TestCase):
+    def test_init(self):
+        plot = FrameworkBoxPlot("title", mock_df, "hvplot", y_axis="dataset")
+        self.assertEqual(plot.plot_title, "title")
+        self.assertEqual(plot.graph_type, "box")
+        self.assertIsNone(plot.plot_x)
+        self.assertIsNotNone(plot.plot_y)
+        self.assertEqual(plot.plot_x_label, "")
+        self.assertEqual(plot.plot_y_label, "")
+        self.assertEqual(plot.label_rot, 90)
+        self.assertEqual(plot.table_cols, Ellipsis)
+
+    def test_preprocess(self):
+        plot = FrameworkBoxPlot("title", mock_df, "hvplot", y_axis="dataset")
+        plot._preprocess()
+        assert plot.df.equals(mock_df)
+
+    @mock.patch("hvplot.plotting.core.hvPlotTabular.box")
+    def test_plot(self, mock_plot):
+        mock_plot.return_value = "box plot"
+        plot_obj = FrameworkBoxPlot("title", mock_df, "hvplot", y_axis="dataset")
+        plot = plot_obj.plot()
+        self.assertEqual(plot, mock_plot.return_value)
 
 
 if __name__ == "__main__":
