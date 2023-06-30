@@ -2,6 +2,7 @@ import os
 
 import panel as pn
 
+from autogluon_dashboard.plotting.framework_boxplot import FrameworkBoxPlot
 from autogluon_dashboard.plotting.framework_error import FrameworkError
 from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
 from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
@@ -15,6 +16,7 @@ from autogluon_dashboard.scripts.constants.app_layout_constants import (
     ALL_FRAMEWORKS_IDF,
     APP_HEADER_BACKGROUND,
     APP_TITLE,
+    FRAMEWORK_BOX_PLOT,
     NO_ERROR_CNTS,
     NO_RANK_COMP,
     PER_DATA_COMP,
@@ -24,6 +26,7 @@ from autogluon_dashboard.scripts.constants.plots_constants import (
     AUTOGLUON_RANK1_TITLE,
     DATASETS_LABEL,
     ERROR_COUNTS_TITLE,
+    FRAMEWORK_BOX_PLOT_TITLE,
     FRAMEWORK_LABEL,
     GRAPH_TYPE_STR,
     METRICS_PLOT_TITLE,
@@ -51,7 +54,7 @@ dataset_list = utils.get_sorted_names_from_col(per_dataset_df, "dataset")
 new_framework_names = utils.clean_up_framework_names(per_dataset_df)
 per_dataset_df["framework"] = new_framework_names
 all_framework_df["framework"] = new_framework_names
-frameworks_list = utils.get_sorted_names_from_col(per_dataset_df, "framework")
+frameworks_list = utils.get_sorted_names_from_col(all_framework_df, "framework")
 frameworks_list.insert(0, "All Frameworks")
 
 # Make DataFrame Interactive
@@ -62,6 +65,7 @@ all_framework_idf = all_framework_df.interactive()
 frameworks_widget = Widget("select", name=FRAMEWORK_LABEL, options=frameworks_list).create_widget()
 yaxis_widget = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
 yaxis_widget2 = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
+yaxis_widget3 = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
 dataset_dropdown = Widget("select", name=DATASETS_LABEL, options=dataset_list).create_widget()
 graph_dropdown = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 graph_dropdown2 = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
@@ -134,6 +138,8 @@ framework_error = FrameworkError(
 interactive_df = InteractiveDataframe(all_framework_df, frameworks_widget, width=3000)
 per_framework_dfi = interactive_df.get_interactive_df().head(nrows)
 
+framework_box = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, y_axis=yaxis_widget3)
+
 # Order matters here!
 plots = [
     metrics_plot_all_datasets,
@@ -142,6 +148,7 @@ plots = [
     top5frameworks_per_dataset,
     ag_rank_counts,
     framework_error,
+    framework_box,
 ]
 plots = [plot.plot() for plot in plots]
 plot_ctr = iter(range(len(plots)))
@@ -162,6 +169,7 @@ template = pn.template.FastListTemplate(
         ),
         pn.Row(NO_RANK_COMP, ag_pct_rank1, plots[next(plot_ctr)]),
         pn.Row(NO_ERROR_CNTS, plots[next(plot_ctr)]),
+        pn.Row(FRAMEWORK_BOX_PLOT, yaxis_widget3, plots[next(plot_ctr)]),
         pn.Card(per_framework_dfi, title=ALL_FRAMEWORKS_IDF[1:], collapsed=True),
     ],
     header_background=APP_HEADER_BACKGROUND,
