@@ -1,4 +1,8 @@
-# autogluon_dashboard
+<div align="left">
+  <img src="https://user-images.githubusercontent.com/16392542/77208906-224aa500-6aba-11ea-96bd-e81806074030.png" width="350">
+</div>
+
+# AutoGluon-Dashboard
 
 Follow the steps below to set up autogluon-dashboard::
 1. Create a virtual environment by running: 
