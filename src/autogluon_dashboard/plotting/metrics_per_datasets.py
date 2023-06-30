@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Optional, Union
 
 import hvplot
 import pandas
@@ -14,13 +14,13 @@ class MetricsPlotPerDataset(Plot):
         df_process: hvplot.Interactive,
         plot_type: str,
         dataset: str,
-        x_axis: Union[str, list] = None,
-        y_axis: Union[str, list] = None,
+        x_axis: Optional[Union[str, List[str]]] = None,
+        y_axis: Optional[Union[str, List[str]]] = None,
         graph_type: str = "bar",
         xlabel: str = "",
         ylabel: str = "",
         label_rot: int = 90,
-        table_cols: list = ...,
+        table_cols: list = [],
     ) -> None:
         dataset_to_plot = self._preprocess(df_process, dataset)
         super().__init__(
