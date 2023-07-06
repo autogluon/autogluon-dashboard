@@ -158,6 +158,7 @@ def run_dashboard():
     upload_to_s3(s3_client, os.path.join(web_files_dir, "out.js"), prefix + "out.js", bucket_name)
     logger.info("WebAssembly files have been successfully uploaded to bucket - %s", bucket_name)
 
+    # TODO: Change website link to https using CloudFront
     logger.info(
         "The dashboard website is: " + f"http://{bucket_name}.s3-website-{region}.amazonaws.com/{prefix}out.html"
     )
