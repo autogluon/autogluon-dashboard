@@ -1,5 +1,6 @@
 import os
 
+import pandas as pd
 import panel as pn
 
 from autogluon_dashboard.plotting.framework_boxplot import FrameworkBoxPlot
@@ -19,6 +20,7 @@ from autogluon_dashboard.scripts.constants.app_layout_constants import (
     FRAMEWORK_BOX_PLOT,
     NO_ERROR_CNTS,
     NO_RANK_COMP,
+    PARETO_FRONT_PLOT,
     PER_DATA_COMP,
 )
 from autogluon_dashboard.scripts.constants.plots_constants import (
@@ -41,12 +43,8 @@ from autogluon_dashboard.scripts.data import get_dataframes
 from autogluon_dashboard.scripts.widget import Widget
 
 # TODO: Remove hardcoded default csv path
-dataset_file = os.environ.get(
-    "PER_DATASET_S3_PATH", "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/dev_data/all_data.csv"
-)
-aggregated_file = os.environ.get(
-    "AGG_DATASET_S3_PATH", "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/dev_data/autogluon.csv"
-)
+dataset_file = os.environ.get("PER_DATASET_S3_PATH", "dev_data/all_data.csv")
+aggregated_file = os.environ.get("AGG_DATASET_S3_PATH", "dev_data/autogluon.csv")
 per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
 
 # clean up framework names
@@ -140,6 +138,37 @@ per_framework_dfi = interactive_df.get_interactive_df().head(nrows)
 
 framework_box = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, y_axis=yaxis_widget3)
 
+
+def plot_pareto_frontier(Xs, Ys, maxY=True):
+    """Pareto frontier selection process"""
+    sorted_list = sorted([[Xs[i], Ys[i]] for i in range(len(Xs))], reverse=False)
+    pareto_front = [sorted_list[0]]
+    for pair in sorted_list[1:]:
+        if maxY:
+            if pair[1] >= pareto_front[-1][1]:
+                pareto_front.append(pair)
+        else:
+            if pair[1] <= pareto_front[-1][1]:
+                pareto_front.append(pair)
+
+    """Plotting process"""
+    pf_X = [pair[0] for pair in pareto_front]
+    pf_Y = [pair[1] for pair in pareto_front]
+    new_df = pd.DataFrame({"col1": pf_X, "col2": pf_Y})
+
+    # df = all_framework_df.sort_values("loss_rescaled")
+    plot = all_framework_df.hvplot(
+        x="time_infer_s_rescaled",
+        y="winrate",
+        c="framework",
+        kind="scatter",
+        size=400,
+        height=800,
+        width=900,
+    ) * new_df.hvplot.step(x="col1", y="col2")
+    return plot
+
+
 # Order matters here!
 plots = [
     metrics_plot_all_datasets,
@@ -170,6 +199,10 @@ template = pn.template.FastListTemplate(
         pn.Row(NO_RANK_COMP, ag_pct_rank1, plots[next(plot_ctr)]),
         pn.Row(NO_ERROR_CNTS, plots[next(plot_ctr)]),
         pn.Row(FRAMEWORK_BOX_PLOT, yaxis_widget3, plots[next(plot_ctr)]),
+        pn.Row(
+            PARETO_FRONT_PLOT,
+            plot_pareto_frontier(all_framework_df["time_infer_s_rescaled"], all_framework_df["winrate"]),
+        ),
         pn.Card(per_framework_dfi, title=ALL_FRAMEWORKS_IDF[1:], collapsed=True),
     ],
     header_background=APP_HEADER_BACKGROUND,
