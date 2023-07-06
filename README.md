@@ -16,7 +16,7 @@ source .venv_dash/bin/activate
 The generated HTML and JS files will be found in the `web_files` folder. These can be uploaded to the desired hosting service (eg: AWS S3). 
 <br> A wrapper script (`dashboard.py`) has been created to run all the necessary commands in the backend to set up the Python web app, create the WebAssembly files and upload them to an S3 bucket for hosting. You can interact with the wrapper using the CLI command - `agdash`, as follows:
 ```
-agdash --per_dataset_csv 'path_to_local_csv_file.csv' --all_dataset_csv 'path_to_local_csv_file.csv' --per_dataset_s3 'path_in_S3_to_store' --all_dataset_s3 'path_in_S3_to_store' --s3_bucket BUCKET_NAME
+agdash --per_dataset_csv 'path_to_local_csv_file.csv' --agg_dataset_csv 'path_to_local_csv_file.csv' --per_dataset_s3 'path_in_S3_to_store' --all_dataset_s3 'path_in_S3_to_store' --s3_bucket 'BUCKET_NAME' --s3-prefix 'sub-folder'
 ``` 
 
 
