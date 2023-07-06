@@ -33,19 +33,38 @@ def get_args() -> argparse.Namespace:
         type=str,
         required=True,
         help="Location of csv file in local filesystem to upload to S3 bucket. Example: sub_folder/file_name.csv",
+        metavar="",
     )
     parser.add_argument(
-        "--all_dataset_csv",
+        "--agg_dataset_csv",
         type=str,
         required=True,
         help="Location of csv file in local filesystem to upload to S3 bucket. Example: sub_folder/file_name.csv",
+        metavar="",
     )
 
     parser.add_argument(
-        "--s3_bucket", type=str, help="Name of S3 bucket that results to aggregate get outputted to", nargs="?"
+        "--s3_bucket",
+        type=str,
+        help="Name of S3 bucket that results to aggregate get outputted to",
+        nargs="?",
+        metavar="",
     )
-    parser.add_argument("--s3_prefix", type=str, nargs="?", default="")
-    parser.add_argument("--s3_region", type=str, help="S3 Region to deploy the dashboard website", nargs="?")
+    parser.add_argument(
+        "--s3_prefix",
+        type=str,
+        help="Prefix for S3 URL",
+        nargs="?",
+        default="",
+        metavar="",
+    )
+    parser.add_argument(
+        "--s3_region",
+        type=str,
+        help="S3 Region to deploy the dashboard website",
+        nargs="?",
+        metavar="",
+    )
 
     args = parser.parse_args()
     return args
@@ -55,12 +74,13 @@ def run_dashboard():
     args = get_args()
     # Set variables to corrensponding command line args
     per_dataset_csv_path = args.per_dataset_csv
-    aggregated_csv_path = args.all_dataset_csv
+    aggregated_csv_path = args.agg_dataset_csv
     bucket_name = args.s3_bucket
     region = args.s3_region
     prefix = args.s3_prefix
 
     logger = logging.getLogger("dashboard-logger")
+    logging.basicConfig(level=logging.INFO)
 
     if not bucket_name:
         if region:
@@ -138,8 +158,9 @@ def run_dashboard():
     upload_to_s3(s3_client, os.path.join(web_files_dir, "out.js"), prefix + "out.js", bucket_name)
     logger.info("WebAssembly files have been successfully uploaded to bucket - %s", bucket_name)
 
+    # TODO: Change website link to https using CloudFront
     logger.info(
-        "The dashboard website is: " + f"https://{bucket_name}.s3-website-{region}.amazonaws.com/{prefix}/out.html"
+        "The dashboard website is: " + f"http://{bucket_name}.s3-website-{region}.amazonaws.com/{prefix}out.html"
     )
 
 
