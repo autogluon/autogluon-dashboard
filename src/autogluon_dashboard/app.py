@@ -1,6 +1,5 @@
 import os
 
-import pandas as pd
 import panel as pn
 
 from autogluon_dashboard.plotting.framework_boxplot import FrameworkBoxPlot
