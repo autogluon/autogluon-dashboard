@@ -9,12 +9,12 @@ class Widget:
         widget_type: str,
         name: str = "",
         value: Union[int, str] = "",
-        options: Union[str, list] = [],
+        options: Union[str, List[str]] = [],
         format: str = "",
         start: int = 0,
         end: int = 15,
-        file: str = None,
-        filename: str = None,
+        file: Optional[str] = None,
+        filename: Optional[str] = None,
     ):
         if widget_type == "select":
             self.create_widget = self._create_selectwidget
