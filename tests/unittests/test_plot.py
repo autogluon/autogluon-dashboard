@@ -10,6 +10,7 @@ from autogluon_dashboard.plotting.framework_error import FrameworkError
 from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
 from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
 from autogluon_dashboard.plotting.metrics_per_datasets import MetricsPlotPerDataset
+from autogluon_dashboard.plotting.pareto_front import ParetoFront
 from autogluon_dashboard.plotting.rank_counts_ag import AGRankCounts
 from autogluon_dashboard.plotting.top5_all_datasets import Top5AllDatasets
 from autogluon_dashboard.plotting.top5_per_dataset import Top5PerDataset
@@ -228,6 +229,36 @@ class TestFrameworkBoxPlot(unittest.TestCase):
         plot_obj = FrameworkBoxPlot("title", mock_df, y_axis="dataset")
         plot = plot_obj.plot()
         self.assertEqual(plot, mock_plot.return_value)
+
+
+class TestParetoFront(unittest.TestCase):
+    def test_init(self):
+        plot = ParetoFront("title", mock_df, "pareto")
+        plot_test = TestPlot()
+        plot_test.plot_init_test(plot)
+
+    def test_preprocess(self):
+        plot = ParetoFront("title", mock_df, "pareto", x_axis="dataset", y_axis="rank")
+        plot._preprocess()
+        assert plot.df.equals(mock_df)
+
+    @mock.patch("pandas.DataFrame.hvplot")
+    @mock.patch("hvplot.plotting.core.hvPlotTabular.step")
+    def test_plot(self, mock_stepplot, mock_hvplot):
+        mock_hvplot.return_value = "plot"
+        mock_stepplot.return_value = "step plot"
+        plot_obj = ParetoFront("title", mock_df, "pareto", x_axis="dataset", y_axis="rank")
+        plot = plot_obj.plot()
+        mock_hvplot.assert_called_once_with(
+            c="framework",
+            kind="scatter",
+            size=400,
+            x="dataset",
+            y="rank",
+            height=800,
+            width=900,
+            grid=True,
+        )
 
 
 if __name__ == "__main__":

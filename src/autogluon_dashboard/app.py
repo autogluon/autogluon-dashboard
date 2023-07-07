@@ -7,6 +7,7 @@ from autogluon_dashboard.plotting.framework_error import FrameworkError
 from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
 from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
 from autogluon_dashboard.plotting.metrics_per_datasets import MetricsPlotPerDataset
+from autogluon_dashboard.plotting.pareto_front import ParetoFront
 from autogluon_dashboard.plotting.rank_counts_ag import AGRankCounts
 from autogluon_dashboard.plotting.top5_all_datasets import Top5AllDatasets
 from autogluon_dashboard.plotting.top5_per_dataset import Top5PerDataset
@@ -19,6 +20,7 @@ from autogluon_dashboard.scripts.constants.app_layout_constants import (
     FRAMEWORK_BOX_PLOT,
     NO_ERROR_CNTS,
     NO_RANK_COMP,
+    PARETO_FRONT_PLOT,
     PER_DATA_COMP,
 )
 from autogluon_dashboard.scripts.constants.plots_constants import (
@@ -140,6 +142,10 @@ per_framework_dfi = interactive_df.get_interactive_df().head(nrows)
 
 framework_box = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, y_axis=yaxis_widget3)
 
+pareto_front = ParetoFront(
+    PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis="time_infer_s_rescaled", y_axis="winrate"
+)
+
 # Order matters here!
 plots = [
     metrics_plot_all_datasets,
@@ -149,6 +155,7 @@ plots = [
     ag_rank_counts,
     framework_error,
     framework_box,
+    pareto_front,
 ]
 plots = [plot.plot() for plot in plots]
 plot_ctr = iter(range(len(plots)))
@@ -170,6 +177,7 @@ template = pn.template.FastListTemplate(
         pn.Row(NO_RANK_COMP, ag_pct_rank1, plots[next(plot_ctr)]),
         pn.Row(NO_ERROR_CNTS, plots[next(plot_ctr)]),
         pn.Row(FRAMEWORK_BOX_PLOT, yaxis_widget3, plots[next(plot_ctr)]),
+        pn.Row(PARETO_FRONT_PLOT, plots[next(plot_ctr)]),
         pn.Card(per_framework_dfi, title=ALL_FRAMEWORKS_IDF[1:], collapsed=True),
     ],
     header_background=APP_HEADER_BACKGROUND,

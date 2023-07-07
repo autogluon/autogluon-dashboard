@@ -2,6 +2,7 @@ from abc import abstractmethod
 from typing import List, Optional, Union
 
 import hvplot.pandas
+import pandas as pd
 
 
 class Plot:
@@ -28,7 +29,12 @@ class Plot:
         self.label_rot = label_rot
         self.table_cols = table_cols
 
-        self.plot = self._create_table if plot_type == "table" else self._create_hvplot
+        if plot_type == "table":
+            self.plot = self._create_table
+        elif plot_type == "hvplot":
+            self.plot = self._create_hvplot
+        elif plot_type == "pareto":
+            self.plot = self._create_pareto_front
 
     @abstractmethod
     def _preprocess(self, *args):
@@ -110,3 +116,43 @@ class Plot:
             Width of the table.
         """
         return self.df.hvplot.table(title=self.plot_title, columns=self.table_cols, width=width)
+
+    def _create_pareto_front(
+        self, maxY: bool = True, width: Union[int, float] = 900, size: int = 400
+    ) -> hvplot.hvPlot:
+        """Pareto frontier selection process
+        Parameters
+        ----------
+        maxY: bool,
+            Boolean value whether to maximize y-axis values in logic to calculate pareto front plots
+        width: int, default=800,
+            Width of the table.
+        size: int, default = 400,
+            Size of points in scatter plot -> represents framework
+        """
+        Xs, Ys = self.df[self.plot_x], self.df[self.plot_y]
+        sorted_list = sorted([[Xs[i], Ys[i]] for i in range(len(Xs))], reverse=False)
+        pareto_front = [sorted_list[0]]
+        for pair in sorted_list[1:]:
+            if maxY:
+                if pair[1] >= pareto_front[-1][1]:
+                    pareto_front.append(pair)
+            else:
+                if pair[1] <= pareto_front[-1][1]:
+                    pareto_front.append(pair)
+
+        pf_X = [pair[0] for pair in pareto_front]
+        pf_Y = [pair[1] for pair in pareto_front]
+        pareto_df = pd.DataFrame({"col1": pf_X, "col2": pf_Y})
+
+        plot = self.df.hvplot(
+            x=self.plot_x,
+            y=self.plot_y,
+            c="framework",
+            kind="scatter",
+            size=size,
+            height=800,
+            width=width,
+            grid=True,
+        ) * pareto_df.hvplot.step(x="col1", y="col2")
+        return plot
