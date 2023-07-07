@@ -201,13 +201,13 @@ class TestInteractiveDataframe(unittest.TestCase):
         plot = InteractiveDataframe(mock_df, "D", width=3000)
         data = {"rank": [1], "dataset": ["B"], "framework": ["D"]}
         expected_df = pd.DataFrame(data)
-        plot_df = plot._preprocess("D", None).reset_index().drop(columns=["index"])
+        plot_df = plot._preprocess(framework="D", dataset=None).reset_index().drop(columns=["index"])
         assert plot_df.equals(expected_df)
 
         plot = InteractiveDataframe(mock_df, framework="A", width=3000, dataset="D")
         data = {"rank": [5], "dataset": ["D"], "framework": ["A"]}
         expected_df = pd.DataFrame(data)
-        plot_df = plot._preprocess("A", "D").reset_index().drop(columns=["index"])
+        plot_df = plot._preprocess(framework="A", dataset="D").reset_index().drop(columns=["index"])
         assert plot_df.equals(expected_df)
 
     @mock.patch("pandas.DataFrame.interactive")

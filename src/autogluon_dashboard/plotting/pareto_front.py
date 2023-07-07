@@ -33,5 +33,5 @@ class ParetoFront(Plot):
             table_cols,
         )
 
-    def _preprocess(*args) -> pandas.DataFrame:
-        return Plot._preprocess(*args)
+    def _preprocess(self, **kwargs) -> pandas.DataFrame:
+        return Plot._preprocess(kwargs)

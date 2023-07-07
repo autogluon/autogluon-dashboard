@@ -22,7 +22,7 @@ class MetricsPlotPerDataset(Plot):
         label_rot: int = 90,
         table_cols: list = [],
     ) -> None:
-        dataset_to_plot = self._preprocess(df_process, dataset)
+        dataset_to_plot = self._preprocess(df=df_process, dataset_name=dataset)
         super().__init__(
             plot_title,
             dataset_to_plot,
@@ -36,5 +36,7 @@ class MetricsPlotPerDataset(Plot):
             table_cols,
         )
 
-    def _preprocess(self, *args) -> pandas.DataFrame:
-        return get_df_filter_by_dataset(args[0], args[1])
+    def _preprocess(self, **kwargs) -> pandas.DataFrame:
+        df = kwargs["df"]
+        dataset_str = kwargs["dataset_name"]
+        return get_df_filter_by_dataset(df, dataset_str)

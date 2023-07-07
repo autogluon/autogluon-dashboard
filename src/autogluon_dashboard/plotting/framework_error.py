@@ -32,5 +32,5 @@ class FrameworkError(Plot):
             table_cols,
         )
 
-    def _preprocess(*args) -> None:
-        return Plot._preprocess(*args)
+    def _preprocess(self, **kwargs) -> None:
+        return Plot._preprocess(kwargs)
