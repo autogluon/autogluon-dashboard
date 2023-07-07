@@ -191,17 +191,34 @@ class TestInteractiveDataframe(unittest.TestCase):
         self.assertEqual(plot.framework, "D")
         self.assertEqual(plot.table_width, 3000)
 
+        plot = InteractiveDataframe(mock_df, "D", width=3000, dataset="C")
+        assert plot.dataset_to_plot.equals(mock_df)
+        self.assertEqual(plot.framework, "D")
+        self.assertEqual(plot.dataset, "C")
+        self.assertEqual(plot.table_width, 3000)
+
     def test_preprocess(self):
         plot = InteractiveDataframe(mock_df, "D", width=3000)
         data = {"rank": [1], "dataset": ["B"], "framework": ["D"]}
         expected_df = pd.DataFrame(data)
-        plot_df = plot._preprocess("D").reset_index().drop(columns=["index"])
+        plot_df = plot._preprocess("D", None).reset_index().drop(columns=["index"])
+        assert plot_df.equals(expected_df)
+
+        plot = InteractiveDataframe(mock_df, framework="A", width=3000, dataset="D")
+        data = {"rank": [5], "dataset": ["D"], "framework": ["A"]}
+        expected_df = pd.DataFrame(data)
+        plot_df = plot._preprocess("A", "D").reset_index().drop(columns=["index"])
         assert plot_df.equals(expected_df)
 
     @mock.patch("pandas.DataFrame.interactive")
     def test_plot(self, mock_plot):
         mock_plot.return_value = "plot"
         plot = InteractiveDataframe(mock_df, "D", width=3000)
+        idf = plot.get_interactive_df()
+        self.assertEqual(idf, mock_plot.return_value)
+
+        mock_plot.return_value = "plot"
+        plot = InteractiveDataframe(mock_df, framework="A", width=3000, dataset="D")
         idf = plot.get_interactive_df()
         self.assertEqual(idf, mock_plot.return_value)
 

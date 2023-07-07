@@ -23,12 +23,14 @@ from autogluon_dashboard.scripts.constants.app_layout_constants import (
     NO_RANK_COMP,
     PARETO_FRONT_PLOT,
     PER_DATA_COMP,
+    PER_DATASET_IDF,
 )
 from autogluon_dashboard.scripts.constants.plots_constants import (
     AG_RANK_COUNTS_TITLE,
     AGG_FRAMEWORKS_DOWNLOAD_TITLE,
     AUTOGLUON_RANK1_TITLE,
     DATASETS_LABEL,
+    DF_WIDGET_NAME,
     ERROR_COUNTS_TITLE,
     FRAMEWORK_BOX_PLOT_TITLE,
     FRAMEWORK_LABEL,
@@ -46,12 +48,8 @@ from autogluon_dashboard.scripts.data import get_dataframes
 from autogluon_dashboard.scripts.widget import Widget
 
 # TODO: Remove hardcoded default csv path
-dataset_file = os.environ.get(
-    "PER_DATASET_S3_PATH", "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/dev_data/all_data.csv"
-)
-aggregated_file = os.environ.get(
-    "AGG_DATASET_S3_PATH", "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/dev_data/autogluon.csv"
-)
+dataset_file = os.environ.get("PER_DATASET_S3_PATH", "dev_data/all_data.csv")
+aggregated_file = os.environ.get("AGG_DATASET_S3_PATH", "dev_data/autogluon.csv")
 per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
 
 # clean up framework names
@@ -68,13 +66,16 @@ all_framework_idf = all_framework_df.interactive()
 
 # Define Panel widgets
 frameworks_widget = Widget("select", name=FRAMEWORK_LABEL, options=frameworks_list).create_widget()
+frameworks_widget2 = Widget("select", name=FRAMEWORK_LABEL, options=frameworks_list).create_widget()
 yaxis_widget = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
 yaxis_widget2 = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
 yaxis_widget3 = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
 dataset_dropdown = Widget("select", name=DATASETS_LABEL, options=dataset_list).create_widget()
+dataset_dropdown2 = Widget("select", name=DATASETS_LABEL, options=dataset_list).create_widget()
 graph_dropdown = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 graph_dropdown2 = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
-nrows = Widget("slider", name="Framework", start=1, end=len(frameworks_list) - 1, value=10).create_widget()
+nrows = Widget("slider", name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
+nrows2 = Widget("slider", name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
 per_dataset_csv_widget = Widget("download", file=dataset_file, filename=PER_DATASET_DOWNLOAD_TITLE).create_widget()
 all_framework_csv_widget = Widget(
     "download", file=aggregated_file, filename=AGG_FRAMEWORKS_DOWNLOAD_TITLE
@@ -144,8 +145,13 @@ framework_error = FrameworkError(
     xlabel=FRAMEWORK_LABEL,
 )
 
-interactive_df = InteractiveDataframe(all_framework_df, frameworks_widget, width=3000)
-per_framework_dfi = interactive_df.get_interactive_df().head(nrows)
+interactive_df_dataset = InteractiveDataframe(
+    per_dataset_df.sort_values(by="rank"), frameworks_widget2, width=3000, dataset=dataset_dropdown2
+)
+per_dataset_dfi = interactive_df_dataset.get_interactive_df().head(nrows)
+
+interactive_df_framework = InteractiveDataframe(all_framework_df, frameworks_widget, width=3000)
+agg_framework_dfi = interactive_df_framework.get_interactive_df().head(nrows2)
 
 framework_box = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, y_axis=yaxis_widget3)
 
@@ -169,6 +175,8 @@ plot_ctr = iter(range(len(plots)))
 template = pn.template.FastListTemplate(
     title=APP_TITLE,
     main=[
+        pn.Card(agg_framework_dfi, title=ALL_FRAMEWORKS_IDF[1:], collapsed=True),
+        pn.Card(per_dataset_dfi, title=PER_DATASET_IDF[1:], collapsed=True),
         pn.Row(DOWNLOAD_FILES_TITLE, per_dataset_csv_widget, all_framework_csv_widget),
         pn.Row(
             ALL_DATA_COMP,
@@ -186,7 +194,6 @@ template = pn.template.FastListTemplate(
         pn.Row(NO_ERROR_CNTS, plots[next(plot_ctr)]),
         pn.Row(FRAMEWORK_BOX_PLOT, yaxis_widget3, plots[next(plot_ctr)]),
         pn.Row(PARETO_FRONT_PLOT, plots[next(plot_ctr)]),
-        pn.Card(per_framework_dfi, title=ALL_FRAMEWORKS_IDF[1:], collapsed=True),
     ],
     header_background=APP_HEADER_BACKGROUND,
 )

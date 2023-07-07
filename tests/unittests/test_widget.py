@@ -58,7 +58,7 @@ class TestWidget(unittest.TestCase):
         test_widget = Widget(widget_type="slider", name="test_slider", start=1, end=10, value=10)
         widget = test_widget.create_widget()
         mock_create_widget.assert_called_once_with(
-            start=test_widget.start, end=test_widget.end, value=test_widget.value
+            name=test_widget.name, start=test_widget.start, end=test_widget.end, value=test_widget.value
         )
         self.assertEqual(widget, mock_create_widget.return_value)
 
