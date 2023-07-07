@@ -30,6 +30,7 @@ from autogluon_dashboard.scripts.constants.plots_constants import (
     AGG_FRAMEWORKS_DOWNLOAD_TITLE,
     AUTOGLUON_RANK1_TITLE,
     DATASETS_LABEL,
+    DF_WIDGET_NAME,
     ERROR_COUNTS_TITLE,
     FRAMEWORK_BOX_PLOT_TITLE,
     FRAMEWORK_LABEL,
@@ -73,8 +74,8 @@ dataset_dropdown = Widget("select", name=DATASETS_LABEL, options=dataset_list).c
 dataset_dropdown2 = Widget("select", name=DATASETS_LABEL, options=dataset_list).create_widget()
 graph_dropdown = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 graph_dropdown2 = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
-nrows = Widget("slider", name="Framework", start=1, end=len(frameworks_list) - 1, value=10).create_widget()
-nrows2 = Widget("slider", name="Framework", start=1, end=len(frameworks_list) - 1, value=10).create_widget()
+nrows = Widget("slider", name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
+nrows2 = Widget("slider", name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
 per_dataset_csv_widget = Widget("download", file=dataset_file, filename=PER_DATASET_DOWNLOAD_TITLE).create_widget()
 all_framework_csv_widget = Widget(
     "download", file=aggregated_file, filename=AGG_FRAMEWORKS_DOWNLOAD_TITLE
@@ -145,7 +146,7 @@ framework_error = FrameworkError(
 )
 
 interactive_df_dataset = InteractiveDataframe(
-    per_dataset_df, frameworks_widget2, width=3000, dataset=dataset_dropdown2
+    per_dataset_df.sort_values(by="rank"), frameworks_widget2, width=3000, dataset=dataset_dropdown2
 )
 per_dataset_dfi = interactive_df_dataset.get_interactive_df().head(nrows)
 

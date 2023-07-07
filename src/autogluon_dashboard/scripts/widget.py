@@ -46,7 +46,7 @@ class Widget:
         return pn.indicators.Number(name=self.name, value=self.value, format=self.format)
 
     def _create_sliderwidget(self) -> pn.widgets.IntSlider:
-        return pn.widgets.IntSlider(start=self.start, end=self.end, value=self.value)
+        return pn.widgets.IntSlider(name=self.name, start=self.start, end=self.end, value=self.value)
 
     def _create_downloadwidget(self) -> pn.widgets.FileDownload:
         return pn.widgets.FileDownload(
