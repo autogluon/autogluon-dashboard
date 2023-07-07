@@ -36,6 +36,8 @@ from autogluon_dashboard.scripts.constants.plots_constants import (
     RANK_LABEL,
     TOP5_PERFORMERS_TITLE,
     YAXIS_LABEL,
+    PER_DATASET_DOWNLOAD_TITLE,
+    AGG_FRAMEWORKS_DOWNLOAD_TITLE,
 )
 from autogluon_dashboard.scripts.constants.widgets_constants import GRAPH_TYPES, METRICS_TO_PLOT
 
@@ -70,10 +72,10 @@ graph_dropdown = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).crea
 graph_dropdown2 = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 nrows = Widget("slider", name="Framework", start=1, end=len(frameworks_list) - 1, value=10).create_widget()
 per_dataset_csv_widget = Widget(
-    "download", file=dataset_file, filename="All Datasets Evaluation Dataset"
+    "download", file=dataset_file, filename=PER_DATASET_DOWNLOAD_TITLE
 ).create_widget()
 all_framework_csv_widget = Widget(
-    "download", file=aggregated_file, filename="All Frameworks Aggregated Evaluation Dataset"
+    "download", file=aggregated_file, filename=AGG_FRAMEWORKS_DOWNLOAD_TITLE
 ).create_widget()
 
 df_ag_only = utils.get_df_filter_by_framework(per_dataset_df, "AutoGluon")
