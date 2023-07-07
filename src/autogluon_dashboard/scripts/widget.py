@@ -13,6 +13,8 @@ class Widget:
         format: str = "",
         start: int = 0,
         end: int = 15,
+        file: str = None,
+        filename: str = None,
     ):
         if widget_type == "select":
             self.create_widget = self._create_selectwidget
@@ -24,6 +26,10 @@ class Widget:
             self.create_widget = self._create_sliderwidget
             self.start = start
             self.end = end
+        elif widget_type == "download":
+            self.create_widget = self._create_downloadwidget
+            self.file = file
+            self.filename = filename
 
         self.name = name
         self.value = value
@@ -41,3 +47,13 @@ class Widget:
 
     def _create_sliderwidget(self) -> pn.widgets.IntSlider:
         return pn.widgets.IntSlider(start=self.start, end=self.end, value=self.value)
+
+    def _create_downloadwidget(self) -> pn.widgets.FileDownload:
+        return pn.widgets.FileDownload(
+            icon="file-download",
+            button_type="success",
+            file=self.file,
+            filename=self.filename,
+            icon_size="3em",
+            embed=True,
+        )
