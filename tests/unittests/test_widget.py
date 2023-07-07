@@ -53,7 +53,7 @@ class TestWidget(unittest.TestCase):
         self.assertEqual(widget, mock_create_widget.return_value)
 
     @mock.patch("panel.widgets.IntSlider")
-    def run_test_create_togglewidget(self, mock_create_widget):
+    def run_test_create_sliderwidget(self, mock_create_widget):
         mock_create_widget.return_value = "slider widget created"
         test_widget = Widget(widget_type="slider", name="test_slider", start=1, end=10, value=10)
         widget = test_widget.create_widget()
@@ -81,7 +81,7 @@ class TestWidget(unittest.TestCase):
         self.run_test_create_selectwidget()
         self.run_test_create_togglewidget()
         self.run_test_create_numberwidget()
-        self.run_test_create_togglewidget()
+        self.run_test_create_sliderwidget()
         self.run_test_create_downloadwidget()
 
 
