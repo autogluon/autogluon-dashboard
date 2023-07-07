@@ -175,6 +175,8 @@ plot_ctr = iter(range(len(plots)))
 template = pn.template.FastListTemplate(
     title=APP_TITLE,
     main=[
+        pn.Card(agg_framework_dfi, title=ALL_FRAMEWORKS_IDF[1:], collapsed=True),
+        pn.Card(per_dataset_dfi, title=PER_DATASET_IDF[1:], collapsed=True),
         pn.Row(DOWNLOAD_FILES_TITLE, per_dataset_csv_widget, all_framework_csv_widget),
         pn.Row(
             ALL_DATA_COMP,
@@ -192,8 +194,6 @@ template = pn.template.FastListTemplate(
         pn.Row(NO_ERROR_CNTS, plots[next(plot_ctr)]),
         pn.Row(FRAMEWORK_BOX_PLOT, yaxis_widget3, plots[next(plot_ctr)]),
         pn.Row(PARETO_FRONT_PLOT, plots[next(plot_ctr)]),
-        pn.Card(agg_framework_dfi, title=ALL_FRAMEWORKS_IDF[1:], collapsed=True),
-        pn.Card(per_dataset_dfi, title=PER_DATASET_IDF[1:], collapsed=True),
     ],
     header_background=APP_HEADER_BACKGROUND,
 )
