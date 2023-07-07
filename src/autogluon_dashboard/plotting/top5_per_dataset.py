@@ -23,7 +23,7 @@ class Top5PerDataset(Plot):
         label_rot: int = 90,
         table_cols: list = [],
     ) -> None:
-        dataset_to_plot = self._preprocess(df=df_process, dataset=dataset, col_name=col_name)
+        dataset_to_plot = self._preprocess(df=df_process, dataset=dataset, col_name_for_metrics=col_name)
         super().__init__(
             plot_title,
             dataset_to_plot,
@@ -37,9 +37,6 @@ class Top5PerDataset(Plot):
             table_cols,
         )
 
-    def _preprocess(self, **kwargs) -> pandas.DataFrame:
-        df = kwargs["df"]
-        dataset = kwargs["dataset"]
-        col_name = kwargs["col_name"]
+    def _preprocess(self, df, dataset, col_name_for_metrics, **kwargs) -> pandas.DataFrame:
         df_filtered_by_dataset = get_df_filter_by_dataset(df, dataset)
-        return get_top5_performers(df_filtered_by_dataset, col_name)
+        return get_top5_performers(df_filtered_by_dataset, col_name_for_metrics)

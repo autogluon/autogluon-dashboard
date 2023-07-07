@@ -33,8 +33,5 @@ class FrameworkBoxPlot(Plot):
         )
         self.plot = self._box_plot
 
-    def _preprocess(self, **kwargs) -> None:
-        return Plot._preprocess(kwargs)
-
     def _box_plot(self) -> hvplot.hvPlot.box:
         return self.df.hvplot.box(self.plot_y, by="framework", rot=self.label_rot)

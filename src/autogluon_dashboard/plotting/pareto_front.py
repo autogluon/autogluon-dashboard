@@ -32,6 +32,3 @@ class ParetoFront(Plot):
             label_rot,
             table_cols,
         )
-
-    def _preprocess(self, **kwargs) -> pandas.DataFrame:
-        return Plot._preprocess(kwargs)

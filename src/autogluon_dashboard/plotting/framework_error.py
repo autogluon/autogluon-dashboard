@@ -31,6 +31,3 @@ class FrameworkError(Plot):
             label_rot,
             table_cols,
         )
-
-    def _preprocess(self, **kwargs) -> None:
-        return Plot._preprocess(kwargs)

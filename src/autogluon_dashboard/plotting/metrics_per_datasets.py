@@ -36,7 +36,5 @@ class MetricsPlotPerDataset(Plot):
             table_cols,
         )
 
-    def _preprocess(self, **kwargs) -> pandas.DataFrame:
-        df = kwargs["df"]
-        dataset_str = kwargs["dataset_name"]
-        return get_df_filter_by_dataset(df, dataset_str)
+    def _preprocess(self, df, dataset_name, **kwargs) -> pandas.DataFrame:
+        return get_df_filter_by_dataset(df, dataset_name)

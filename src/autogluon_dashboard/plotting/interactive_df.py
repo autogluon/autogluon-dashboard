@@ -21,10 +21,8 @@ class InteractiveDataframe(Plot):
             width=self.table_width
         )
 
-    def _preprocess(self, **kwargs) -> pandas.DataFrame:
+    def _preprocess(self, framework, dataset, **kwargs) -> pandas.DataFrame:
         df = self.dataset_to_plot
-        dataset = kwargs["dataset"]
-        framework = kwargs["framework"]
         if dataset:
             df = get_df_filter_by_dataset(df, dataset)
         if "All Frameworks" in framework:
