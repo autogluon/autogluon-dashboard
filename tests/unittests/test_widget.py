@@ -19,7 +19,7 @@ class TestWidget(unittest.TestCase):
         self.assertEqual(test_select_widget2.format, "format")
 
     @mock.patch("panel.widgets.Select")
-    def run_test_create_selectwidget(self, mock_create_widget):
+    def test_create_selectwidget(self, mock_create_widget):
         mock_create_widget.return_value = "select widget created"
         test_widget = Widget("select", "test_create", 2, [0, 1, 2, 3], "format")
         widget = test_widget.create_widget()
@@ -27,7 +27,7 @@ class TestWidget(unittest.TestCase):
         self.assertEqual(widget, mock_create_widget.return_value)
 
     @mock.patch("panel.indicators.Number")
-    def run_test_create_numberwidget(self, mock_create_widget):
+    def test_create_numberwidget(self, mock_create_widget):
         mock_create_widget.return_value = "select number created"
         test_widget = Widget("number", "test_create", 2, [0, 1, 2, 3], "format")
         widget = test_widget.create_widget()
@@ -37,7 +37,7 @@ class TestWidget(unittest.TestCase):
         self.assertEqual(widget, mock_create_widget.return_value)
 
     @mock.patch("panel.widgets.ToggleGroup")
-    def run_test_create_togglewidget(self, mock_create_widget):
+    def test_create_togglewidget(self, mock_create_widget):
         mock_create_widget.return_value = "toggle widget created"
         test_widget = Widget(
             widget_type="toggle",
@@ -53,7 +53,7 @@ class TestWidget(unittest.TestCase):
         self.assertEqual(widget, mock_create_widget.return_value)
 
     @mock.patch("panel.widgets.IntSlider")
-    def run_test_create_sliderwidget(self, mock_create_widget):
+    def test_create_sliderwidget(self, mock_create_widget):
         mock_create_widget.return_value = "slider widget created"
         test_widget = Widget(widget_type="slider", name="test_slider", start=1, end=10, value=10)
         widget = test_widget.create_widget()
@@ -63,7 +63,7 @@ class TestWidget(unittest.TestCase):
         self.assertEqual(widget, mock_create_widget.return_value)
 
     @mock.patch("panel.widgets.FileDownload")
-    def run_test_create_downloadwidget(self, mock_create_widget):
+    def test_create_downloadwidget(self, mock_create_widget):
         mock_create_widget.return_value = "download widget created"
         test_widget = Widget("download", file="some_file.csv", filename="Some File Dataset")
         widget = test_widget.create_widget()
@@ -76,13 +76,6 @@ class TestWidget(unittest.TestCase):
             embed=True,
         )
         self.assertEqual(widget, mock_create_widget.return_value)
-
-    def test_widgets(self):
-        self.run_test_create_selectwidget()
-        self.run_test_create_togglewidget()
-        self.run_test_create_numberwidget()
-        self.run_test_create_sliderwidget()
-        self.run_test_create_downloadwidget()
 
 
 if __name__ == "__main__":
