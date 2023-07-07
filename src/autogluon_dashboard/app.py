@@ -26,6 +26,7 @@ from autogluon_dashboard.scripts.constants.app_layout_constants import (
 )
 from autogluon_dashboard.scripts.constants.plots_constants import (
     AG_RANK_COUNTS_TITLE,
+    AGG_FRAMEWORKS_DOWNLOAD_TITLE,
     AUTOGLUON_RANK1_TITLE,
     DATASETS_LABEL,
     ERROR_COUNTS_TITLE,
@@ -33,11 +34,10 @@ from autogluon_dashboard.scripts.constants.plots_constants import (
     FRAMEWORK_LABEL,
     GRAPH_TYPE_STR,
     METRICS_PLOT_TITLE,
+    PER_DATASET_DOWNLOAD_TITLE,
     RANK_LABEL,
     TOP5_PERFORMERS_TITLE,
     YAXIS_LABEL,
-    PER_DATASET_DOWNLOAD_TITLE,
-    AGG_FRAMEWORKS_DOWNLOAD_TITLE,
 )
 from autogluon_dashboard.scripts.constants.widgets_constants import GRAPH_TYPES, METRICS_TO_PLOT
 
@@ -71,9 +71,7 @@ dataset_dropdown = Widget("select", name=DATASETS_LABEL, options=dataset_list).c
 graph_dropdown = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 graph_dropdown2 = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 nrows = Widget("slider", name="Framework", start=1, end=len(frameworks_list) - 1, value=10).create_widget()
-per_dataset_csv_widget = Widget(
-    "download", file=dataset_file, filename=PER_DATASET_DOWNLOAD_TITLE
-).create_widget()
+per_dataset_csv_widget = Widget("download", file=dataset_file, filename=PER_DATASET_DOWNLOAD_TITLE).create_widget()
 all_framework_csv_widget = Widget(
     "download", file=aggregated_file, filename=AGG_FRAMEWORKS_DOWNLOAD_TITLE
 ).create_widget()
