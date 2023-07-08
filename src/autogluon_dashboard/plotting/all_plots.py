@@ -37,7 +37,7 @@ class Plot:
             self.plot = self._create_pareto_front
 
     @abstractmethod
-    def _preprocess(self, *args):
+    def _preprocess(self, **kwargs):
         return
 
     def _create_hvplot(

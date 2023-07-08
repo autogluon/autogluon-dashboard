@@ -17,15 +17,17 @@ class InteractiveDataframe(Plot):
         self.dataset = dataset
 
     def get_interactive_df(self) -> hvplot.Interactive:
-        return hvplot.bind(self._preprocess, self.framework, self.dataset).interactive(width=self.table_width)
+        return hvplot.bind(self._preprocess, framework=self.framework, dataset=self.dataset).interactive(
+            width=self.table_width
+        )
 
-    def _preprocess(*args) -> pandas.DataFrame:
-        df = args[0].dataset_to_plot
-        if args[2]:
-            df = get_df_filter_by_dataset(df, args[2])
-        if "All Frameworks" in args[1]:
+    def _preprocess(self, framework, dataset, **kwargs) -> pandas.DataFrame:
+        df = self.dataset_to_plot
+        if dataset:
+            df = get_df_filter_by_dataset(df, dataset)
+        if "All Frameworks" in framework:
             return df
-        return get_df_filter_by_framework(df, args[1])
+        return get_df_filter_by_framework(df, framework)
 
     def _process_df(self, df_process, dataset) -> pandas.DataFrame:
         print(dataset)

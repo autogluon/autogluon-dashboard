@@ -23,7 +23,7 @@ class AGRankCounts(Plot):
         label_rot: int = 90,
         table_cols: list = [],
     ) -> None:
-        dataset_to_plot = self._preprocess(df_process, framework, col_name)
+        dataset_to_plot = self._preprocess(df=df_process, framework=framework, col_name_for_metrics=col_name)
         super().__init__(
             plot_title,
             dataset_to_plot,
@@ -37,6 +37,6 @@ class AGRankCounts(Plot):
             table_cols,
         )
 
-    def _preprocess(self, *args) -> pandas.Series:
-        df_filtered_by_framework = get_df_filter_by_framework(args[0], args[1])
-        return get_col_metric_counts(df_filtered_by_framework, args[2])
+    def _preprocess(self, df, framework, col_name_for_metrics, **kwargs) -> pandas.Series:
+        df_filtered_by_framework = get_df_filter_by_framework(df, framework)
+        return get_col_metric_counts(df_filtered_by_framework, col_name_for_metrics)
