@@ -5,6 +5,7 @@ from unittest.mock import MagicMock
 import pandas as pd
 
 import autogluon_dashboard
+from autogluon_dashboard.plotting.errored_datasets import ErroredDatasets
 from autogluon_dashboard.plotting.framework_boxplot import FrameworkBoxPlot
 from autogluon_dashboard.plotting.framework_error import FrameworkError
 from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
@@ -276,6 +277,35 @@ class TestParetoFront(unittest.TestCase):
             width=900,
             grid=True,
         )
+
+
+class TestErroredDatasets(unittest.TestCase):
+    def test_init(self):
+        plot = ErroredDatasets("title", mock_df, "table", framework="A")
+        self.assertEqual(plot.plot_title, "title")
+        self.assertEqual(plot.graph_type, "bar")
+        self.assertIsNone(plot.plot_x)
+        self.assertIsNone(plot.plot_y)
+        self.assertEqual(plot.plot_x_label, "")
+        self.assertEqual(plot.plot_y_label, "")
+        self.assertEqual(plot.label_rot, 90)
+        self.assertEqual(plot.table_cols, ["Errored Datasets"])
+
+    def test_preprocess(self):
+        plot = ErroredDatasets("title", mock_df, "table", framework="A")
+        data = {
+            "Errored Datasets": ["B", "C"],
+        }
+        expected_df = pd.DataFrame(data)
+        plot_df = plot.df.sort_values(by="Errored Datasets").reset_index().drop(columns=["index"])
+        assert plot_df.equals(expected_df)
+
+    @mock.patch("hvplot.plotting.core.hvPlotTabular.table")
+    def test_plot(self, mock_plot):
+        mock_plot.return_value = "plot"
+        plot_obj = ErroredDatasets("title", mock_df, "table", framework="A")
+        plot = plot_obj.plot()
+        self.assertEqual(plot, mock_plot.return_value)
 
 
 if __name__ == "__main__":
