@@ -255,14 +255,15 @@ class TestFrameworkBoxPlot(unittest.TestCase):
         plot_obj = FrameworkBoxPlot("title", mock_df, y_axis="dataset")
         plot = plot_obj.plot()
         mock_plot.assert_called_once_with(
-            "dataset", 
-            by="framework", 
-            rot=90, 
-            width=1000, 
-            height=500, 
+            "dataset",
+            by="framework",
+            rot=90,
+            width=1000,
+            height=500,
             grid=True,
         )
         self.assertEqual(plot, mock_plot.return_value)
+
 
 class TestParetoFront(unittest.TestCase):
     def test_init(self):

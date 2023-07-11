@@ -1,11 +1,10 @@
 from typing import List, Optional, Union
 
 import hvplot
-
-from .all_plots import Plot
 import pandas
 
 from ..scripts.utils import get_df_filter_by_dataset
+from .all_plots import Plot
 
 
 class FrameworkBoxPlot(Plot):

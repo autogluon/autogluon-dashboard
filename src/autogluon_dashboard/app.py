@@ -48,12 +48,8 @@ from autogluon_dashboard.scripts.data import get_dataframes
 from autogluon_dashboard.scripts.widget import Widget
 
 # TODO: Remove hardcoded default csv path
-dataset_file = os.environ.get(
-    "PER_DATASET_S3_PATH", "dev_data/all_data.csv"
-)
-aggregated_file = os.environ.get(
-    "AGG_DATASET_S3_PATH", "dev_data/autogluon.csv"
-)
+dataset_file = os.environ.get("PER_DATASET_S3_PATH", "dev_data/all_data.csv")
+aggregated_file = os.environ.get("AGG_DATASET_S3_PATH", "dev_data/autogluon.csv")
 per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
 
 # clean up framework names
@@ -159,7 +155,9 @@ interactive_df_framework = InteractiveDataframe(all_framework_df, frameworks_wid
 agg_framework_dfi = interactive_df_framework.get_interactive_df().head(nrows2)
 
 framework_box_all_datasets = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, y_axis=yaxis_widget3)
-metrics_box_per_dataset = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_idf, y_axis=METRICS_TO_PLOT, dataset=dataset_dropdown3)
+metrics_box_per_dataset = FrameworkBoxPlot(
+    FRAMEWORK_BOX_PLOT_TITLE, per_dataset_idf, y_axis=METRICS_TO_PLOT, dataset=dataset_dropdown3
+)
 
 pareto_front = ParetoFront(
     PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis="time_infer_s_rescaled", y_axis="winrate"
