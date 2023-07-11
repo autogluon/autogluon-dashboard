@@ -2,6 +2,7 @@ import os
 
 import panel as pn
 
+from autogluon_dashboard.plotting.errored_datasets import ErroredDatasets
 from autogluon_dashboard.plotting.framework_boxplot import FrameworkBoxPlot
 from autogluon_dashboard.plotting.framework_error import FrameworkError
 from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
@@ -163,6 +164,12 @@ pareto_front = ParetoFront(
     PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis="time_infer_s_rescaled", y_axis="winrate"
 )
 
+framework_error_list = all_framework_df.sort_values(by="error_count", ascending=False)
+error_tables = [
+    ErroredDatasets(f"{framework} Errored Datasets", per_dataset_df, "table", framework).plot(width=225)
+    for framework in framework_error_list["framework"]
+]
+
 # Order matters here!
 plots = [
     metrics_plot_all_datasets,
@@ -176,6 +183,7 @@ plots = [
 ]
 plots = [plot.plot() for plot in plots]
 plot_ctr = iter(range(len(plots)))
+error_table_ctr = iter(range(len(error_tables)))
 template = pn.template.FastListTemplate(
     title=APP_TITLE,
     main=[
@@ -195,7 +203,28 @@ template = pn.template.FastListTemplate(
             plots[next(plot_ctr)],
         ),
         pn.Row(NO_RANK_COMP, ag_pct_rank1, plots[next(plot_ctr)]),
-        pn.Row(NO_ERROR_CNTS, plots[next(plot_ctr)]),
+        pn.Row(
+            NO_ERROR_CNTS,
+            plots[next(plot_ctr)],
+            pn.Column(
+                pn.Row(
+                    error_tables[next(error_table_ctr)],
+                    error_tables[next(error_table_ctr)],
+                    error_tables[next(error_table_ctr)],
+                    error_tables[next(error_table_ctr)],
+                ),
+                pn.Row(
+                    error_tables[next(error_table_ctr)],
+                    error_tables[next(error_table_ctr)],
+                    error_tables[next(error_table_ctr)],
+                ),
+                pn.Row(
+                    error_tables[next(error_table_ctr)],
+                    error_tables[next(error_table_ctr)],
+                    error_tables[next(error_table_ctr)],
+                ),
+            ),
+        ),
         pn.Row(FRAMEWORK_BOX_PLOT, yaxis_widget3, plots[next(plot_ctr)]),
         pn.Row(PARETO_FRONT_PLOT, plots[next(plot_ctr)]),
     ],

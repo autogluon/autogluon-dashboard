@@ -78,7 +78,7 @@ class TestUtils(unittest.TestCase):
                 "AutoGluon v0.3",
             ]
         )
-        new_framework_names = clean_up_framework_names(mock_df)
+        new_framework_names = clean_up_framework_names(mock_df, dummy=True)
         assert new_framework_names.equals(expected_names)
 
 

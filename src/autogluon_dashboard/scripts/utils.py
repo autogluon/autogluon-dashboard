@@ -37,7 +37,7 @@ def get_df_filter_by_framework(df: pandas.DataFrame, framework: str) -> pandas.D
     framework: str,
         Name of dataset to filter by.
     """
-    return df.loc[(df["framework"].isin([framework]))]
+    return df[(df.framework.isin([framework]))]
 
 
 def get_col_metric_counts(df: pandas.DataFrame, metric: str) -> pandas.Series:
@@ -99,14 +99,15 @@ def get_name_before_first_underscore(df: pandas.DataFrame, col_name: str) -> pan
     return df[col_name].str.extract(r"^(.*?)(?:_|$)")[0]
 
 
-def clean_up_framework_names(df: pandas.DataFrame) -> list:
+def clean_up_framework_names(df: pandas.DataFrame, dummy: bool = False) -> list:
     new_framework_names = get_name_before_first_underscore(df, "framework")
-    num_frameworks = len(set(new_framework_names))
-    # dummy framework replacement
-    for i in range(len(new_framework_names)):
-        new_framework_names[i] = (
-            "AutoGluon"
-            if i % num_frameworks == 0 or new_framework_names[i] == "AutoGluon"
-            else "AutoGluon v" + f"0.{i%num_frameworks}"
-        )
+    if dummy:
+        num_frameworks = len(set(new_framework_names))
+        # dummy framework replacement
+        for i in range(len(new_framework_names)):
+            new_framework_names[i] = (
+                "AutoGluon"
+                if i % num_frameworks == 0 or new_framework_names[i] == "AutoGluon"
+                else "AutoGluon v" + f"0.{i%num_frameworks}"
+            )
     return new_framework_names

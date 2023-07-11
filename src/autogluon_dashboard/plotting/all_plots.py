@@ -18,6 +18,7 @@ class Plot:
         ylabel: str = "",
         label_rot: int = 90,
         table_cols: list = [],
+        table_width: Optional[int] = None,
     ) -> None:
         self.plot_title = plot_title
         self.df = dataset_to_plot
@@ -28,6 +29,7 @@ class Plot:
         self.plot_y_label = ylabel
         self.label_rot = label_rot
         self.table_cols = table_cols
+        self.table_width = table_width
 
         if plot_type == "table":
             self.plot = self._create_table
@@ -115,7 +117,8 @@ class Plot:
         width: int, default=800,
             Width of the table.
         """
-        return self.df.hvplot.table(title=self.plot_title, columns=self.table_cols, width=width)
+        table_width = width if not self.table_width else self.table_width
+        return self.df.hvplot.table(title=self.plot_title, columns=self.table_cols, width=table_width)
 
     def _create_pareto_front(
         self, maxY: bool = True, width: Union[int, float] = 900, size: int = 400
