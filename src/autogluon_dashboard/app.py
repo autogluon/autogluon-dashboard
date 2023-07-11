@@ -49,10 +49,10 @@ from autogluon_dashboard.scripts.widget import Widget
 
 # TODO: Remove hardcoded default csv path
 dataset_file = os.environ.get(
-    "PER_DATASET_S3_PATH", "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/dev_data/all_data.csv"
+    "PER_DATASET_S3_PATH", "dev_data/all_data.csv"
 )
 aggregated_file = os.environ.get(
-    "AGG_DATASET_S3_PATH", "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/dev_data/autogluon.csv"
+    "AGG_DATASET_S3_PATH", "dev_data/autogluon.csv"
 )
 per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
 
@@ -76,6 +76,7 @@ yaxis_widget2 = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).crea
 yaxis_widget3 = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
 dataset_dropdown = Widget("select", name=DATASETS_LABEL, options=dataset_list).create_widget()
 dataset_dropdown2 = Widget("select", name=DATASETS_LABEL, options=dataset_list).create_widget()
+dataset_dropdown3 = Widget("select", name=DATASETS_LABEL, options=dataset_list).create_widget()
 graph_dropdown = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 graph_dropdown2 = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 nrows = Widget("slider", name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
@@ -157,7 +158,8 @@ per_dataset_dfi = interactive_df_dataset.get_interactive_df().head(nrows)
 interactive_df_framework = InteractiveDataframe(all_framework_df, frameworks_widget, width=3000)
 agg_framework_dfi = interactive_df_framework.get_interactive_df().head(nrows2)
 
-framework_box = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, y_axis=yaxis_widget3)
+framework_box_all_datasets = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, y_axis=yaxis_widget3)
+metrics_box_per_dataset = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_idf, y_axis=METRICS_TO_PLOT, dataset=dataset_dropdown3)
 
 pareto_front = ParetoFront(
     PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis="time_infer_s_rescaled", y_axis="winrate"
@@ -171,7 +173,8 @@ plots = [
     top5frameworks_per_dataset,
     ag_rank_counts,
     framework_error,
-    framework_box,
+    framework_box_all_datasets,
+    metrics_box_per_dataset,
     pareto_front,
 ]
 plots = [plot.plot() for plot in plots]
@@ -196,7 +199,7 @@ template = pn.template.FastListTemplate(
         ),
         pn.Row(NO_RANK_COMP, ag_pct_rank1, plots[next(plot_ctr)]),
         pn.Row(NO_ERROR_CNTS, plots[next(plot_ctr)]),
-        pn.Row(FRAMEWORK_BOX_PLOT, yaxis_widget3, plots[next(plot_ctr)]),
+        pn.Row(FRAMEWORK_BOX_PLOT, yaxis_widget3, plots[next(plot_ctr)], plots[next(plot_ctr)]),
         pn.Row(PARETO_FRONT_PLOT, plots[next(plot_ctr)]),
     ],
     header_background=APP_HEADER_BACKGROUND,

@@ -237,16 +237,32 @@ class TestFrameworkBoxPlot(unittest.TestCase):
 
     def test_preprocess(self):
         plot = FrameworkBoxPlot("title", mock_df, y_axis="dataset")
-        plot._preprocess()
+        plot._preprocess(df=mock_df, dataset=None)
         assert plot.df.equals(mock_df)
+        plot = FrameworkBoxPlot("title", mock_df, y_axis="dataset", dataset="A")
+        plot_df = plot._preprocess(df=mock_df, dataset="A").reset_index().drop(columns=["index"])
+        data = {
+            "rank": [3, 3, 1],
+            "dataset": ["A", "A", "A"],
+            "framework": ["C", "A", "A"],
+        }
+        expected_df = pd.DataFrame(data)
+        assert plot_df.equals(expected_df)
 
     @mock.patch("hvplot.plotting.core.hvPlotTabular.box")
     def test_plot(self, mock_plot):
         mock_plot.return_value = "box plot"
         plot_obj = FrameworkBoxPlot("title", mock_df, y_axis="dataset")
         plot = plot_obj.plot()
+        mock_plot.assert_called_once_with(
+            "dataset", 
+            by="framework", 
+            rot=90, 
+            width=1000, 
+            height=500, 
+            grid=True,
+        )
         self.assertEqual(plot, mock_plot.return_value)
-
 
 class TestParetoFront(unittest.TestCase):
     def test_init(self):
