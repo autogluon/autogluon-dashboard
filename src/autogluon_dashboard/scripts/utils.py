@@ -38,7 +38,6 @@ def get_df_filter_by_framework(df: pandas.DataFrame, framework: str) -> pandas.D
         Name of dataset to filter by.
     """
     return df[(df.framework.isin([framework]))]
-    # return df.loc[(df["framework"].isin([framework]))]
 
 
 def get_col_metric_counts(df: pandas.DataFrame, metric: str) -> pandas.Series:
