@@ -1,4 +1,4 @@
-APP_HEADER_BACKGROUND = "#88d8b0"
+APP_HEADER_BACKGROUND = "#000000"
 APP_TITLE = "Interactive AutoGluon Dashboards"
 ALL_DATA_COMP = "# All Datasets Comparison"
 PER_DATA_COMP = "# Per Dataset Comparison"
