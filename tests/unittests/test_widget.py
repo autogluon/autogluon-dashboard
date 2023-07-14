@@ -84,7 +84,7 @@ class TestWidget(unittest.TestCase):
             button_type="success",
             file=test_widget.file,
             icon_size="3em",
-            embed=False,
+            embed=True,
         )
         self.assertEqual(widget, mock_create_widget.return_value)
 
