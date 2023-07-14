@@ -191,7 +191,11 @@ template = pn.template.FastListTemplate(
     main=[
         pn.Card(agg_framework_dfi, title=ALL_FRAMEWORKS_IDF[1:], collapsed=True),
         pn.Card(per_dataset_dfi, title=PER_DATASET_IDF[1:], collapsed=True),
-        pn.Row(pn.Column(DOWNLOAD_FILES_TITLE, pn.Row(per_dataset_csv_widget, all_framework_csv_widget), DOWNLOAD_FILES_NOTE)),
+        pn.Row(
+            pn.Column(
+                DOWNLOAD_FILES_TITLE, pn.Row(per_dataset_csv_widget, all_framework_csv_widget), DOWNLOAD_FILES_NOTE
+            )
+        ),
         pn.Row(
             ALL_DATA_COMP,
             pn.WidgetBox(yaxis_widget, graph_dropdown),
