@@ -53,7 +53,6 @@ class Widget:
             icon="file-download",
             button_type="success",
             file=self.file,
-            filename=self.filename,
             icon_size="3em",
             embed=True,
         )

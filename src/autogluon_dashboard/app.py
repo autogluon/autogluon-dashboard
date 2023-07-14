@@ -81,10 +81,11 @@ graph_dropdown = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).crea
 graph_dropdown2 = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 nrows = Widget("slider", name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
 nrows2 = Widget("slider", name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
-per_dataset_csv_widget = Widget("download", file=dataset_file, filename=PER_DATASET_DOWNLOAD_TITLE).create_widget()
-all_framework_csv_widget = Widget(
-    "download", file=aggregated_file, filename=AGG_FRAMEWORKS_DOWNLOAD_TITLE
-).create_widget()
+
+per_dataset_df.to_csv(PER_DATASET_DOWNLOAD_TITLE)
+per_dataset_csv_widget = Widget("download", file=PER_DATASET_DOWNLOAD_TITLE).create_widget()
+all_framework_df.to_csv(AGG_FRAMEWORKS_DOWNLOAD_TITLE)
+all_framework_csv_widget = Widget("download", file=AGG_FRAMEWORKS_DOWNLOAD_TITLE).create_widget()
 
 df_ag_only = utils.get_df_filter_by_framework(per_dataset_df, "AutoGluon")
 prop_ag_best = utils.get_proportion_framework_rank1(df_ag_only, per_dataset_df, len(dataset_list))
@@ -189,7 +190,7 @@ template = pn.template.FastListTemplate(
     main=[
         pn.Card(agg_framework_dfi, title=ALL_FRAMEWORKS_IDF[1:], collapsed=True),
         pn.Card(per_dataset_dfi, title=PER_DATASET_IDF[1:], collapsed=True),
-        pn.Row(DOWNLOAD_FILES_TITLE, per_dataset_csv_widget, all_framework_csv_widget),
+        pn.Row(pn.Column(DOWNLOAD_FILES_TITLE, pn.Row(per_dataset_csv_widget, all_framework_csv_widget))),
         pn.Row(
             ALL_DATA_COMP,
             pn.WidgetBox(yaxis_widget, graph_dropdown),

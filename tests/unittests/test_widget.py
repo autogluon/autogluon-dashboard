@@ -1,6 +1,8 @@
 import unittest
 from unittest import mock
 
+import pandas as pd
+
 from autogluon_dashboard.scripts.widget import Widget
 
 
@@ -65,13 +67,22 @@ class TestWidget(unittest.TestCase):
     @mock.patch("panel.widgets.FileDownload")
     def test_create_downloadwidget(self, mock_create_widget):
         mock_create_widget.return_value = "download widget created"
-        test_widget = Widget("download", file="some_file.csv", filename="Some File Dataset")
+        d = {
+            "dataset": [
+                "D",
+                "C",
+                "A",
+                "B",
+            ],
+            "framework": ["A", "B", "C", "D"],
+        }
+        mock_df = pd.DataFrame(data=d)
+        test_widget = Widget("download", file=mock_df, filename="Some File Dataset")
         widget = test_widget.create_widget()
         mock_create_widget.assert_called_once_with(
             icon="file-download",
             button_type="success",
             file=test_widget.file,
-            filename=test_widget.filename,
             icon_size="3em",
             embed=True,
         )
