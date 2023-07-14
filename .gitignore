@@ -3,6 +3,7 @@ data_config.py
 pyodide
 out.py
 web_files
+*.csv
 
 #Venv
 .venv*/
