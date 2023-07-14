@@ -1,5 +1,7 @@
 import pandas
 
+from autogluon_dashboard.scripts.constants.df_constants import FRAMEWORK, RANK
+
 
 def get_sorted_names_from_col(df: pandas.DataFrame, col_name: str) -> list:
     """
@@ -69,7 +71,7 @@ def get_proportion_framework_rank1(
     total_runs: int,
         Total #runs for a given framework = Total number of datasets.
     """
-    return framework_df.loc[(datsets_df["rank"] == 1.0)].shape[0] / total_runs
+    return framework_df.loc[(datsets_df[RANK] == 1.0)].shape[0] / total_runs
 
 
 def get_top5_performers(df: pandas.DataFrame, metric: str) -> pandas.DataFrame:
@@ -100,7 +102,7 @@ def get_name_before_first_underscore(df: pandas.DataFrame, col_name: str) -> pan
 
 
 def clean_up_framework_names(df: pandas.DataFrame, dummy: bool = False) -> list:
-    new_framework_names = get_name_before_first_underscore(df, "framework")
+    new_framework_names = get_name_before_first_underscore(df, FRAMEWORK)
     if dummy:
         num_frameworks = len(set(new_framework_names))
         # dummy framework replacement

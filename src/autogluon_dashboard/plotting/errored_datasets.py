@@ -3,6 +3,8 @@ from typing import List, Optional, Union
 import hvplot
 import pandas
 
+from autogluon_dashboard.scripts.constants.df_constants import DATASET
+
 from ..scripts.utils import get_df_filter_by_framework, get_sorted_names_from_col
 from .all_plots import Plot
 
@@ -37,7 +39,7 @@ class ErroredDatasets(Plot):
         )
 
     def _preprocess(self, df, framework, **kwargs) -> pandas.DataFrame:
-        dataset_list = get_sorted_names_from_col(df, "dataset")
+        dataset_list = get_sorted_names_from_col(df, DATASET)
         df_filtered_by_framework = get_df_filter_by_framework(df, framework)
         datasets = df_filtered_by_framework.dataset.values
         errored_datasets = list(set(dataset_list).difference(datasets))

@@ -1,7 +1,9 @@
+from .df_constants import BESTDIFF, LOSS_RESCALED, TIME_INFER_S_RESCALED, TIME_TRAIN_S_RESCALED
+
 METRICS_TO_PLOT = [
-    "loss_rescaled",
-    "time_train_s_rescaled",
-    "time_infer_s_rescaled",
-    "bestdiff",
+    LOSS_RESCALED,
+    TIME_TRAIN_S_RESCALED,
+    TIME_INFER_S_RESCALED,
+    BESTDIFF,
 ]
 GRAPH_TYPES = ["bar", "line", "hist", "scatter"]
