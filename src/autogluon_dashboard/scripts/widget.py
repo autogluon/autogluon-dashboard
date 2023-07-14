@@ -50,11 +50,6 @@ class Widget:
     def _create_sliderwidget(self) -> pn.widgets.IntSlider:
         return pn.widgets.IntSlider(name=self.name, start=self.start, end=self.end, value=self.value)
 
-    def download_file(self):
-        url = self.file
-        df = pd.read_csv(url)
-        df.to_csv()
-
     def _get_stringio_obj(self) -> StringIO:
         sio = StringIO()
         self.file.to_csv(sio)
