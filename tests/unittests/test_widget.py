@@ -82,8 +82,7 @@ class TestWidget(unittest.TestCase):
         mock_create_widget.assert_called_once_with(
             icon="file-download",
             button_type="success",
-            file=test_widget.io_file,
-            filename=test_widget.filename,
+            file=test_widget.file,
             icon_size="3em",
             embed=False,
         )

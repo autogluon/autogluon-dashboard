@@ -50,19 +50,11 @@ class Widget:
     def _create_sliderwidget(self) -> pn.widgets.IntSlider:
         return pn.widgets.IntSlider(name=self.name, start=self.start, end=self.end, value=self.value)
 
-    def _get_stringio_obj(self) -> StringIO:
-        sio = StringIO()
-        self.file.to_csv(sio)
-        sio.seek(0)
-        return sio
-
     def _create_downloadwidget(self) -> pn.widgets.FileDownload:
-        self.io_file = self._get_stringio_obj()
         return pn.widgets.FileDownload(
             icon="file-download",
             button_type="success",
-            file=self.io_file,
-            filename=self.filename,
+            file=self.file,
             icon_size="3em",
             embed=False,
         )
