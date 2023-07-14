@@ -54,5 +54,5 @@ class Widget:
             button_type="success",
             file=self.file,
             icon_size="3em",
-            embed=False,
+            embed=True,
         )
