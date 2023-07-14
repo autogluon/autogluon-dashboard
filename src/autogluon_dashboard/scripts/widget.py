@@ -1,5 +1,7 @@
+from io import StringIO
 from typing import List, Optional, Union
 
+import pandas as pd
 import panel as pn
 
 
@@ -48,12 +50,24 @@ class Widget:
     def _create_sliderwidget(self) -> pn.widgets.IntSlider:
         return pn.widgets.IntSlider(name=self.name, start=self.start, end=self.end, value=self.value)
 
+    def download_file(self):
+        url = self.file
+        df = pd.read_csv(url)
+        df.to_csv()
+
+    def _get_stringio_obj(self) -> StringIO:
+        sio = StringIO()
+        self.file.to_csv(sio)
+        sio.seek(0)
+        return sio
+
     def _create_downloadwidget(self) -> pn.widgets.FileDownload:
+        self.io_file = self._get_stringio_obj()
         return pn.widgets.FileDownload(
             icon="file-download",
             button_type="success",
-            file=self.file,
+            file=self.io_file,
             filename=self.filename,
             icon_size="3em",
-            embed=True,
+            embed=False,
         )

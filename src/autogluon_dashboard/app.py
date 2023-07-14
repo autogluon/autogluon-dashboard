@@ -81,9 +81,10 @@ graph_dropdown = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).crea
 graph_dropdown2 = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 nrows = Widget("slider", name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
 nrows2 = Widget("slider", name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
-per_dataset_csv_widget = Widget("download", file=dataset_file, filename=PER_DATASET_DOWNLOAD_TITLE).create_widget()
+
+per_dataset_csv_widget = Widget("download", file=per_dataset_df, filename=PER_DATASET_DOWNLOAD_TITLE).create_widget()
 all_framework_csv_widget = Widget(
-    "download", file=aggregated_file, filename=AGG_FRAMEWORKS_DOWNLOAD_TITLE
+    "download", file=all_framework_df, filename=AGG_FRAMEWORKS_DOWNLOAD_TITLE
 ).create_widget()
 
 df_ag_only = utils.get_df_filter_by_framework(per_dataset_df, "AutoGluon")
