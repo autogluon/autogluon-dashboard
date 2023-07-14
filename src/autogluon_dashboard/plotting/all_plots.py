@@ -4,6 +4,8 @@ from typing import List, Optional, Union
 import hvplot.pandas
 import pandas as pd
 
+from autogluon_dashboard.scripts.constants.df_constants import FRAMEWORK
+
 
 class Plot:
     def __init__(
@@ -151,7 +153,7 @@ class Plot:
         plot = self.df.hvplot(
             x=self.plot_x,
             y=self.plot_y,
-            c="framework",
+            c=FRAMEWORK,
             kind="scatter",
             size=size,
             height=800,

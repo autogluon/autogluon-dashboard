@@ -2,6 +2,8 @@ from typing import List, Optional, Union
 
 import hvplot
 
+from autogluon_dashboard.scripts.constants.df_constants import FRAMEWORK
+
 from .all_plots import Plot
 
 
@@ -34,4 +36,4 @@ class FrameworkBoxPlot(Plot):
         self.plot = self._box_plot
 
     def _box_plot(self) -> hvplot.hvPlot.box:
-        return self.df.hvplot.box(self.plot_y, by="framework", rot=self.label_rot)
+        return self.df.hvplot.box(self.plot_y, by=FRAMEWORK, rot=self.label_rot)
