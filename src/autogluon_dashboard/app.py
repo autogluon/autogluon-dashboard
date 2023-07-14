@@ -55,12 +55,10 @@ from autogluon_dashboard.scripts.constants.plots_constants import (
     YAXIS_LABEL,
 )
 from autogluon_dashboard.scripts.constants.widgets_constants import GRAPH_TYPES, METRICS_TO_PLOT
-
-# Load Data
 from autogluon_dashboard.scripts.data import get_dataframes
 from autogluon_dashboard.scripts.widget import Widget
 
-# TODO: Remove hardcoded default csv path
+# Load Data
 dataset_file = os.environ.get("PER_DATASET_S3_PATH", PER_DATASET_DEFAULT_CSV_PATH)
 aggregated_file = os.environ.get("AGG_DATASET_S3_PATH", AGG_FRAMEWORK_DEFAULT_CSV_PATH)
 per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
