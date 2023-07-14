@@ -235,5 +235,6 @@ template = pn.template.FastListTemplate(
         pn.Row(PARETO_FRONT_PLOT, plots[next(plot_ctr)]),
     ],
     header_background=APP_HEADER_BACKGROUND,
+    logo="https://user-images.githubusercontent.com/16392542/77208906-224aa500-6aba-11ea-96bd-e81806074030.png",
 )
 template.servable()
