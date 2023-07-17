@@ -8,6 +8,7 @@ from .widget import Widget
 class ToggleWidget(Widget):
     """
     This class is used to define a Panel widget for creating a list of options to toggle between.
+    
     Attributes
     ----------
     name: str

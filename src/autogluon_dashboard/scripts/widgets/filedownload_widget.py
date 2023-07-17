@@ -6,6 +6,7 @@ from .widget import Widget
 class FileDownloadWidget(Widget):
     """
     This class is used to define a Panel widget for downloading files from the dashboard website.
+    
     Attributes
     ----------
     file: str

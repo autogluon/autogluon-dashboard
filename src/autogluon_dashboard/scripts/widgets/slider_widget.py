@@ -8,6 +8,7 @@ from .widget import Widget
 class SliderWidget(Widget):
     """
     This class is used to define a Panel widget for creating a slider with a start and end value.
+    
     Attributes
     ----------
     name: str

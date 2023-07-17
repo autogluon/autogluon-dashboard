@@ -8,6 +8,7 @@ from .widget import Widget
 class SelectWidget(Widget):
     """
     This class is used to define a Panel widget for selecting a value from different options.
+    
     Attributes
     ----------
     name: str

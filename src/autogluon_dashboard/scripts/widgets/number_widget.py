@@ -9,6 +9,7 @@ class NumberWidget(Widget):
     """
     This class is used to define a Panel widget for displaying a number on the dashboard website.
     For example, displaying a percentage.
+    
     Attributes
     ----------
     name: str
