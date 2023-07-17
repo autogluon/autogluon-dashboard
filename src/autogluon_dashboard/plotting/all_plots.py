@@ -7,7 +7,7 @@ import pandas as pd
 from autogluon_dashboard.scripts.constants.df_constants import FRAMEWORK
 
 
-class Plot:    
+class Plot:
     """
     This parent class is used to define all plots that are used on the dashboard website.
     It is inherited by subplot classes for individual plots
@@ -41,11 +41,11 @@ class Plot:
     -------
     _preprocess():
         preprocess data from dataframe before plotting. Inherited and redefined by appropriate subclasses.
-    
+
     _create_hvplot():
-        Create a plot of a given type leveraging the hvplot library, 
+        Create a plot of a given type leveraging the hvplot library,
         and using data from a pandas interactive dataframe.
-    
+
     _create_table():
         Create a table leveraging the hvplot library,
         and using data from a pandas interactive dataframe.
@@ -53,8 +53,9 @@ class Plot:
     _create_pareto_front():
 
 
-    
+
     """
+
     def __init__(
         self,
         plot_title: str,
@@ -174,7 +175,7 @@ class Plot:
     ) -> hvplot.hvPlot:
         """
         Create a Pareto frontier plot leveraging the hvplot library
-        
+
         Parameters
         ----------
         maxY: bool,
