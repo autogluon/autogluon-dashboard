@@ -6,7 +6,7 @@ from .widget import Widget
 class FileDownloadWidget(Widget):
     """
     This class is used to define a Panel widget for downloading files from the dashboard website.
-    
+
     Attributes
     ----------
     file: str
@@ -18,9 +18,9 @@ class FileDownloadWidget(Widget):
         creates a panel `FileDownload` widget.
 
     Usage
-    ------- 
+    -------
     >>> file_download_widget = FileDownloadWidget(file=pandas_df.to_csv()).create_widget()
-    
+
     This will return a Panel widget that can be directly added to the dashboard and rendered by Panel
     """
 
