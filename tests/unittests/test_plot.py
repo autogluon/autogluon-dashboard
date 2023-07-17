@@ -12,7 +12,7 @@ from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
 from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
 from autogluon_dashboard.plotting.metrics_per_datasets import MetricsPlotPerDataset
 from autogluon_dashboard.plotting.pareto_front import ParetoFront
-from autogluon_dashboard.plotting.rank_counts_ag import AGRankCounts
+from autogluon_dashboard.plotting.metric_counts_framework import FrameworkMetricCounts
 from autogluon_dashboard.plotting.top5_all_datasets import Top5AllDatasets
 from autogluon_dashboard.plotting.top5_per_dataset import Top5PerDataset
 
@@ -164,14 +164,14 @@ class TestFrameworkError(unittest.TestCase):
         plot_test.plot_test(plot_obj, mock_plot)
 
 
-class TestAGRankCounts(unittest.TestCase):
+class TestFrameworkMetricCounts(unittest.TestCase):
     def test_init(self):
-        plot = AGRankCounts("title", mock_df, "hvplot", col_name="rank", framework="A")
+        plot = FrameworkMetricCounts("title", mock_df, "hvplot", col_name="rank", framework="A")
         plot_test = TestPlot()
         plot_test.plot_init_test(plot)
 
     def test_preprocess(self):
-        plot = AGRankCounts("title", mock_df, "hvplot", col_name="rank", framework="A")
+        plot = FrameworkMetricCounts("title", mock_df, "hvplot", col_name="rank", framework="A")
         data = {"rank": [1, 1, 1]}
         expected_df = pd.DataFrame(data)
         plot_df = plot.df.reset_index().drop(columns=["index"])
@@ -180,7 +180,7 @@ class TestAGRankCounts(unittest.TestCase):
     @mock.patch("hvplot.plotting.core.hvPlotTabular.table")
     def test_plot(self, mock_plot):
         mock_plot.return_value = "plot"
-        plot_obj = AGRankCounts("title", mock_df, "table", col_name="rank", framework="A")
+        plot_obj = FrameworkMetricCounts("title", mock_df, "table", col_name="rank", framework="A")
         plot = plot_obj.plot()
         self.assertEqual(plot, mock_plot.return_value)
 

@@ -9,7 +9,7 @@ from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
 from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
 from autogluon_dashboard.plotting.metrics_per_datasets import MetricsPlotPerDataset
 from autogluon_dashboard.plotting.pareto_front import ParetoFront
-from autogluon_dashboard.plotting.rank_counts_ag import AGRankCounts
+from autogluon_dashboard.plotting.metric_counts_framework import FrameworkMetricCounts
 from autogluon_dashboard.plotting.top5_all_datasets import Top5AllDatasets
 from autogluon_dashboard.plotting.top5_per_dataset import Top5PerDataset
 from autogluon_dashboard.scripts import utils
@@ -141,7 +141,7 @@ top5frameworks_per_dataset = Top5PerDataset(
     dataset_dropdown,
     table_cols=[FRAMEWORK, RANK],
 )
-ag_rank_counts = AGRankCounts(
+ag_rank_counts = FrameworkMetricCounts(
     AG_RANK_COUNTS_TITLE,
     per_dataset_df,
     "hvplot",
