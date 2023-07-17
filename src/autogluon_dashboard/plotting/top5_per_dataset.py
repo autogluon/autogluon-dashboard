@@ -57,6 +57,7 @@ class Top5PerDataset(Plot):
 
     You can now call the `.plot()` method on this object to render the plot as a Panel object on the dashboard website.
     """
+
     def __init__(
         self,
         plot_title: str,
