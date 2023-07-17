@@ -38,8 +38,6 @@ class ErroredDatasets(Plot):
         label of y-axis
     label_rot: int,
         rotation value of labels on axes
-    table_cols: list,
-        list of columns to use for table plots
 
     Methods
     -------
@@ -54,7 +52,6 @@ class ErroredDatasets(Plot):
     You can now call the `.plot()` method on this object to render the plot as a Panel object on the dashboard website.
     
     """
-
     def __init__(
         self,
         plot_title: str,
@@ -67,7 +64,6 @@ class ErroredDatasets(Plot):
         xlabel: str = "",
         ylabel: str = "",
         label_rot: int = 90,
-        table_cols: list = [],
     ) -> None:
         dataset_to_plot = self._preprocess(df=df_process, framework=framework)
         super().__init__(
