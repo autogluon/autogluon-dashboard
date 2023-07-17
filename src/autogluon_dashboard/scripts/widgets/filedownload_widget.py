@@ -17,8 +17,9 @@ class FileDownloadWidget(Widget):
         creates a panel `FileDownload` widget.
 
     Usage
-    -------
-    Example: file_download_widget = FileDownloadWidget(file=pandas_df.to_csv()).create_widget()
+    ------- 
+    >>> file_download_widget = FileDownloadWidget(file=pandas_df.to_csv()).create_widget()
+    
     This will return a Panel widget that can be directly added to the dashboard and rendered by Panel
     """
 

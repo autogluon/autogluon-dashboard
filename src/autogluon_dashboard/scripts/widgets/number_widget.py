@@ -25,7 +25,8 @@ class NumberWidget(Widget):
 
     Usage
     -------
-    Example: number_widget = NumberWidget(name="number widget", value=10, format="{value}%").create_widget()
+    >>> number_widget = NumberWidget(name="number widget", value=10, format="{value}%").create_widget()
+    
     This will return a Panel widget that can be directly added to the dashboard and rendered by Panel
     """
 

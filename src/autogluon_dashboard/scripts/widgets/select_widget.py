@@ -22,7 +22,8 @@ class SelectWidget(Widget):
 
     Usage
     -------
-    Example: frameworks_widget = SelectWidget(name="select widget", options=frameworks_list).create_widget()
+    >>> frameworks_widget = SelectWidget(name="select widget", options=frameworks_list).create_widget()
+    
     This will return a Panel widget that can be directly added to the dashboard and rendered by Panel
     """
 

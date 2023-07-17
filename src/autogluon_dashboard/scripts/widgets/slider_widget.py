@@ -26,7 +26,8 @@ class SliderWidget(Widget):
 
     Usage
     -------
-    Example: slider_widget = SliderWidget(name="slider widget", value=5, start=0, end=10).create_widget()
+    >>> slider_widget = SliderWidget(name="slider widget", value=5, start=0, end=10).create_widget()
+    
     This will return a Panel widget that can be directly added to the dashboard and rendered by Panel
     """
 

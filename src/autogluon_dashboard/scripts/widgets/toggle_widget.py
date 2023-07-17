@@ -22,7 +22,8 @@ class ToggleWidget(Widget):
 
     Usage
     -------
-    Example: toggle_widget = ToggleWidget(name="Toggle widget", options=["A", "B", "C"]).create_widget()
+    >>> toggle_widget = ToggleWidget(name="Toggle widget", options=["A", "B", "C"]).create_widget()
+    
     This will return a Panel widget that can be directly added to the dashboard and rendered by Panel
     """
 
