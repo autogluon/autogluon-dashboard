@@ -19,10 +19,13 @@ class ErroredDatasets(Plot):
     ----------
     plot_title: str,
         title of the plot on the dashboard website
-    dataset_to_plot: hvplot.Interactive,
+    df_process: hvplot.Interactive,
         interactive pandas dataframe that is used to create the plot
+        this dataframe will first go through the preprocess method
     plot_type: str,
         type of hvplot. hvplot, table, pareto
+    framework: str,
+        framework to query for errored datasets
     x_axis: Optional[Union[str, List[str]]],
         values to plot on x-axis
     y_axis: Optional[Union[str, List[str]]],
@@ -37,14 +40,19 @@ class ErroredDatasets(Plot):
         rotation value of labels on axes
     table_cols: list,
         list of columns to use for table plots
-    table_width: Optional[int],
-        width of table
 
     Methods
     -------
     _preprocess():
         inherited from parent `Plot` class
         returns a table containing the datasets that errored out for a provided framework
+    
+    Usage
+    ------
+    >>> errored_datasets_plot = ErroredDatasets("AutoGluon Errored Datasets", benchmark_df, "table", framework)
+
+    You can now call the `.plot()` method on this object to render the plot as a Panel object on the dashboard website.
+    
     """
 
     def __init__(
