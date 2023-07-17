@@ -8,7 +8,7 @@ from .widget import Widget
 class SelectWidget(Widget):
     """
     This class is used to define a Panel widget for selecting a value from different options.
-    
+
     Attributes
     ----------
     name: str
@@ -24,7 +24,7 @@ class SelectWidget(Widget):
     Usage
     -------
     >>> frameworks_widget = SelectWidget(name="select widget", options=frameworks_list).create_widget()
-    
+
     This will return a Panel widget that can be directly added to the dashboard and rendered by Panel
     """
 

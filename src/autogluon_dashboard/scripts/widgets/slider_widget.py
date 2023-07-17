@@ -8,7 +8,7 @@ from .widget import Widget
 class SliderWidget(Widget):
     """
     This class is used to define a Panel widget for creating a slider with a start and end value.
-    
+
     Attributes
     ----------
     name: str
@@ -28,7 +28,7 @@ class SliderWidget(Widget):
     Usage
     -------
     >>> slider_widget = SliderWidget(name="slider widget", value=5, start=0, end=10).create_widget()
-    
+
     This will return a Panel widget that can be directly added to the dashboard and rendered by Panel
     """
 

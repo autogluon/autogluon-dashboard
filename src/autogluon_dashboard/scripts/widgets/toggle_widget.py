@@ -8,7 +8,7 @@ from .widget import Widget
 class ToggleWidget(Widget):
     """
     This class is used to define a Panel widget for creating a list of options to toggle between.
-    
+
     Attributes
     ----------
     name: str
@@ -24,7 +24,7 @@ class ToggleWidget(Widget):
     Usage
     -------
     >>> toggle_widget = ToggleWidget(name="Toggle widget", options=["A", "B", "C"]).create_widget()
-    
+
     This will return a Panel widget that can be directly added to the dashboard and rendered by Panel
     """
 

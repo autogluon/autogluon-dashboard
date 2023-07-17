@@ -9,7 +9,7 @@ class NumberWidget(Widget):
     """
     This class is used to define a Panel widget for displaying a number on the dashboard website.
     For example, displaying a percentage.
-    
+
     Attributes
     ----------
     name: str
@@ -27,7 +27,7 @@ class NumberWidget(Widget):
     Usage
     -------
     >>> number_widget = NumberWidget(name="number widget", value=10, format="{value}%").create_widget()
-    
+
     This will return a Panel widget that can be directly added to the dashboard and rendered by Panel
     """
 
