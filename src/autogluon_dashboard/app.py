@@ -56,7 +56,10 @@ from autogluon_dashboard.scripts.constants.plots_constants import (
 )
 from autogluon_dashboard.scripts.constants.widgets_constants import GRAPH_TYPES, METRICS_TO_PLOT
 from autogluon_dashboard.scripts.data import get_dataframes
-from autogluon_dashboard.scripts.widget import Widget
+from autogluon_dashboard.scripts.widgets.filedownload_widget import FileDownloadWidget
+from autogluon_dashboard.scripts.widgets.number_widget import NumberWidget
+from autogluon_dashboard.scripts.widgets.select_widget import SelectWidget
+from autogluon_dashboard.scripts.widgets.slider_widget import SliderWidget
 
 # Load Data
 dataset_file = os.environ.get("PER_DATASET_S3_PATH", PER_DATASET_DEFAULT_CSV_PATH)
@@ -76,27 +79,26 @@ per_dataset_idf = per_dataset_df.interactive()
 all_framework_idf = all_framework_df.interactive()
 
 # Define Panel widgets
-frameworks_widget = Widget("select", name=FRAMEWORK_LABEL, options=frameworks_list).create_widget()
-frameworks_widget2 = Widget("select", name=FRAMEWORK_LABEL, options=frameworks_list).create_widget()
-yaxis_widget = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
-yaxis_widget2 = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
-yaxis_widget3 = Widget("select", name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
-dataset_dropdown = Widget("select", name=DATASETS_LABEL, options=dataset_list).create_widget()
-dataset_dropdown2 = Widget("select", name=DATASETS_LABEL, options=dataset_list).create_widget()
-graph_dropdown = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
-graph_dropdown2 = Widget("select", name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
-nrows = Widget("slider", name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
-nrows2 = Widget("slider", name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
+frameworks_widget = SelectWidget(name=FRAMEWORK_LABEL, options=frameworks_list).create_widget()
+frameworks_widget2 = SelectWidget(name=FRAMEWORK_LABEL, options=frameworks_list).create_widget()
+yaxis_widget = SelectWidget(name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
+yaxis_widget2 = SelectWidget(name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
+yaxis_widget3 = SelectWidget(name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
+dataset_dropdown = SelectWidget(name=DATASETS_LABEL, options=dataset_list).create_widget()
+dataset_dropdown2 = SelectWidget(name=DATASETS_LABEL, options=dataset_list).create_widget()
+graph_dropdown = SelectWidget(name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
+graph_dropdown2 = SelectWidget(name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
+nrows = SliderWidget(name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
+nrows2 = SliderWidget(name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
 
 per_dataset_df.to_csv(PER_DATASET_DOWNLOAD_TITLE)
-per_dataset_csv_widget = Widget("download", file=PER_DATASET_DOWNLOAD_TITLE).create_widget()
+per_dataset_csv_widget = FileDownloadWidget(file=PER_DATASET_DOWNLOAD_TITLE).create_widget()
 all_framework_df.to_csv(AGG_FRAMEWORKS_DOWNLOAD_TITLE)
-all_framework_csv_widget = Widget("download", file=AGG_FRAMEWORKS_DOWNLOAD_TITLE).create_widget()
+all_framework_csv_widget = FileDownloadWidget(file=AGG_FRAMEWORKS_DOWNLOAD_TITLE).create_widget()
 
 df_ag_only = utils.get_df_filter_by_framework(per_dataset_df, "AutoGluon")
 prop_ag_best = utils.get_proportion_framework_rank1(df_ag_only, per_dataset_df, len(dataset_list))
-ag_pct_rank1 = Widget(
-    "number",
+ag_pct_rank1 = NumberWidget(
     name=AUTOGLUON_RANK1_TITLE,
     value=round(prop_ag_best * 100, 2),
     format="{value}%",
