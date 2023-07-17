@@ -18,7 +18,7 @@ class Top5AllDatasets(Plot):
     dataset_to_plot: hvplot.Interactive,
         interactive pandas dataframe that is used to create the plot
         this dataframe will first go through the preprocess method
-        this should be the dataframe of all framworks aggregated across all datasets
+        this should be the dataframe of all frameworks aggregated across all datasets
     plot_type: str,
         type of hvplot. hvplot, table, pareto
     col_name: str,
