@@ -6,10 +6,10 @@ from autogluon_dashboard.plotting.errored_datasets import ErroredDatasets
 from autogluon_dashboard.plotting.framework_boxplot import FrameworkBoxPlot
 from autogluon_dashboard.plotting.framework_error import FrameworkError
 from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
+from autogluon_dashboard.plotting.metric_counts_framework import FrameworkMetricCounts
 from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
 from autogluon_dashboard.plotting.metrics_per_datasets import MetricsPlotPerDataset
 from autogluon_dashboard.plotting.pareto_front import ParetoFront
-from autogluon_dashboard.plotting.metric_counts_framework import FrameworkMetricCounts
 from autogluon_dashboard.plotting.top5_all_datasets import Top5AllDatasets
 from autogluon_dashboard.plotting.top5_per_dataset import Top5PerDataset
 from autogluon_dashboard.scripts import utils

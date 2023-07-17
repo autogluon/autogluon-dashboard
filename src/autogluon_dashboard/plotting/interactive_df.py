@@ -30,17 +30,18 @@ class InteractiveDataframe(Plot):
     _preprocess():
         inherited from parent `Plot` class
         returns the dataframe filtered by provided framework and dataset
-    
+
     get_interactive_df():
         returns an interactive table of the pandas dataframe
 
     Usage
     ------
     >>> interactive_df = InteractiveDataframe(benchmark_df, "AutoGluon", width=3000, dataset="Dataset A")
-    
+
     You can now call the `.get_interactive_df()` method on this object to render the table as a Panel object on the dashboard website.
-    
+
     """
+
     def __init__(
         self, df_process: hvplot.Interactive, framework: str, width: int, dataset: Optional[str] = None
     ) -> None:

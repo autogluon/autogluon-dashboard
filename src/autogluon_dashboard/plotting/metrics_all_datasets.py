@@ -42,10 +42,11 @@ class MetricsPlotAll(Plot):
             graph_type=graph_dropdown,
             xlabel=FRAMEWORK_LABELS,
         )
-    
+
     You can now call the `.plot()` method on this object to render the table as a Panel object on the dashboard website.
-    
+
     """
+
     def __init__(
         self,
         plot_title: str,

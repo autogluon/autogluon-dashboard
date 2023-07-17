@@ -40,14 +40,15 @@ class FrameworkBoxPlot(Plot):
     _box_plot():
         `plot` function from parent `Plot` class is set to this
         returns a box plot for a given y-axis metric, plotted by framework
-    
+
     Usage
     ------
     >>> framework_box = FrameworkBoxPlot("box plot", per_dataset_df, y_axis=["loss"])
-    
+
     You can now call the `.plot()` method on this object to render the plot as a Panel object on the dashboard website.
-    
+
     """
+
     def __init__(
         self,
         plot_title: str,

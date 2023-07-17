@@ -44,14 +44,15 @@ class ErroredDatasets(Plot):
     _preprocess():
         inherited from parent `Plot` class
         returns a table containing the datasets that errored out for a provided framework
-    
+
     Usage
     ------
     >>> errored_datasets_plot = ErroredDatasets("AutoGluon Errored Datasets", benchmark_df, "table", framework)
 
     You can now call the `.plot()` method on this object to render the plot as a Panel object on the dashboard website.
-    
+
     """
+
     def __init__(
         self,
         plot_title: str,

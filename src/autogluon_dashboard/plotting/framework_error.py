@@ -32,7 +32,7 @@ class FrameworkError(Plot):
         label of y-axis
     label_rot: int,
         rotation value of labels on axes
-    
+
     Usage
     ------
     >>> framework_error = FrameworkError(
@@ -42,10 +42,11 @@ class FrameworkError(Plot):
             x_axis="framework",
             y_axis="error_count",
         )
-    
+
     You can now call the `.plot()` method on this object to render the plot as a Panel object on the dashboard website.
-    
+
     """
+
     def __init__(
         self,
         plot_title: str,

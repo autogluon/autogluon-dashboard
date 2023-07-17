@@ -43,6 +43,7 @@ class FrameworkMetricCounts(Plot):
         inherited from parent `Plot` class
         returns the counts of given column name filtered by provided framework
     """
+
     def __init__(
         self,
         plot_title: str,

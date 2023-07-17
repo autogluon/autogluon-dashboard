@@ -35,8 +35,9 @@ class ParetoFront(Plot):
     >>> pareto_front = ParetoFront("pareto plot", all_frameworks_df, "pareto", x_axis=TIME_INFER_S_RESCALED, y_axis=WINRATE)
 
     You can now call the `.plot()` method on this object to render the table as a Panel object on the dashboard website.
-    
+
     """
+
     def __init__(
         self,
         plot_title: str,
