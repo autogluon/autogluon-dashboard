@@ -7,7 +7,54 @@ import pandas as pd
 from autogluon_dashboard.scripts.constants.df_constants import FRAMEWORK
 
 
-class Plot:
+class Plot:    
+    """
+    This parent class is used to define all plots that are used on the dashboard website.
+    It is inherited by subplot classes for individual plots
+
+    Attributes
+    ----------
+    plot_title: str,
+        title of the plot on the dashboard website
+    dataset_to_plot: hvplot.Interactive,
+        interactive pandas dataframe that is used to create the plot
+    plot_type: str,
+        type of hvplot. hvplot, table, pareto
+    x_axis: Optional[Union[str, List[str]]],
+        values to plot on x-axis
+    y_axis: Optional[Union[str, List[str]]],
+        values to plot on y-axis
+    graph_type: str,
+        type of graph. examples: bar, line, hist
+    xlabel: str,
+        label of x-axis
+    ylabel: str,
+        label of y-axis
+    label_rot: int,
+        rotation value of labels on axes
+    table_cols: list,
+        list of columns to use for table plots
+    table_width: Optional[int],
+        width of table
+
+    Methods
+    -------
+    _preprocess():
+        preprocess data from dataframe before plotting. Inherited and redefined by appropriate subclasses.
+    
+    _create_hvplot():
+        Create a plot of a given type leveraging the hvplot library, 
+        and using data from a pandas interactive dataframe.
+    
+    _create_table():
+        Create a table leveraging the hvplot library,
+        and using data from a pandas interactive dataframe.
+
+    _create_pareto_front():
+
+
+    
+    """
     def __init__(
         self,
         plot_title: str,
@@ -125,7 +172,9 @@ class Plot:
     def _create_pareto_front(
         self, maxY: bool = True, width: Union[int, float] = 900, size: int = 400
     ) -> hvplot.hvPlot:
-        """Pareto frontier selection process
+        """
+        Create a Pareto frontier plot leveraging the hvplot library
+        
         Parameters
         ----------
         maxY: bool,
