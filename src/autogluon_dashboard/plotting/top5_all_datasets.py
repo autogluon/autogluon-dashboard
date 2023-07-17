@@ -8,6 +8,53 @@ from .all_plots import Plot
 
 
 class Top5AllDatasets(Plot):
+    """
+    This class is used to create a table the top 5 performers (frameworks) for a given metric aggregated across all datasets
+
+    Attributes
+    ----------
+    plot_title: str,
+        title of the plot on the dashboard website
+    dataset_to_plot: hvplot.Interactive,
+        interactive pandas dataframe that is used to create the plot
+        this dataframe will first go through the preprocess method
+        this should be the dataframe of all framworks aggregated across all datasets
+    plot_type: str,
+        type of hvplot. hvplot, table, pareto
+    framework: str,
+        framework to query for errored datasets
+    x_axis: Optional[Union[str, List[str]]],
+        values to plot on x-axis
+    y_axis: Optional[Union[str, List[str]]],
+        values to plot on y-axis
+    graph_type: str,
+        type of graph. examples: bar, line, hist
+    xlabel: str,
+        label of x-axis
+    ylabel: str,
+        label of y-axis
+    label_rot: int,
+        rotation value of labels on axes
+
+    Methods
+    -------
+    _preprocess():
+        inherited from parent `Plot` class
+        returns a Series of the top 5 performers (frameworks) for a given metric aggregated across all dataset
+
+    Usage
+    ------
+    >>> top5frameworks_all_datasets = Top5AllDatasets(
+            TOP5_PERFORMERS_TITLE + " (all datasets)",
+            all_frameworks_df,
+            "table",
+            "rank",
+            table_cols=["framework", "rank"],
+        )
+
+    You can now call the `.plot()` method on this object to render the plot as a Panel object on the dashboard website.
+    """
+
     def __init__(
         self,
         plot_title: str,
