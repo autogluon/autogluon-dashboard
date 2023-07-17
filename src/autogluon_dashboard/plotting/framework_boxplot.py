@@ -59,7 +59,6 @@ class FrameworkBoxPlot(Plot):
         xlabel: str = "",
         ylabel: str = "",
         label_rot: int = 90,
-        table_cols: list = [],
     ) -> None:
         super(FrameworkBoxPlot, self).__init__(
             plot_title,
@@ -71,7 +70,6 @@ class FrameworkBoxPlot(Plot):
             xlabel,
             ylabel,
             label_rot,
-            table_cols,
         )
         self.plot = self._box_plot
 
