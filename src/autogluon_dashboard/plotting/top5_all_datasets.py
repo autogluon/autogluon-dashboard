@@ -21,8 +21,8 @@ class Top5AllDatasets(Plot):
         this should be the dataframe of all framworks aggregated across all datasets
     plot_type: str,
         type of hvplot. hvplot, table, pareto
-    framework: str,
-        framework to query for errored datasets
+    col_name: str,
+        column to get metrics for and top 5 performers
     x_axis: Optional[Union[str, List[str]]],
         values to plot on x-axis
     y_axis: Optional[Union[str, List[str]]],
