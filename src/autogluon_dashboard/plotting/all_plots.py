@@ -51,9 +51,7 @@ class Plot:
         and using data from a pandas interactive dataframe.
 
     _create_pareto_front():
-
-
-
+        Create a Pareto frontier plot leveraging the hvplot library
     """
 
     def __init__(
@@ -175,6 +173,8 @@ class Plot:
     ) -> hvplot.hvPlot:
         """
         Create a Pareto frontier plot leveraging the hvplot library
+        The plot is inference time v/s winrate for each framework
+        The pareto frontier line is created by looking at smallest inference time and best winrate
 
         Parameters
         ----------
