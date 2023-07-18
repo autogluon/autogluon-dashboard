@@ -203,4 +203,4 @@ if __name__ == "__main__":
     create_merged_file("src/autogluon_dashboard/plotting", out_file_path)
     create_merged_file("src/autogluon_dashboard/widgets/widget.py", out_file_path)
     create_merged_file("src/autogluon_dashboard/widgets", out_file_path)
-    create_merged_file("src/autogluon_dashboard", out_file_path)
+    create_merged_file("src/autogluon_dashboard/app.py", out_file_path)
