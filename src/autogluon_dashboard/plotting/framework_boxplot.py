@@ -4,7 +4,7 @@ import hvplot
 
 from autogluon_dashboard.constants.df_constants import FRAMEWORK
 
-from .all_plots import Plot
+from .plot import Plot
 
 
 class FrameworkBoxPlot(Plot):

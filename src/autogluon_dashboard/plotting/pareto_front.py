@@ -3,7 +3,7 @@ from typing import List, Optional, Union
 import hvplot
 import pandas
 
-from .all_plots import Plot
+from .plot import Plot
 
 
 class ParetoFront(Plot):

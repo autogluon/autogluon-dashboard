@@ -4,7 +4,7 @@ import hvplot
 import pandas
 
 from ..utils.dataset_utils import get_df_filter_by_dataset, get_df_filter_by_framework
-from .all_plots import Plot
+from .plot import Plot
 
 
 class InteractiveDataframe(Plot):

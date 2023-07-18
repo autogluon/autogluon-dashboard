@@ -4,7 +4,7 @@ import hvplot
 import pandas
 
 from ..utils.dataset_utils import get_df_filter_by_dataset, get_top5_performers
-from .all_plots import Plot
+from .plot import Plot
 
 
 class Top5PerDataset(Plot):

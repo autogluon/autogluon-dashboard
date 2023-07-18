@@ -132,42 +132,49 @@ def extract_code(filepath: str) -> str:
     return "".join(code_lines)
 
 
-def create_merged_file(directory: str, output_file: str) -> None:
+def create_merged_file(path: str, output_file: str) -> None:
     """Creates a merged file (or appends to if already created)
-    with all code from the specified directory.
+    with all code from the specified path. The path can be a file or a directory
 
     Parameters
     ----------
-    directory: str,
-        Directory to crawl through for aggregation.
+    path: str,
+        path to crawl through for aggregation. This can be a path to a file or a directory
     output_file: str,
         Name of output file to store aggregated code in.
     """
     code = []
     imports = set()
 
-    # Iterate over all files in the directory
-    for filename in sorted(os.listdir(directory)):
-        filepath = os.path.join(directory, filename)
+    if os.path.isfile(path):
+        # Extract code from other files
+        code.append(extract_code(path))
+        # Extract imports from other files
+        get_imports(path, imports)
 
-        # Skip directories and the output file itself
-        if os.path.isdir(filepath) or filename == output_file:
-            continue
+    elif os.path.isdir(path):
+        # Iterate over all files in the directory
+        for filename in sorted(os.listdir(path)):
+            filepath = os.path.join(path, filename)
 
-        # Check if the file is the central file (app.py)
-        if filename == "app.py":
-            get_imports(filepath, imports)
-            code.append(extract_code(filepath))
+            # Skip sub-directories and the output file itself
+            if os.path.isdir(filepath) or filename == output_file:
+                continue
 
-        # dashboard is the wrapper file so we don't need it in the aggregated file
-        elif filename == "dashboard.py" or filename == "aggregate_file.py":
-            continue
+            # Check if the file is the central file of a directory
+            elif filename == "plot.py" or filename == "widget.py":
+                continue
 
-        else:
-            # Extract code from other files
-            code.append(extract_code(filepath))
-            # Extract imports from other files
-            get_imports(filepath, imports)
+            # dashboard is the wrapper file so we don't need it in the aggregated file
+            # we also don't need the code in the aggregate_file script
+            elif filename == "dashboard.py" or filename == "aggregate_file.py":
+                continue
+
+            else:
+                # Extract code from other files
+                code.append(extract_code(filepath))
+                # Extract imports from other files
+                get_imports(filepath, imports)
 
     # sort imports so order remains deterministic
     imports = sorted(imports)
@@ -192,6 +199,8 @@ if __name__ == "__main__":
 
     create_merged_file("src/autogluon_dashboard/constants", out_file_path)
     create_merged_file("src/autogluon_dashboard/utils", out_file_path)
+    create_merged_file("src/autogluon_dashboard/plotting/plot.py", out_file_path)
     create_merged_file("src/autogluon_dashboard/plotting", out_file_path)
+    create_merged_file("src/autogluon_dashboard/widgets/widget.py", out_file_path)
     create_merged_file("src/autogluon_dashboard/widgets", out_file_path)
     create_merged_file("src/autogluon_dashboard", out_file_path)

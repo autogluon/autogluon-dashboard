@@ -1,6 +1,6 @@
 import panel as pn
 
-from autogluon_dashboard.widgets.all_widgets import Widget
+from autogluon_dashboard.widgets.widget import Widget
 
 
 class FileDownloadWidget(Widget):
