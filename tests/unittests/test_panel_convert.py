@@ -15,7 +15,7 @@ class TestPanelConvert(unittest.TestCase):
         agg_file_location = os.path.join(os.path.join(test_file_dir, f"{autogluon_dir}"), "out.py")
         web_files_dir = os.path.join(f"{autogluon_dir}", "web_files/")
         per_dataset_test_loc = os.path.join(test_file_dir, "resources/all_data.csv")
-        aggregated_test_loc = os.path.join(test_file_dir, "resources/autogluon.csv")
+        aggregated_test_loc = os.path.join(test_file_dir, "resources/aggregated.csv")
         os.environ["PER_DATASET_S3_PATH"] = per_dataset_test_loc
         os.environ["AGG_DATASET_S3_PATH"] = aggregated_test_loc
         process = subprocess.run(
@@ -36,7 +36,7 @@ class TestPanelConvert(unittest.TestCase):
         )
 
         self.assertEqual(process.returncode, 0, f"panel convert did not run successfully. {process.stderr}")
-        self.assertIsNone(process.stderr)
+        self.assertEqual(process.stderr.find(b"Error"), -1, f"panel convert did not run successfully. {process.stderr}")
 
 
 if __name__ == "__main__":
