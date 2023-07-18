@@ -32,11 +32,13 @@ class TestPanelConvert(unittest.TestCase):
                 "holoviews",
                 "hvplot",
             ],
-            capture_output=True
+            capture_output=True,
         )
 
         self.assertEqual(process.returncode, 0, f"panel convert did not run successfully. {process.stderr}")
-        self.assertEqual(process.stderr.find(b"Error"), -1, f"panel convert did not run successfully. {process.stderr}")
+        self.assertEqual(
+            process.stderr.find(b"Error"), -1, f"panel convert did not run successfully. {process.stderr}"
+        )
 
 
 if __name__ == "__main__":
