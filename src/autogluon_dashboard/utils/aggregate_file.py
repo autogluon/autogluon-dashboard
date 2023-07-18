@@ -172,7 +172,7 @@ def create_merged_file(directory: str, output_file: str) -> None:
     # sort imports so order remains deterministic
     imports = sorted(imports)
     # filter out relative imports from sub-folders (plotting, utils, and utils) as well as imports from Plot class
-    imports = list(filter(lambda imp: not re.search(r"plotting|utils|utils|Plot", imp), imports))
+    imports = list(filter(lambda imp: not re.search(r"plotting|utils|utils|Plot|autogluon_dashboard", imp), imports))
     # Combine all code and imports
     merged_code = "\n".join(imports) + "\n\n" + "\n".join(code)
 
