@@ -4,7 +4,7 @@ from typing import List, Optional, Union
 import hvplot.pandas
 import pandas as pd
 
-from autogluon_dashboard.scripts.constants.df_constants import FRAMEWORK
+from autogluon_dashboard.constants.df_constants import FRAMEWORK
 
 
 class Plot:

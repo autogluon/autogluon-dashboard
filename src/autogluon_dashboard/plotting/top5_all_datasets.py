@@ -3,7 +3,7 @@ from typing import List, Optional, Union
 import hvplot
 import pandas
 
-from ..scripts.utils import get_top5_performers
+from ..utils.dataset_utils import get_top5_performers
 from .all_plots import Plot
 
 

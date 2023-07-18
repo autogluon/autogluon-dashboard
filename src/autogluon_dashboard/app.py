@@ -2,18 +2,7 @@ import os
 
 import panel as pn
 
-from autogluon_dashboard.plotting.errored_datasets import ErroredDatasets
-from autogluon_dashboard.plotting.framework_boxplot import FrameworkBoxPlot
-from autogluon_dashboard.plotting.framework_error import FrameworkError
-from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
-from autogluon_dashboard.plotting.metric_counts_framework import FrameworkMetricCounts
-from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
-from autogluon_dashboard.plotting.metrics_per_datasets import MetricsPlotPerDataset
-from autogluon_dashboard.plotting.pareto_front import ParetoFront
-from autogluon_dashboard.plotting.top5_all_datasets import Top5AllDatasets
-from autogluon_dashboard.plotting.top5_per_dataset import Top5PerDataset
-from autogluon_dashboard.scripts import utils
-from autogluon_dashboard.scripts.constants.app_layout_constants import (
+from autogluon_dashboard.constants.app_layout_constants import (
     ALL_DATA_COMP,
     ALL_FRAMEWORKS_IDF,
     APP_HEADER_BACKGROUND,
@@ -26,11 +15,8 @@ from autogluon_dashboard.scripts.constants.app_layout_constants import (
     PER_DATA_COMP,
     PER_DATASET_IDF,
 )
-from autogluon_dashboard.scripts.constants.aws_s3_constants import (
-    AGG_FRAMEWORK_DEFAULT_CSV_PATH,
-    PER_DATASET_DEFAULT_CSV_PATH,
-)
-from autogluon_dashboard.scripts.constants.df_constants import (
+from autogluon_dashboard.constants.aws_s3_constants import AGG_FRAMEWORK_DEFAULT_CSV_PATH, PER_DATASET_DEFAULT_CSV_PATH
+from autogluon_dashboard.constants.df_constants import (
     DATASET,
     ERROR_COUNT,
     FRAMEWORK,
@@ -38,7 +24,7 @@ from autogluon_dashboard.scripts.constants.df_constants import (
     TIME_INFER_S_RESCALED,
     WINRATE,
 )
-from autogluon_dashboard.scripts.constants.plots_constants import (
+from autogluon_dashboard.constants.plots_constants import (
     AG_RANK_COUNTS_TITLE,
     AGG_FRAMEWORKS_DOWNLOAD_TITLE,
     AUTOGLUON_RANK1_TITLE,
@@ -54,12 +40,28 @@ from autogluon_dashboard.scripts.constants.plots_constants import (
     TOP5_PERFORMERS_TITLE,
     YAXIS_LABEL,
 )
-from autogluon_dashboard.scripts.constants.widgets_constants import GRAPH_TYPES, METRICS_TO_PLOT
-from autogluon_dashboard.scripts.data import get_dataframes
-from autogluon_dashboard.scripts.widgets.filedownload_widget import FileDownloadWidget
-from autogluon_dashboard.scripts.widgets.number_widget import NumberWidget
-from autogluon_dashboard.scripts.widgets.select_widget import SelectWidget
-from autogluon_dashboard.scripts.widgets.slider_widget import SliderWidget
+from autogluon_dashboard.constants.widgets_constants import GRAPH_TYPES, METRICS_TO_PLOT
+from autogluon_dashboard.plotting.errored_datasets import ErroredDatasets
+from autogluon_dashboard.plotting.framework_boxplot import FrameworkBoxPlot
+from autogluon_dashboard.plotting.framework_error import FrameworkError
+from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
+from autogluon_dashboard.plotting.metric_counts_framework import FrameworkMetricCounts
+from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
+from autogluon_dashboard.plotting.metrics_per_datasets import MetricsPlotPerDataset
+from autogluon_dashboard.plotting.pareto_front import ParetoFront
+from autogluon_dashboard.plotting.top5_all_datasets import Top5AllDatasets
+from autogluon_dashboard.plotting.top5_per_dataset import Top5PerDataset
+from autogluon_dashboard.utils.dataset_utils import (
+    clean_up_framework_names,
+    get_df_filter_by_framework,
+    get_proportion_framework_rank1,
+    get_sorted_names_from_col,
+)
+from autogluon_dashboard.utils.get_data import get_dataframes
+from autogluon_dashboard.widgets.filedownload_widget import FileDownloadWidget
+from autogluon_dashboard.widgets.number_widget import NumberWidget
+from autogluon_dashboard.widgets.select_widget import SelectWidget
+from autogluon_dashboard.widgets.slider_widget import SliderWidget
 
 # Load Data
 dataset_file = os.environ.get("PER_DATASET_S3_PATH", PER_DATASET_DEFAULT_CSV_PATH)
@@ -67,11 +69,11 @@ aggregated_file = os.environ.get("AGG_DATASET_S3_PATH", AGG_FRAMEWORK_DEFAULT_CS
 per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
 
 # clean up framework names
-dataset_list = utils.get_sorted_names_from_col(per_dataset_df, DATASET)
-new_framework_names = utils.clean_up_framework_names(per_dataset_df)
+dataset_list = get_sorted_names_from_col(per_dataset_df, DATASET)
+new_framework_names = clean_up_framework_names(per_dataset_df)
 per_dataset_df[FRAMEWORK] = new_framework_names
 all_framework_df[FRAMEWORK] = new_framework_names
-frameworks_list = utils.get_sorted_names_from_col(all_framework_df, FRAMEWORK)
+frameworks_list = get_sorted_names_from_col(all_framework_df, FRAMEWORK)
 frameworks_list.insert(0, "All Frameworks")
 
 # Make DataFrame Interactive
@@ -96,8 +98,8 @@ per_dataset_csv_widget = FileDownloadWidget(file=PER_DATASET_DOWNLOAD_TITLE).cre
 all_framework_df.to_csv(AGG_FRAMEWORKS_DOWNLOAD_TITLE)
 all_framework_csv_widget = FileDownloadWidget(file=AGG_FRAMEWORKS_DOWNLOAD_TITLE).create_widget()
 
-df_ag_only = utils.get_df_filter_by_framework(per_dataset_df, "AutoGluon")
-prop_ag_best = utils.get_proportion_framework_rank1(df_ag_only, per_dataset_df, len(dataset_list))
+df_ag_only = get_df_filter_by_framework(per_dataset_df, "AutoGluon")
+prop_ag_best = get_proportion_framework_rank1(df_ag_only, per_dataset_df, len(dataset_list))
 ag_pct_rank1 = NumberWidget(
     name=AUTOGLUON_RANK1_TITLE,
     value=round(prop_ag_best * 100, 2),

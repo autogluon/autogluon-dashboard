@@ -2,7 +2,7 @@ from typing import List, Optional, Union
 
 import hvplot
 
-from autogluon_dashboard.scripts.constants.df_constants import FRAMEWORK
+from autogluon_dashboard.constants.df_constants import FRAMEWORK
 
 from .all_plots import Plot
 

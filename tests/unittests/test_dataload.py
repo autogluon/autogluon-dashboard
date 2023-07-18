@@ -2,7 +2,7 @@ import unittest
 from unittest import mock
 from unittest.mock import call
 
-from autogluon_dashboard.scripts.data import get_dataframes
+from autogluon_dashboard.utils.get_data import get_dataframes
 
 PER_DATASET_TEST_CSV_PATH = "random_csv.csv"
 ALL_DATASETS_COMBINED_TEST_CSV_PATH = "random_csv2.csv"

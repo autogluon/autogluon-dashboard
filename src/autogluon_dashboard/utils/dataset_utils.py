@@ -1,6 +1,6 @@
 import pandas
 
-from autogluon_dashboard.scripts.constants.df_constants import FRAMEWORK, RANK
+from autogluon_dashboard.constants.df_constants import FRAMEWORK, RANK
 
 
 def get_sorted_names_from_col(df: pandas.DataFrame, col_name: str) -> list:
