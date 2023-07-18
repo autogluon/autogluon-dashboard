@@ -2,7 +2,7 @@ from typing import List, Union
 
 import panel as pn
 
-from .widget import Widget
+from autogluon_dashboard.widgets.widget import Widget
 
 
 class NumberWidget(Widget):

@@ -6,7 +6,7 @@ import subprocess
 import boto3
 import botocore
 
-from autogluon_dashboard.scripts.constants.aws_s3_constants import CSV_FILES_DIR, DEFAULT_BUCKET_NAME, S3_REGION
+from autogluon_dashboard.constants.aws_s3_constants import CSV_FILES_DIR, DEFAULT_BUCKET_NAME, S3_REGION
 
 
 def upload_to_s3(s3_client: botocore.client, file_name: str, object_name: str, bucket_name: str, args: dict = None):
@@ -125,7 +125,7 @@ def run_dashboard():
     )
 
     wrapper_dir = os.path.dirname(__file__)
-    agg_script_location = os.path.join(wrapper_dir, "aggregate_file.py")
+    agg_script_location = os.path.join(wrapper_dir, "utils/aggregate_file.py")
     agg_file_location = os.path.join(wrapper_dir, "out.py")
     # Aggregate all code into output file
     subprocess.run(["python3", f"{agg_script_location}"])

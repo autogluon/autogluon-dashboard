@@ -3,11 +3,11 @@ from unittest import mock
 
 import pandas as pd
 
-from autogluon_dashboard.scripts.widgets.filedownload_widget import FileDownloadWidget
-from autogluon_dashboard.scripts.widgets.number_widget import NumberWidget
-from autogluon_dashboard.scripts.widgets.select_widget import SelectWidget
-from autogluon_dashboard.scripts.widgets.slider_widget import SliderWidget
-from autogluon_dashboard.scripts.widgets.toggle_widget import ToggleWidget
+from autogluon_dashboard.widgets.filedownload_widget import FileDownloadWidget
+from autogluon_dashboard.widgets.number_widget import NumberWidget
+from autogluon_dashboard.widgets.select_widget import SelectWidget
+from autogluon_dashboard.widgets.slider_widget import SliderWidget
+from autogluon_dashboard.widgets.toggle_widget import ToggleWidget
 
 
 class TestWidget(unittest.TestCase):

@@ -3,7 +3,7 @@ from typing import Optional
 import hvplot
 import pandas
 
-from ..scripts.utils import get_df_filter_by_dataset, get_df_filter_by_framework
+from ..utils.dataset_utils import get_df_filter_by_dataset, get_df_filter_by_framework
 from .all_plots import Plot
 
 

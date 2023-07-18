@@ -156,8 +156,8 @@ def create_merged_file(directory: str, output_file: str) -> None:
 
         # Check if the file is the central file (app.py)
         if filename == "app.py":
-            code.append(extract_code(filepath))
             get_imports(filepath, imports)
+            code.append(extract_code(filepath))
 
         # dashboard is the wrapper file so we don't need it in the aggregated file
         elif filename == "dashboard.py" or filename == "aggregate_file.py":
@@ -171,8 +171,8 @@ def create_merged_file(directory: str, output_file: str) -> None:
 
     # sort imports so order remains deterministic
     imports = sorted(imports)
-    # filter out relative imports from sub-folders (plotting, scripts, and utils) as well as imports from Plot class
-    imports = list(filter(lambda imp: not re.search(r"plotting|scripts|utils|Plot", imp), imports))
+    # filter out relative imports from sub-folders (plotting, utils, and utils) as well as imports from Plot class
+    imports = list(filter(lambda imp: not re.search(r"plotting|utils|utils|Plot", imp), imports))
     # Combine all code and imports
     merged_code = "\n".join(imports) + "\n\n" + "\n".join(code)
 
@@ -183,14 +183,15 @@ def create_merged_file(directory: str, output_file: str) -> None:
 
 if __name__ == "__main__":
     # Specify the directory containing the files and the desired output file name
-    out_file_path = "out.py"
+    out_file_path = "../out.py"
     dirname = os.path.dirname(__file__)
     out_file_path = os.path.join(dirname, out_file_path)
 
     with open(out_file_path, "w") as fp:
         pass
 
-    create_merged_file("src/autogluon_dashboard/scripts/constants", out_file_path)
-    create_merged_file("src/autogluon_dashboard/scripts", out_file_path)
+    create_merged_file("src/autogluon_dashboard/constants", out_file_path)
+    create_merged_file("src/autogluon_dashboard/utils", out_file_path)
     create_merged_file("src/autogluon_dashboard/plotting", out_file_path)
+    create_merged_file("src/autogluon_dashboard/widgets", out_file_path)
     create_merged_file("src/autogluon_dashboard", out_file_path)

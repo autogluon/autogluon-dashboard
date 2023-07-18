@@ -2,7 +2,7 @@ import filecmp
 import os
 import unittest
 
-from autogluon_dashboard.aggregate_file import create_merged_file, extract_code, get_imports
+from autogluon_dashboard.utils.aggregate_file import create_merged_file, extract_code, get_imports
 
 TEST_FILE_PATH = "tests/unittests/mock_python_files/mock_file.py"
 TEST_DIR_PATH = "tests/unittests/mock_python_files"

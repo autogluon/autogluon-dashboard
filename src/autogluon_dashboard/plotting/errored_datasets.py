@@ -3,9 +3,9 @@ from typing import List, Optional, Union
 import hvplot
 import pandas
 
-from autogluon_dashboard.scripts.constants.df_constants import DATASET
+from autogluon_dashboard.constants.df_constants import DATASET
 
-from ..scripts.utils import get_df_filter_by_framework, get_sorted_names_from_col
+from ..utils.dataset_utils import get_df_filter_by_framework, get_sorted_names_from_col
 from .all_plots import Plot
 
 ERRORED_DATASETS = "Errored Datasets"
