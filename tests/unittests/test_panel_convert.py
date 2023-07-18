@@ -15,7 +15,7 @@ class TestPanelConvert(unittest.TestCase):
         agg_file_location = os.path.join(os.path.join(test_file_dir, f"{autogluon_dir}"), "out.py")
         web_files_dir = os.path.join(f"{autogluon_dir}", "web_files/")
         per_dataset_test_loc = os.path.join(test_file_dir, "resources/all_data.csv")
-        aggregated_test_loc = os.path.join(test_file_dir, "resources/uere.csv")
+        aggregated_test_loc = os.path.join(test_file_dir, "resources/aggregated.csv")
         os.environ["PER_DATASET_S3_PATH"] = per_dataset_test_loc
         os.environ["AGG_DATASET_S3_PATH"] = aggregated_test_loc
         process = subprocess.run(
