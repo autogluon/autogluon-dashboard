@@ -64,3 +64,6 @@ agdash = "autogluon_dashboard.dashboard:run_dashboard"
 
 [project.optional-dependencies]
 tests = ["pytest", "pytest-mock", "tox"]
+
+[tool.pytest.ini_options]
+addopts = "--cov --cov-report json"

@@ -7,4 +7,5 @@ function setup_lint_env {
 function install_dashboard_test {
     python3 -m pip install --upgrade -e "./[tests]"
     python3 -m pip install pytest
+    python3 -m pip install coverage-threshold
 }
