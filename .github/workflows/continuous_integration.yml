@@ -35,3 +35,26 @@ jobs:
       - name: Run Dashboard Tests
         run: |
           chmod +x ./.github/workflow_scripts/test_dashboard.sh && ./.github/workflow_scripts/test_dashboard.sh
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: ./coverage.json
+
+  run_coverage_check:
+    needs: run_tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Download code coverage results
+        uses: actions/download-artifact@v3
+        with:
+          name: code-coverage-report
+      - name: Run Unittests Coverage Check
+        run: |
+          chmod +x ./.github/workflow_scripts/test_coverage.sh && ./.github/workflow_scripts/test_coverage.sh

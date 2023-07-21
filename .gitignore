@@ -4,6 +4,8 @@ pyodide
 out.py
 web_files
 *.csv
+coverage.json
+results.xml
 
 #Venv
 .venv*/
