@@ -11,5 +11,6 @@ function install_dashboard_test {
 }
 
 function install_coverage_test {
+    python3 -m pip install pytest
     python3 -m pip install coverage-threshold
 }
