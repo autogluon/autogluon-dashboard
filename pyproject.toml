@@ -66,4 +66,4 @@ agdash = "autogluon_dashboard.dashboard:run_dashboard"
 tests = ["pytest", "pytest-mock", "tox"]
 
 [tool.pytest.ini_options]
-addopts = "--cov --cov-report term-missing"
+addopts = "--cov --cov-report term-missing --cov-report json"
