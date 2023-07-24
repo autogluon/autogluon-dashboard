@@ -66,4 +66,6 @@ agdash = "autogluon_dashboard.dashboard:run_dashboard"
 tests = ["pytest", "pytest-mock", "tox"]
 
 [tool.pytest.ini_options]
-addopts = "--cov --cov-report term-missing"
+addopts = "--cov src/autogluon_dashboard --cov-report term-missing --ignore=tests/unittests/coverage/"
+[tool.coverage.run]
+omit = ["app.py", "dashboard.py"]
