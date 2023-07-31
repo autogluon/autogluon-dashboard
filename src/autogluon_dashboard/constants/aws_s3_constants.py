@@ -7,3 +7,4 @@ PER_DATASET_DEFAULT_CSV_PATH = (
 AGG_FRAMEWORK_DEFAULT_CSV_PATH = (
     "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/dev_data/autogluon.csv"  # TODO: Change default csv path
 )
+HARDWARE_METRICS_DEFAULT_CSV_PATH = "https://dashboard-test-yash.s3.us-west-2.amazonaws.com/dev_data/hardware_metrics.csv"  # TODO: Change default csv path
