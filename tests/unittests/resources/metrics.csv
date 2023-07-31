@@ -1,0 +1,24 @@
+framework,dataset,mode,fold,metric,statistic_type,statistic_value,unit
+AutoGluon v0.1,credit-g,Training,1,CPUUtilization,Average,30.04708333333333,Percent
+AutoGluon v0.1,credit-g,Prediction,1,CPUUtilization,Average,20.04708333333333,Percent
+AutoGluon v0.1,vehicle,Training,1,CPUUtilization,Average,22.83888888888889,Percent
+AutoGluon v0.1,vehicle,Prediction,1,CPUUtilization,Average,19.83888888888889,Percent
+AutoGluon v0.1,credit-g,Training,1,DiskWriteOps,Average,31474.2,Count
+AutoGluon v0.1,credit-g,Prediction,1,DiskWriteOps,Average,20255.2,Count
+AutoGluon v0.1,vehicle,Training,1,DiskWriteOps,Average,32767.5,Count
+AutoGluon v0.1,vehicle,Prediction,1,DiskWriteOps,Average,32658.666666668,Count
+AutoGluon v0.1,credit-g,Training,1,DiskReadOps,Average,2457.8,Count
+AutoGluon v0.1,credit-g,Prediction,1,DiskReadOps,Average,3080.25,Count
+AutoGluon v0.1,vehicle,Training,1,DiskReadOps,Average,1458.0,Count
+AutoGluon v0.1,vehicle,Prediction,1,DiskReadOps,Average,27.333333333332,Count
+AutoGluon v0.1,vehicle,Training,0,CPUUtilization,Average,43.108333333334,Percent
+AutoGluon v0.1,vehicle,Prediction,0,CPUUtilization,Average,23.108333333334,Percent
+AutoGluon v0.1,credit-g,Training,0,CPUUtilization,Average,22.0775,Percent
+AutoGluon v0.1,credit-g,Prediction,0,CPUUtilization,Average,14.0775,Percent
+AutoGluon v0.1,vehicle,Training,0,DiskWriteOps,Average,23.108333333333334,Count
+AutoGluon v0.1,vehicle,Prediction,0,DiskWriteOps,Average,20.104,Count
+AutoGluon v0.1,credit-g,Training,0,DiskWriteOps,Average,22.0775,Count
+AutoGluon v0.1,credit-g,Prediction,0,DiskWriteOps,Average,29.0455,Count
+AutoGluon v0.1,vehicle,Training,0,DiskReadOps,Average,23.108333333333334,Count
+AutoGluon v0.1,vehicle,Prediction,0,DiskReadOps,Average,15.108333333333334,Count
+AutoGluon v0.1,credit-g,Training,0,DiskReadOps,Average,22.0775,Count
