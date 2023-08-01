@@ -6,7 +6,7 @@ import subprocess
 import boto3
 import botocore
 
-from autogluon_dashboard.constants.aws_s3_constants import CSV_FILES_DIR, DEFAULT_BUCKET_NAME, S3_REGION
+from autogluon_dashboard.constants.aws_s3_constants import CSV_FILES_DIR, DEFAULT_BUCKET_NAME, S3_REGION, CLOUDFRONT_DOMAIN
 
 
 def upload_to_s3(s3_client: botocore.client, file_name: str, object_name: str, bucket_name: str, args: dict = None):
@@ -122,9 +122,9 @@ def run_dashboard():
     per_dataset_s3_loc = CSV_FILES_DIR + "all_data.csv"
     aggregated_s3_loc = CSV_FILES_DIR + "autogluon.csv"
     hware_s3_loc = CSV_FILES_DIR + "hardware_metrics.csv"
-    os.environ["PER_DATASET_S3_PATH"] = s3_url + per_dataset_s3_loc
-    os.environ["AGG_DATASET_S3_PATH"] = s3_url + aggregated_s3_loc
-    os.environ["HWARE_METRICS_S3_PATH"] = s3_url + hware_s3_loc
+    os.environ["PER_DATASET_S3_PATH"] = CLOUDFRONT_DOMAIN + f"/{prefix}" + per_dataset_s3_loc
+    os.environ["AGG_DATASET_S3_PATH"] = CLOUDFRONT_DOMAIN + f"/{prefix}" + aggregated_s3_loc
+    os.environ["HWARE_METRICS_S3_PATH"] = CLOUDFRONT_DOMAIN + f"/{prefix}" + hware_s3_loc
 
     s3_client = boto3.client("s3")
 
@@ -172,7 +172,7 @@ def run_dashboard():
 
     # TODO: Change website link to https using CloudFront
     logger.info(
-        "The dashboard website is: " + f"http://{bucket_name}.s3-website-{region}.amazonaws.com/{prefix}out.html"
+        "The dashboard website is: " + f"{CLOUDFRONT_DOMAIN}/{prefix}out.html"
     )
 
 
