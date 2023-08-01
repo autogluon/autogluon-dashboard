@@ -6,7 +6,12 @@ import subprocess
 import boto3
 import botocore
 
-from autogluon_dashboard.constants.aws_s3_constants import CSV_FILES_DIR, DEFAULT_BUCKET_NAME, S3_REGION, CLOUDFRONT_DOMAIN
+from autogluon_dashboard.constants.aws_s3_constants import (
+    CLOUDFRONT_DOMAIN,
+    CSV_FILES_DIR,
+    DEFAULT_BUCKET_NAME,
+    S3_REGION,
+)
 
 
 def upload_to_s3(s3_client: botocore.client, file_name: str, object_name: str, bucket_name: str, args: dict = None):
@@ -171,9 +176,7 @@ def run_dashboard():
     logger.info("WebAssembly files have been successfully uploaded to bucket - %s", bucket_name)
 
     # TODO: Change website link to https using CloudFront
-    logger.info(
-        "The dashboard website is: " + f"{CLOUDFRONT_DOMAIN}/{prefix}out.html"
-    )
+    logger.info("The dashboard website is: " + f"{CLOUDFRONT_DOMAIN}/{prefix}out.html")
 
 
 if __name__ == "__main__":
