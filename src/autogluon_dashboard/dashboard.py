@@ -32,14 +32,22 @@ def get_args() -> argparse.Namespace:
         "--per_dataset_csv",
         type=str,
         required=True,
-        help="Location of csv file in local filesystem to upload to S3 bucket. Example: sub_folder/file_name.csv",
+        help="Location of csv file of all datasets+frameworks data in local filesystem to upload to S3 bucket. Example: sub_folder/file_name.csv",
         metavar="",
     )
     parser.add_argument(
         "--agg_dataset_csv",
         type=str,
         required=True,
-        help="Location of csv file in local filesystem to upload to S3 bucket. Example: sub_folder/file_name.csv",
+        help="Location of csv file of aggregated data across all frameworks in local filesystem to upload to S3 bucket. Example: sub_folder/file_name.csv",
+        metavar="",
+    )
+
+    parser.add_argument(
+        "--hware_metrics_csv",
+        type=str,
+        required=True,
+        help="Location of csv file of hardware metrics in local filesystem to upload to S3 bucket. Example: sub_folder/file_name.csv",
         metavar="",
     )
 
@@ -75,6 +83,7 @@ def run_dashboard():
     # Set variables to corrensponding command line args
     per_dataset_csv_path = args.per_dataset_csv
     aggregated_csv_path = args.agg_dataset_csv
+    hware_metrics_csv_path = args.hware_metrics_csv
     bucket_name = args.s3_bucket
     region = args.s3_region
     prefix = args.s3_prefix
@@ -112,16 +121,19 @@ def run_dashboard():
     CSV_FILES_DIR = CSV_FILES_DIR if CSV_FILES_DIR.endswith("/") else CSV_FILES_DIR + "/"
     per_dataset_s3_loc = CSV_FILES_DIR + "all_data.csv"
     aggregated_s3_loc = CSV_FILES_DIR + "autogluon.csv"
+    hware_s3_loc = CSV_FILES_DIR + "hardware_metrics.csv"
     os.environ["PER_DATASET_S3_PATH"] = s3_url + per_dataset_s3_loc
     os.environ["AGG_DATASET_S3_PATH"] = s3_url + aggregated_s3_loc
+    os.environ["HWARE_METRICS_S3_PATH"] = s3_url + hware_s3_loc
 
     s3_client = boto3.client("s3")
 
     # Upload CSV files to S3
     upload_to_s3(s3_client, per_dataset_csv_path, prefix + per_dataset_s3_loc, bucket_name)
     upload_to_s3(s3_client, aggregated_csv_path, prefix + aggregated_s3_loc, bucket_name)
+    upload_to_s3(s3_client, hware_metrics_csv_path, prefix + hware_s3_loc, bucket_name)
     logger.info(
-        f"Evaluation CSV files have been successfully uploaded to bucket - {bucket_name}, at location {s3_url + per_dataset_s3_loc} and {s3_url + aggregated_s3_loc}.",
+        f"Evaluation CSV files have been successfully uploaded to bucket - {bucket_name}, at locations: {s3_url + per_dataset_s3_loc}, {s3_url + aggregated_s3_loc}, and {s3_url + hware_s3_loc}.",
     )
 
     wrapper_dir = os.path.dirname(__file__)

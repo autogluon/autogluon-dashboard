@@ -9,13 +9,18 @@ from autogluon_dashboard.constants.app_layout_constants import (
     APP_TITLE,
     DOWNLOAD_FILES_TITLE,
     FRAMEWORK_BOX_PLOT,
+    HARDWARE_METRICS_PLOT,
     NO_ERROR_CNTS,
     NO_RANK_COMP,
     PARETO_FRONT_PLOT,
     PER_DATA_COMP,
     PER_DATASET_IDF,
 )
-from autogluon_dashboard.constants.aws_s3_constants import AGG_FRAMEWORK_DEFAULT_CSV_PATH, PER_DATASET_DEFAULT_CSV_PATH
+from autogluon_dashboard.constants.aws_s3_constants import (
+    AGG_FRAMEWORK_DEFAULT_CSV_PATH,
+    HARDWARE_METRICS_DEFAULT_CSV_PATH,
+    PER_DATASET_DEFAULT_CSV_PATH,
+)
 from autogluon_dashboard.constants.df_constants import (
     DATASET,
     ERROR_COUNT,
@@ -34,6 +39,9 @@ from autogluon_dashboard.constants.plots_constants import (
     FRAMEWORK_BOX_PLOT_TITLE,
     FRAMEWORK_LABEL,
     GRAPH_TYPE_STR,
+    HARDWARE_METRICS_DOWNLOAD_TITLE,
+    HARDWARE_METRICS_PLOT_TITLE,
+    HW_METRICS_WIDGET_NAME,
     METRICS_PLOT_TITLE,
     PER_DATASET_DOWNLOAD_TITLE,
     RANK_LABEL,
@@ -44,6 +52,7 @@ from autogluon_dashboard.constants.widgets_constants import GRAPH_TYPES, METRICS
 from autogluon_dashboard.plotting.errored_datasets import ErroredDatasets
 from autogluon_dashboard.plotting.framework_boxplot import FrameworkBoxPlot
 from autogluon_dashboard.plotting.framework_error import FrameworkError
+from autogluon_dashboard.plotting.hardware_metrics import HardwareMetrics
 from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
 from autogluon_dashboard.plotting.metric_counts_framework import FrameworkMetricCounts
 from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
@@ -66,19 +75,23 @@ from autogluon_dashboard.widgets.slider_widget import SliderWidget
 # Load Data
 dataset_file = os.environ.get("PER_DATASET_S3_PATH", PER_DATASET_DEFAULT_CSV_PATH)
 aggregated_file = os.environ.get("AGG_DATASET_S3_PATH", AGG_FRAMEWORK_DEFAULT_CSV_PATH)
-per_dataset_df, all_framework_df = get_dataframes(dataset_file, aggregated_file)
+hardware_metrics_file = os.environ.get("HWARE_METRICS_S3_PATH", HARDWARE_METRICS_DEFAULT_CSV_PATH)
+dataset_paths = [dataset_file, aggregated_file, hardware_metrics_file]
+per_dataset_df, all_framework_df, hware_metrics_df = get_dataframes(dataset_paths)
 
 # clean up framework names
 dataset_list = get_sorted_names_from_col(per_dataset_df, DATASET)
 new_framework_names = clean_up_framework_names(per_dataset_df)
 per_dataset_df[FRAMEWORK] = new_framework_names
 all_framework_df[FRAMEWORK] = new_framework_names
+
 frameworks_list = get_sorted_names_from_col(all_framework_df, FRAMEWORK)
 frameworks_list.insert(0, "All Frameworks")
 
 # Make DataFrame Interactive
 per_dataset_idf = per_dataset_df.interactive()
 all_framework_idf = all_framework_df.interactive()
+hware_metrics_idf = hware_metrics_df.interactive()
 
 # Define Panel widgets
 frameworks_widget = SelectWidget(name=FRAMEWORK_LABEL, options=frameworks_list).create_widget()
@@ -92,11 +105,16 @@ graph_dropdown = SelectWidget(name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_w
 graph_dropdown2 = SelectWidget(name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 nrows = SliderWidget(name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
 nrows2 = SliderWidget(name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
+yaxis_widget4 = SelectWidget(
+    name=HW_METRICS_WIDGET_NAME, options=list(hware_metrics_df.metric.unique())
+).create_widget()
 
 per_dataset_df.to_csv(PER_DATASET_DOWNLOAD_TITLE)
 per_dataset_csv_widget = FileDownloadWidget(file=PER_DATASET_DOWNLOAD_TITLE).create_widget()
 all_framework_df.to_csv(AGG_FRAMEWORKS_DOWNLOAD_TITLE)
 all_framework_csv_widget = FileDownloadWidget(file=AGG_FRAMEWORKS_DOWNLOAD_TITLE).create_widget()
+hware_metrics_df.to_csv(HARDWARE_METRICS_DOWNLOAD_TITLE)
+hware_metrics_csv_widget = FileDownloadWidget(file=HARDWARE_METRICS_DOWNLOAD_TITLE).create_widget()
 
 df_ag_only = get_df_filter_by_framework(per_dataset_df, "AutoGluon")
 prop_ag_best = get_proportion_framework_rank1(df_ag_only, per_dataset_df, len(dataset_list))
@@ -173,6 +191,27 @@ framework_box = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, y_axi
 
 pareto_front = ParetoFront(PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis=TIME_INFER_S_RESCALED, y_axis=WINRATE)
 
+hware_metrics_by_mode_plot = HardwareMetrics(
+    HARDWARE_METRICS_PLOT_TITLE,
+    hware_metrics_idf,
+    "hvplot",
+    col_name=yaxis_widget4,
+    x_axis="framework",
+    y_axis="statistic_value",
+    ylabel=yaxis_widget4,
+    by="mode",
+)
+
+hware_metrics_by_dataset_plot = HardwareMetrics(
+    HARDWARE_METRICS_PLOT_TITLE,
+    hware_metrics_idf,
+    "hvplot",
+    col_name=yaxis_widget4,
+    x_axis="framework",
+    y_axis="statistic_value",
+    ylabel=yaxis_widget4,
+    by="dataset",
+)
 
 framework_error_list = all_framework_df.sort_values(by=ERROR_COUNT, ascending=False)
 error_tables = [
@@ -190,6 +229,8 @@ plots = [
     framework_error,
     framework_box,
     pareto_front,
+    hware_metrics_by_mode_plot,
+    hware_metrics_by_dataset_plot,
 ]
 plots = [plot.plot() for plot in plots]
 plot_ctr = iter(range(len(plots)))
@@ -199,7 +240,12 @@ template = pn.template.FastListTemplate(
     main=[
         pn.Card(agg_framework_dfi, title=ALL_FRAMEWORKS_IDF[1:], collapsed=True),
         pn.Card(per_dataset_dfi, title=PER_DATASET_IDF[1:], collapsed=True),
-        pn.Row(pn.Column(DOWNLOAD_FILES_TITLE, pn.Row(per_dataset_csv_widget, all_framework_csv_widget))),
+        pn.Row(
+            pn.Column(
+                DOWNLOAD_FILES_TITLE,
+                pn.Row(per_dataset_csv_widget, all_framework_csv_widget, hware_metrics_csv_widget),
+            )
+        ),
         pn.Row(
             ALL_DATA_COMP,
             pn.WidgetBox(yaxis_widget, graph_dropdown),
@@ -237,6 +283,7 @@ template = pn.template.FastListTemplate(
         ),
         pn.Row(FRAMEWORK_BOX_PLOT, yaxis_widget3, plots[next(plot_ctr)]),
         pn.Row(PARETO_FRONT_PLOT, plots[next(plot_ctr)]),
+        pn.Row(HARDWARE_METRICS_PLOT, pn.Column(plots[next(plot_ctr)], plots[next(plot_ctr)].panel())),
     ],
     header_background=APP_HEADER_BACKGROUND,
     logo="https://user-images.githubusercontent.com/16392542/77208906-224aa500-6aba-11ea-96bd-e81806074030.png",

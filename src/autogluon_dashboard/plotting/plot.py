@@ -67,6 +67,7 @@ class Plot:
         label_rot: int = 90,
         table_cols: list = [],
         table_width: Optional[int] = None,
+        by: str = "",
     ) -> None:
         self.plot_title = plot_title
         self.df = dataset_to_plot
@@ -75,6 +76,7 @@ class Plot:
         self.graph_type = graph_type
         self.plot_x_label = xlabel
         self.plot_y_label = ylabel
+        self.by = by
         self.label_rot = label_rot
         self.table_cols = table_cols
         self.table_width = table_width
@@ -135,6 +137,16 @@ class Plot:
                 ylabel=self.plot_y_label,
                 grid=True,
             )
+        if self.by:
+            return self.df.hvplot(
+                title=self.plot_title,
+                x=self.plot_x,
+                y=self.plot_y,
+                kind=self.graph_type,
+                ylabel=self.plot_y_label,
+                by=self.by,
+                grid=True,
+            )
         return self.df.hvplot(
             title=self.plot_title,
             x=self.plot_x,
@@ -145,6 +157,7 @@ class Plot:
             height=height,
             rot=self.label_rot,
             xlabel=self.plot_x_label,
+            ylabel=self.plot_y_label,
             grid=True,
         )
 

@@ -1,7 +1,9 @@
 import pandas as pd
 
 
-def get_dataframes(csv1_path: str, csv2_path: str) -> tuple[pd.DataFrame, pd.DataFrame]:
-    per_dataset_df = pd.read_csv(csv1_path)
-    all_framework_df = pd.read_csv(csv2_path)
-    return per_dataset_df, all_framework_df
+def get_dataframes(paths: list) -> list[pd.DataFrame]:
+    dfs = []
+    for dataset_path in paths:
+        df = pd.read_csv(dataset_path) if dataset_path else None
+        dfs.append(df)
+    return dfs

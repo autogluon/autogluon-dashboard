@@ -8,6 +8,7 @@ import autogluon_dashboard
 from autogluon_dashboard.plotting.errored_datasets import ErroredDatasets
 from autogluon_dashboard.plotting.framework_boxplot import FrameworkBoxPlot
 from autogluon_dashboard.plotting.framework_error import FrameworkError
+from autogluon_dashboard.plotting.hardware_metrics import HardwareMetrics
 from autogluon_dashboard.plotting.interactive_df import InteractiveDataframe
 from autogluon_dashboard.plotting.metric_counts_framework import FrameworkMetricCounts
 from autogluon_dashboard.plotting.metrics_all_datasets import MetricsPlotAll
@@ -304,6 +305,32 @@ class TestErroredDatasets(unittest.TestCase):
     def test_plot(self, mock_plot):
         mock_plot.return_value = "plot"
         plot_obj = ErroredDatasets("title", mock_df, "table", framework="A")
+        plot = plot_obj.plot()
+        self.assertEqual(plot, mock_plot.return_value)
+
+
+class TestHardwareMetrics(unittest.TestCase):
+    def __init__(self, methodName: str = "runTest") -> None:
+        super().__init__(methodName)
+        d = {
+            "rank": [5, 2, 3, 1, 3, 4, 5, 1],
+            "dataset": ["D", "C", "A", "B", "A", "D", "C", "A"],
+            "framework": ["A", "B", "C", "D", "A", "C", "B", "A"],
+            "statistic_value": [5, 2, 3, 1, 3, 4, 5, 1],
+            "metric": ["CPU", "GPU", "CPU", "CPU", "GPU", "CPU", "GPU", "GPU"],
+            "mode": ["T", "P", "T", "P", "P", "P", "T", "T"],
+        }
+        self.mock_df = pd.DataFrame(data=d)
+
+    def test_init(self):
+        plot = HardwareMetrics("title", self.mock_df, "hvplot", col_name="CPU", by="mode")
+        plot_test = TestPlot()
+        plot_test.plot_init_test(plot)
+
+    @mock.patch("pandas.DataFrame.hvplot")
+    def test_plot(self, mock_plot):
+        mock_plot.return_value = "plot"
+        plot_obj = HardwareMetrics("title", self.mock_df, "hvplot", col_name="CPU", y_axis="CPU", by="mode")
         plot = plot_obj.plot()
         self.assertEqual(plot, mock_plot.return_value)
 

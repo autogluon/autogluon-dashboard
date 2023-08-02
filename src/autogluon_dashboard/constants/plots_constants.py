@@ -12,3 +12,6 @@ FRAMEWORK_BOX_PLOT_TITLE = "Boxplots of Framework Performance for Different Metr
 PER_DATASET_DOWNLOAD_TITLE = "All Datasets Evaluation Dataset.csv"
 AGG_FRAMEWORKS_DOWNLOAD_TITLE = "All Frameworks Aggregated Evaluation Dataset.csv"
 DF_WIDGET_NAME = "Top Ranked Frameworks"
+HW_METRICS_WIDGET_NAME = "Hardware Metric"
+HARDWARE_METRICS_DOWNLOAD_TITLE = "Hardware Metrics.csv"
+HARDWARE_METRICS_PLOT_TITLE = "Hardware Metrics"

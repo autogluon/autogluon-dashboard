@@ -16,6 +16,8 @@ class TestDashboardWrapper(unittest.TestCase):
                 "dev_data/all_data.csv",
                 "--agg_dataset_csv",
                 "dev_data/autogluon.csv",
+                "--hware_metrics_csv",
+                "dev_data/hardware_metrics.csv",
                 "--s3_bucket",
                 "test-bucket",
                 "--s3_prefix",
@@ -27,6 +29,7 @@ class TestDashboardWrapper(unittest.TestCase):
             args = get_args()
             self.assertEqual(args.per_dataset_csv, "dev_data/all_data.csv")
             self.assertEqual(args.agg_dataset_csv, "dev_data/autogluon.csv")
+            self.assertEqual(args.hware_metrics_csv, "dev_data/hardware_metrics.csv")
             self.assertEqual(args.s3_bucket, "test-bucket")
             self.assertEqual(args.s3_prefix, "sub_folder")
             self.assertEqual(args.s3_region, "us-east-2")
