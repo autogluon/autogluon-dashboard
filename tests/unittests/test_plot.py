@@ -319,7 +319,6 @@ class TestHardwareMetrics(unittest.TestCase):
             "statistic_value": [5, 2, 3, 1, 3, 4, 5, 1],
             "metric": ["CPU", "GPU", "CPU", "CPU", "GPU", "CPU", "GPU", "GPU"],
             "mode": ["T", "P", "T", "P", "P", "P", "T", "T"],
-
         }
         self.mock_df = pd.DataFrame(data=d)
 
