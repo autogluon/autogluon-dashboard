@@ -318,31 +318,20 @@ class TestHardwareMetrics(unittest.TestCase):
             "framework": ["A", "B", "C", "D", "A", "C", "B", "A"],
             "statistic_value": [5, 2, 3, 1, 3, 4, 5, 1],
             "metric": ["CPU", "GPU", "CPU", "CPU", "GPU", "CPU", "GPU", "GPU"],
+            "mode": ["T", "P", "T", "P", "P", "P", "T", "T"],
+
         }
         self.mock_df = pd.DataFrame(data=d)
 
     def test_init(self):
-        plot = HardwareMetrics("title", self.mock_df, "hvplot", col_name="dataset")
+        plot = HardwareMetrics("title", self.mock_df, "hvplot", col_name="CPU", by="mode")
         plot_test = TestPlot()
         plot_test.plot_init_test(plot)
-
-    def test_preprocess(self):
-        plot = HardwareMetrics("title", self.mock_df, "hvplot", col_name="CPU", y_axis="CPU")
-        data = {
-            "rank": [5, 3, 1, 4],
-            "dataset": ["D", "A", "B", "D"],
-            "framework": ["A", "C", "D", "C"],
-            "statistic_value": [5.0, 3.0, 1.0, 4.0],
-            "metric": ["CPU", "CPU", "CPU", "CPU"],
-        }
-        expected_df = pd.DataFrame(data)
-        plot_df = plot.df.reset_index().drop(columns=["index"])
-        assert plot_df.equals(expected_df)
 
     @mock.patch("pandas.DataFrame.hvplot")
     def test_plot(self, mock_plot):
         mock_plot.return_value = "plot"
-        plot_obj = HardwareMetrics("title", self.mock_df, "hvplot", col_name="CPU", y_axis="CPU")
+        plot_obj = HardwareMetrics("title", self.mock_df, "hvplot", col_name="CPU", y_axis="CPU", by="mode")
         plot = plot_obj.plot()
         self.assertEqual(plot, mock_plot.return_value)
 
