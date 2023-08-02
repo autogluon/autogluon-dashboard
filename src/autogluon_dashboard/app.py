@@ -41,6 +41,7 @@ from autogluon_dashboard.constants.plots_constants import (
     GRAPH_TYPE_STR,
     HARDWARE_METRICS_DOWNLOAD_TITLE,
     HARDWARE_METRICS_PLOT_TITLE,
+    HW_METRICS_WIDGET_NAME,
     METRICS_PLOT_TITLE,
     PER_DATASET_DOWNLOAD_TITLE,
     RANK_LABEL,
@@ -104,8 +105,9 @@ graph_dropdown = SelectWidget(name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_w
 graph_dropdown2 = SelectWidget(name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 nrows = SliderWidget(name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
 nrows2 = SliderWidget(name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
-by_widget = SelectWidget(options=["mode", "dataset"]).create_widget()
-yaxis_widget4 = SelectWidget(options=list(hware_metrics_df.metric.unique())).create_widget()
+yaxis_widget4 = SelectWidget(
+    name=HW_METRICS_WIDGET_NAME, options=list(hware_metrics_df.metric.unique())
+).create_widget()
 
 per_dataset_df.to_csv(PER_DATASET_DOWNLOAD_TITLE)
 per_dataset_csv_widget = FileDownloadWidget(file=PER_DATASET_DOWNLOAD_TITLE).create_widget()
@@ -189,7 +191,7 @@ framework_box = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, y_axi
 
 pareto_front = ParetoFront(PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis=TIME_INFER_S_RESCALED, y_axis=WINRATE)
 
-hware_metrics_plot = HardwareMetrics(
+hware_metrics_by_mode_plot = HardwareMetrics(
     HARDWARE_METRICS_PLOT_TITLE,
     hware_metrics_idf,
     "hvplot",
@@ -197,7 +199,18 @@ hware_metrics_plot = HardwareMetrics(
     x_axis="framework",
     y_axis="statistic_value",
     ylabel=yaxis_widget4,
-    by=by_widget,
+    by="mode",
+)
+
+hware_metrics_by_dataset_plot = HardwareMetrics(
+    HARDWARE_METRICS_PLOT_TITLE,
+    hware_metrics_idf,
+    "hvplot",
+    col_name=yaxis_widget4,
+    x_axis="framework",
+    y_axis="statistic_value",
+    ylabel=yaxis_widget4,
+    by="dataset",
 )
 
 framework_error_list = all_framework_df.sort_values(by=ERROR_COUNT, ascending=False)
@@ -216,7 +229,8 @@ plots = [
     framework_error,
     framework_box,
     pareto_front,
-    hware_metrics_plot,
+    hware_metrics_by_mode_plot,
+    hware_metrics_by_dataset_plot,
 ]
 plots = [plot.plot() for plot in plots]
 plot_ctr = iter(range(len(plots)))
@@ -269,7 +283,7 @@ template = pn.template.FastListTemplate(
         ),
         pn.Row(FRAMEWORK_BOX_PLOT, yaxis_widget3, plots[next(plot_ctr)]),
         pn.Row(PARETO_FRONT_PLOT, plots[next(plot_ctr)]),
-        pn.Row(HARDWARE_METRICS_PLOT, plots[next(plot_ctr)]),
+        pn.Row(HARDWARE_METRICS_PLOT, pn.Column(plots[next(plot_ctr)], plots[next(plot_ctr)].panel())),
     ],
     header_background=APP_HEADER_BACKGROUND,
     logo="https://user-images.githubusercontent.com/16392542/77208906-224aa500-6aba-11ea-96bd-e81806074030.png",
