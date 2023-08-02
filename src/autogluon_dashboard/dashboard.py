@@ -38,7 +38,6 @@ def get_args() -> argparse.Namespace:
         type=str,
         required=True,
         help="Location of csv file of all datasets+frameworks data in local filesystem to upload to S3 bucket. Example: sub_folder/file_name.csv",
-        help="Location of csv file of all datasets+frameworks data in local filesystem to upload to S3 bucket. Example: sub_folder/file_name.csv",
         metavar="",
     )
     parser.add_argument(
