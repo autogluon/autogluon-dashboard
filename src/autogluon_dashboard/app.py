@@ -232,7 +232,20 @@ plots = [
     hware_metrics_by_mode_plot,
     hware_metrics_by_dataset_plot,
 ]
-plots = [plot.plot() for plot in plots]
+
+for i in range(len(plots)):
+    plot = plots[i]
+    print(plot)
+    plot = plot.plot()
+    print(plot)
+
+    try:
+        plot = plot
+    except Exception:
+        continue
+    plots[i] = plot
+
+#plots = [plot.plot().opts(active_tools=[]) for plot in plots]
 plot_ctr = iter(range(len(plots)))
 error_table_ctr = iter(range(len(error_tables)))
 template = pn.template.FastListTemplate(
@@ -249,19 +262,19 @@ template = pn.template.FastListTemplate(
         pn.Row(
             ALL_DATA_COMP,
             pn.WidgetBox(yaxis_widget, graph_dropdown),
-            plots[next(plot_ctr)].panel(),
+            plots[next(plot_ctr)].opts(active_tools=[]).panel(),
             plots[next(plot_ctr)],
         ),
         pn.Row(
             PER_DATA_COMP,
             pn.WidgetBox(yaxis_widget2, dataset_dropdown, graph_dropdown2),
-            plots[next(plot_ctr)].panel(),
+            plots[next(plot_ctr)].opts(active_tools=[]).panel(),
             plots[next(plot_ctr)],
         ),
-        pn.Row(NO_RANK_COMP, ag_pct_rank1, plots[next(plot_ctr)]),
+        pn.Row(NO_RANK_COMP, ag_pct_rank1, plots[next(plot_ctr)].opts(active_tools=[])),
         pn.Row(
             NO_ERROR_CNTS,
-            plots[next(plot_ctr)],
+            plots[next(plot_ctr)].opts(active_tools=[]),
             pn.Column(
                 pn.Row(
                     error_tables[next(error_table_ctr)],
@@ -282,8 +295,8 @@ template = pn.template.FastListTemplate(
             ),
         ),
         pn.Row(FRAMEWORK_BOX_PLOT, yaxis_widget3, plots[next(plot_ctr)]),
-        pn.Row(PARETO_FRONT_PLOT, plots[next(plot_ctr)]),
-        pn.Row(HARDWARE_METRICS_PLOT, pn.Column(plots[next(plot_ctr)], plots[next(plot_ctr)].panel())),
+        pn.Row(PARETO_FRONT_PLOT, plots[next(plot_ctr)].opts(active_tools=[])),
+        pn.Row(HARDWARE_METRICS_PLOT, pn.Column(plots[next(plot_ctr)].opts(active_tools=[]), plots[next(plot_ctr)].opts(active_tools=[]).panel())),
     ],
     header_background=APP_HEADER_BACKGROUND,
     logo="https://user-images.githubusercontent.com/16392542/77208906-224aa500-6aba-11ea-96bd-e81806074030.png",

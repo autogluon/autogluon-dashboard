@@ -136,7 +136,7 @@ class Plot:
                 xlabel=self.plot_x_label,
                 ylabel=self.plot_y_label,
                 grid=True,
-            ).opts(active_tools=[])
+            )
         if self.by:
             return self.df.hvplot(
                 title=self.plot_title,
@@ -146,7 +146,7 @@ class Plot:
                 ylabel=self.plot_y_label,
                 by=self.by,
                 grid=True,
-            ).opts(active_tools=[])
+            )
         return self.df.hvplot(
             title=self.plot_title,
             x=self.plot_x,
@@ -159,7 +159,7 @@ class Plot:
             xlabel=self.plot_x_label,
             ylabel=self.plot_y_label,
             grid=True,
-        ).opts(active_tools=[])
+        )
 
     def _create_table(self, width: Union[int, float] = 800) -> hvplot.hvPlot.table:
         """
@@ -222,5 +222,5 @@ class Plot:
             height=800,
             width=width,
             grid=True,
-        ).opts(active_tools=[]) * pareto_df.hvplot.step(x="col1", y="col2").opts(active_tools=[])
+        ) * pareto_df.hvplot.step(x="col1", y="col2")
         return plot
