@@ -72,7 +72,3 @@ class FrameworkBoxPlot(Plot):
             ylabel,
             label_rot,
         )
-        self.plot = self._box_plot
-
-    def _box_plot(self) -> hvplot.hvPlot.box:
-        return self.df.hvplot.box(self.plot_y, by=FRAMEWORK, rot=self.label_rot, height=500, width=1000)

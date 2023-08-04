@@ -187,7 +187,7 @@ per_dataset_dfi = interactive_df_dataset.get_interactive_df().head(nrows)
 interactive_df_framework = InteractiveDataframe(all_framework_df, frameworks_widget, width=3000)
 agg_framework_dfi = interactive_df_framework.get_interactive_df().head(nrows2)
 
-framework_box = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, y_axis=yaxis_widget3)
+framework_box = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, "box", y_axis=yaxis_widget3)
 
 pareto_front = ParetoFront(PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis=TIME_INFER_S_RESCALED, y_axis=WINRATE)
 
