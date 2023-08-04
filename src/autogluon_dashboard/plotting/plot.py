@@ -87,6 +87,8 @@ class Plot:
             self.plot = self._create_hvplot
         elif plot_type == "pareto":
             self.plot = self._create_pareto_front
+        elif plot_type == "box":
+            self.plot = self._create_box_plot
 
     @abstractmethod
     def _preprocess(self, **kwargs):
@@ -224,3 +226,16 @@ class Plot:
             grid=True,
         ) * pareto_df.hvplot.step(x="col1", y="col2")
         return plot
+
+    def _create_box_plot(self, height=500, width=1000) -> hvplot.hvPlot.box:
+        """
+        Create a box plot of frameworks v/s metrics as seen in the AMLB paper.
+
+        Parameters
+        ----------
+        height: int, default = 500,
+            height of the plot
+        width: int, default = 1000,
+            width of the plot
+        """
+        return self.df.hvplot.box(self.plot_y, by=FRAMEWORK, rot=self.label_rot, height=height, width=width)
