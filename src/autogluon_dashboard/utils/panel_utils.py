@@ -6,13 +6,10 @@ failure_text_widget = pn.widgets.StaticText(name="Unable to render", value="Erro
 def create_panel_object(panel_objs, title, widgets=[], plots=[], extra_plots=[]):
     try:
         for i in range(len(plots)):
-            try:
-                plots[i] = plots[i].plot()
-            except Exception as e:
-                raise e
+            plots[i] = plots[i].plot()
             try:
                 plots[i] = plots[i].opts(active_tools=[]).panel()
-            except Exception as e:
+            except Exception:
                 continue
         panel_obj = pn.Row(title, *widgets, *plots, *extra_plots)
         panel_objs.append(panel_obj)
@@ -33,11 +30,8 @@ def get_error_tables_grid(error_tables, num_rows=3, num_cols=3) -> pn.Column:
         row = []
         try:
             for _ in range(num_cols):
-                try:
-                    error_framework_table = error_tables[next(error_table_ctr)]
-                    row.append(error_framework_table)
-                except Exception as e:
-                    raise e
+                error_framework_table = error_tables[next(error_table_ctr)]
+                row.append(error_framework_table)
         except Exception:
             break
         rows.append(pn.Row(*row))
