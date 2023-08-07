@@ -26,6 +26,11 @@ class TestDataLoad(unittest.TestCase):
         mock_data.assert_has_calls(calls, any_order=False)
         assert mock_data.call_count == 3
 
+    def test_data_load(self):
+        paths = "./resources/aggregated.csv", None, "./resources/aggregated.csv"
+        _, df2, _ = get_dataframes(paths)
+        self.assertEqual(df2, None)
+
 
 if __name__ == "__main__":
     unittest.main()
