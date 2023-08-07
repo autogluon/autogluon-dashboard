@@ -67,6 +67,7 @@ from autogluon_dashboard.utils.dataset_utils import (
     get_sorted_names_from_col,
 )
 from autogluon_dashboard.utils.get_data import get_dataframes
+from autogluon_dashboard.utils.panel_utils import create_panel_object, get_error_tables_grid
 from autogluon_dashboard.widgets.filedownload_widget import FileDownloadWidget
 from autogluon_dashboard.widgets.number_widget import NumberWidget
 from autogluon_dashboard.widgets.select_widget import SelectWidget
@@ -103,8 +104,8 @@ dataset_dropdown = SelectWidget(name=DATASETS_LABEL, options=dataset_list).creat
 dataset_dropdown2 = SelectWidget(name=DATASETS_LABEL, options=dataset_list).create_widget()
 graph_dropdown = SelectWidget(name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 graph_dropdown2 = SelectWidget(name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
-nrows = SliderWidget(name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
-nrows2 = SliderWidget(name=DF_WIDGET_NAME, start=1, end=len(frameworks_list) - 1, value=10).create_widget()
+nrows = SliderWidget(name=DF_WIDGET_NAME, start=0, end=len(frameworks_list) - 1, value=10).create_widget()
+nrows2 = SliderWidget(name=DF_WIDGET_NAME, start=0, end=len(frameworks_list) - 1, value=10).create_widget()
 yaxis_widget4 = SelectWidget(
     name=HW_METRICS_WIDGET_NAME, options=list(hware_metrics_df.metric.unique())
 ).create_widget()
@@ -125,6 +126,8 @@ ag_pct_rank1 = NumberWidget(
 ).create_widget()
 
 # Plots
+panel_objs = []
+
 metrics_plot_all_datasets = MetricsPlotAll(
     METRICS_PLOT_TITLE,
     all_framework_idf,
@@ -141,6 +144,15 @@ top5frameworks_all_datasets = Top5AllDatasets(
     RANK,
     table_cols=[FRAMEWORK, RANK],
 )
+create_panel_object(
+    panel_objs,
+    ALL_DATA_COMP,
+    widgets=[pn.WidgetBox(yaxis_widget, graph_dropdown)],
+    plots=[
+        metrics_plot_all_datasets,
+        top5frameworks_all_datasets,
+    ],
+)
 
 metrics_plot_per_datasets = MetricsPlotPerDataset(
     METRICS_PLOT_TITLE,
@@ -152,7 +164,6 @@ metrics_plot_per_datasets = MetricsPlotPerDataset(
     graph_type=graph_dropdown2,
     xlabel=FRAMEWORK_LABEL,
 )
-
 top5frameworks_per_dataset = Top5PerDataset(
     TOP5_PERFORMERS_TITLE,
     per_dataset_idf,
@@ -161,6 +172,16 @@ top5frameworks_per_dataset = Top5PerDataset(
     dataset_dropdown,
     table_cols=[FRAMEWORK, RANK],
 )
+create_panel_object(
+    panel_objs,
+    PER_DATA_COMP,
+    widgets=[pn.WidgetBox(yaxis_widget2, dataset_dropdown, graph_dropdown2)],
+    plots=[
+        metrics_plot_per_datasets,
+        top5frameworks_per_dataset,
+    ],
+)
+
 ag_rank_counts = FrameworkMetricCounts(
     AG_RANK_COUNTS_TITLE,
     per_dataset_df,
@@ -170,6 +191,8 @@ ag_rank_counts = FrameworkMetricCounts(
     xlabel=RANK_LABEL,
     label_rot=0,
 )
+create_panel_object(panel_objs, NO_RANK_COMP, widgets=[ag_pct_rank1], plots=[ag_rank_counts])
+
 framework_error = FrameworkError(
     ERROR_COUNTS_TITLE,
     all_framework_idf,
@@ -178,18 +201,20 @@ framework_error = FrameworkError(
     y_axis=ERROR_COUNT,
     xlabel=FRAMEWORK_LABEL,
 )
-
-interactive_df_dataset = InteractiveDataframe(
-    per_dataset_df.sort_values(by=RANK), frameworks_widget2, width=3000, dataset=dataset_dropdown2
-)
-per_dataset_dfi = interactive_df_dataset.get_interactive_df().head(nrows)
-
-interactive_df_framework = InteractiveDataframe(all_framework_df, frameworks_widget, width=3000)
-agg_framework_dfi = interactive_df_framework.get_interactive_df().head(nrows2)
+framework_error_list = all_framework_df.sort_values(by=ERROR_COUNT, ascending=False)
+error_tables = [
+    ErroredDatasets(f"{framework} Errored Datasets", per_dataset_df, "table", framework).plot(width=225)
+    for framework in framework_error_list[FRAMEWORK]
+]
+grid = get_error_tables_grid(error_tables=error_tables)
+create_panel_object(panel_objs, NO_ERROR_CNTS, plots=[framework_error], extra_plots=[grid])
 
 framework_box = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, "box", y_axis=yaxis_widget3)
+create_panel_object(panel_objs, FRAMEWORK_BOX_PLOT, widgets=[yaxis_widget3], plots=[framework_box])
 
 pareto_front = ParetoFront(PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis=TIME_INFER_S_RESCALED, y_axis=WINRATE)
+create_panel_object(panel_objs, PARETO_FRONT_PLOT, plots=[pareto_front])
+
 
 hware_metrics_by_mode_plot = HardwareMetrics(
     HARDWARE_METRICS_PLOT_TITLE,
@@ -212,30 +237,25 @@ hware_metrics_by_dataset_plot = HardwareMetrics(
     ylabel=yaxis_widget4,
     by="dataset",
 )
+create_panel_object(
+    panel_objs,
+    HARDWARE_METRICS_PLOT,
+    widgets=[yaxis_widget4],
+    plots=[
+        hware_metrics_by_mode_plot,
+        hware_metrics_by_dataset_plot,
+    ],
+)
 
-framework_error_list = all_framework_df.sort_values(by=ERROR_COUNT, ascending=False)
-error_tables = [
-    ErroredDatasets(f"{framework} Errored Datasets", per_dataset_df, "table", framework).plot(width=225)
-    for framework in framework_error_list[FRAMEWORK]
-]
+interactive_df_framework = InteractiveDataframe(all_framework_df, frameworks_widget, width=3000)
+agg_framework_dfi = interactive_df_framework.get_interactive_df().head(nrows2)
 
-# Order matters here!
-plots = [
-    metrics_plot_all_datasets,
-    top5frameworks_all_datasets,
-    metrics_plot_per_datasets,
-    top5frameworks_per_dataset,
-    ag_rank_counts,
-    framework_error,
-    framework_box,
-    pareto_front,
-    hware_metrics_by_mode_plot,
-    hware_metrics_by_dataset_plot,
-]
+interactive_df_dataset = InteractiveDataframe(
+    per_dataset_df.sort_values(by=RANK), frameworks_widget2, width=3000, dataset=dataset_dropdown2
+)
+per_dataset_dfi = interactive_df_dataset.get_interactive_df().head(nrows)
 
-plots = [plot.plot() for plot in plots]
-plot_ctr = iter(range(len(plots)))
-error_table_ctr = iter(range(len(error_tables)))
+plot_ctr = iter(range(len(panel_objs)))
 template = pn.template.FastListTemplate(
     title=APP_TITLE,
     main=[
@@ -247,49 +267,7 @@ template = pn.template.FastListTemplate(
                 pn.Row(per_dataset_csv_widget, all_framework_csv_widget, hware_metrics_csv_widget),
             )
         ),
-        pn.Row(
-            ALL_DATA_COMP,
-            pn.WidgetBox(yaxis_widget, graph_dropdown),
-            plots[next(plot_ctr)].opts(active_tools=[]).panel(),
-            plots[next(plot_ctr)],
-        ),
-        pn.Row(
-            PER_DATA_COMP,
-            pn.WidgetBox(yaxis_widget2, dataset_dropdown, graph_dropdown2),
-            plots[next(plot_ctr)].opts(active_tools=[]).panel(),
-            plots[next(plot_ctr)],
-        ),
-        pn.Row(NO_RANK_COMP, ag_pct_rank1, plots[next(plot_ctr)].opts(active_tools=[])),
-        pn.Row(
-            NO_ERROR_CNTS,
-            plots[next(plot_ctr)].opts(active_tools=[]),
-            pn.Column(
-                pn.Row(
-                    error_tables[next(error_table_ctr)],
-                    error_tables[next(error_table_ctr)],
-                    error_tables[next(error_table_ctr)],
-                    error_tables[next(error_table_ctr)],
-                ),
-                pn.Row(
-                    error_tables[next(error_table_ctr)],
-                    error_tables[next(error_table_ctr)],
-                    error_tables[next(error_table_ctr)],
-                ),
-                pn.Row(
-                    error_tables[next(error_table_ctr)],
-                    error_tables[next(error_table_ctr)],
-                    error_tables[next(error_table_ctr)],
-                ),
-            ),
-        ),
-        pn.Row(FRAMEWORK_BOX_PLOT, yaxis_widget3, plots[next(plot_ctr)]),
-        pn.Row(PARETO_FRONT_PLOT, plots[next(plot_ctr)].opts(active_tools=[])),
-        pn.Row(
-            HARDWARE_METRICS_PLOT,
-            pn.Column(
-                plots[next(plot_ctr)].opts(active_tools=[]), plots[next(plot_ctr)].opts(active_tools=[]).panel()
-            ),
-        ),
+        *panel_objs,
     ],
     header_background=APP_HEADER_BACKGROUND,
     logo="https://user-images.githubusercontent.com/16392542/77208906-224aa500-6aba-11ea-96bd-e81806074030.png",
