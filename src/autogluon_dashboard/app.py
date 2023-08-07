@@ -92,7 +92,7 @@ frameworks_list.insert(0, "All Frameworks")
 # Make DataFrame Interactive
 per_dataset_idf = per_dataset_df.interactive()
 all_framework_idf = all_framework_df.interactive()
-hware_metrics_idf = hware_metrics_df.interactive()
+hware_metrics_idf = hware_metrics_df.interactive() if hware_metrics_df is not None else None
 
 # Define Panel widgets
 frameworks_widget = SelectWidget(name=FRAMEWORK_LABEL, options=frameworks_list).create_widget()
@@ -106,15 +106,18 @@ graph_dropdown = SelectWidget(name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_w
 graph_dropdown2 = SelectWidget(name=GRAPH_TYPE_STR, options=GRAPH_TYPES).create_widget()
 nrows = SliderWidget(name=DF_WIDGET_NAME, start=0, end=len(frameworks_list) - 1, value=10).create_widget()
 nrows2 = SliderWidget(name=DF_WIDGET_NAME, start=0, end=len(frameworks_list) - 1, value=10).create_widget()
-yaxis_widget4 = SelectWidget(
-    name=HW_METRICS_WIDGET_NAME, options=list(hware_metrics_df.metric.unique())
-).create_widget()
+yaxis_widget4 = None
+if hware_metrics_df is not None:
+    yaxis_widget4 = SelectWidget(
+        name=HW_METRICS_WIDGET_NAME, options=list(hware_metrics_df.metric.unique())
+    ).create_widget()
 
 per_dataset_df.to_csv(PER_DATASET_DOWNLOAD_TITLE)
 per_dataset_csv_widget = FileDownloadWidget(file=PER_DATASET_DOWNLOAD_TITLE).create_widget()
 all_framework_df.to_csv(AGG_FRAMEWORKS_DOWNLOAD_TITLE)
 all_framework_csv_widget = FileDownloadWidget(file=AGG_FRAMEWORKS_DOWNLOAD_TITLE).create_widget()
-hware_metrics_df.to_csv(HARDWARE_METRICS_DOWNLOAD_TITLE)
+if hware_metrics_df is not None:
+    hware_metrics_df.to_csv(HARDWARE_METRICS_DOWNLOAD_TITLE)
 hware_metrics_csv_widget = FileDownloadWidget(file=HARDWARE_METRICS_DOWNLOAD_TITLE).create_widget()
 
 df_ag_only = get_df_filter_by_framework(per_dataset_df, "AutoGluon")
@@ -215,28 +218,29 @@ create_panel_object(panel_objs, FRAMEWORK_BOX_PLOT, widgets=[yaxis_widget3], plo
 pareto_front = ParetoFront(PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis=TIME_INFER_S_RESCALED, y_axis=WINRATE)
 create_panel_object(panel_objs, PARETO_FRONT_PLOT, plots=[pareto_front])
 
+hware_metrics_by_mode_plot, hware_metrics_by_dataset_plot = None, None
+if hware_metrics_idf:
+    hware_metrics_by_mode_plot = HardwareMetrics(
+        HARDWARE_METRICS_PLOT_TITLE,
+        hware_metrics_idf,
+        "hvplot",
+        col_name=yaxis_widget4,
+        x_axis="framework",
+        y_axis="statistic_value",
+        ylabel=yaxis_widget4,
+        by="mode",
+    )
 
-hware_metrics_by_mode_plot = HardwareMetrics(
-    HARDWARE_METRICS_PLOT_TITLE,
-    hware_metrics_idf,
-    "hvplot",
-    col_name=yaxis_widget4,
-    x_axis="framework",
-    y_axis="statistic_value",
-    ylabel=yaxis_widget4,
-    by="mode",
-)
-
-hware_metrics_by_dataset_plot = HardwareMetrics(
-    HARDWARE_METRICS_PLOT_TITLE,
-    hware_metrics_idf,
-    "hvplot",
-    col_name=yaxis_widget4,
-    x_axis="framework",
-    y_axis="statistic_value",
-    ylabel=yaxis_widget4,
-    by="dataset",
-)
+    hware_metrics_by_dataset_plot = HardwareMetrics(
+        HARDWARE_METRICS_PLOT_TITLE,
+        hware_metrics_idf,
+        "hvplot",
+        col_name=yaxis_widget4,
+        x_axis="framework",
+        y_axis="statistic_value",
+        ylabel=yaxis_widget4,
+        by="dataset",
+    )
 create_panel_object(
     panel_objs,
     HARDWARE_METRICS_PLOT,
