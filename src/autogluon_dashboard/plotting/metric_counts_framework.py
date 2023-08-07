@@ -42,6 +42,20 @@ class FrameworkMetricCounts(Plot):
     _preprocess():
         inherited from parent `Plot` class
         returns the counts of given column name filtered by provided framework
+
+    Usage
+    ------
+    >>> hware_metrics_plot = FrameworkMetricCounts(
+            AG_RANK_COUNTS_TITLE,
+            per_dataset_df,
+            "hvplot",
+            RANK,
+            "AutoGluon",
+            xlabel=RANK_LABEL,
+            label_rot=0,
+        )
+
+    You can now call the `.plot()` method on this object to render the plot as a Panel object on the dashboard website.
     """
 
     def __init__(
