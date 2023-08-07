@@ -32,7 +32,7 @@ def get_error_tables_grid(error_tables, num_rows=3, num_cols=3) -> pn.Column:
     for _ in range(num_rows):
         row = []
         try:
-            for _ in range(3):
+            for _ in range(num_cols):
                 try:
                     error_framework_table = error_tables[next(error_table_ctr)]
                     row.append(error_framework_table)
