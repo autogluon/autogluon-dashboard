@@ -34,7 +34,6 @@ from autogluon_dashboard.constants.df_constants import (
 from autogluon_dashboard.constants.plots_constants import (
     AG_RANK_COUNTS_TITLE,
     AGG_FRAMEWORKS_DOWNLOAD_TITLE,
-    AUTOGLUON_RANK1_TITLE,
     DATASETS_LABEL,
     DF_WIDGET_NAME,
     ERROR_COUNTS_TITLE,
@@ -46,6 +45,7 @@ from autogluon_dashboard.constants.plots_constants import (
     HW_METRICS_WIDGET_NAME,
     METRICS_PLOT_TITLE,
     PER_DATASET_DOWNLOAD_TITLE,
+    RANK1_TITLE,
     RANK_LABEL,
     TOP5_PERFORMERS_TITLE,
     YAXIS_LABEL,
@@ -126,13 +126,9 @@ if hware_metrics_df is not None:
     hware_metrics_df.to_csv(HARDWARE_METRICS_DOWNLOAD_TITLE)
 hware_metrics_csv_widget = FileDownloadWidget(file=HARDWARE_METRICS_DOWNLOAD_TITLE).create_widget()
 
-df_ag_only = get_df_filter_by_framework(per_dataset_df, "AutoGluon")
-prop_ag_best = get_proportion_framework_rank1(df_ag_only, per_dataset_df, len(dataset_list))
-ag_pct_rank1 = NumberWidget(
-    name=AUTOGLUON_RANK1_TITLE,
-    value=round(prop_ag_best * 100, 2),
-    format="{value}%",
-).create_widget()
+df_framework_only = get_df_filter_by_framework(per_dataset_idf, frameworks_widget3)
+prop_best = get_proportion_framework_rank1(df_framework_only, per_dataset_df, len(dataset_list))
+pct_rank1 = round(prop_best * 100, 2)
 
 # Plots
 panel_objs = []
@@ -200,7 +196,7 @@ ag_rank_counts = FrameworkMetricCounts(
     xlabel=RANK_LABEL,
     label_rot=0,
 )
-create_panel_object(panel_objs, NO_RANK_COMP, widgets=[ag_pct_rank1, frameworks_widget3], plots=[ag_rank_counts])
+create_panel_object(panel_objs, title=NO_RANK_COMP, widgets=[pct_rank1], plots=[ag_rank_counts])
 
 framework_error = FrameworkError(
     ERROR_COUNTS_TITLE,
