@@ -22,11 +22,13 @@ from autogluon_dashboard.constants.aws_s3_constants import (
     PER_DATASET_DEFAULT_CSV_PATH,
 )
 from autogluon_dashboard.constants.df_constants import (
+    BESTDIFF,
     DATASET,
     ERROR_COUNT,
     FRAMEWORK,
+    LOSS_RESCALED,
     RANK,
-    TIME_INFER_S_RESCALED,
+    TIME_INFER_S,
     WINRATE,
 )
 from autogluon_dashboard.constants.plots_constants import (
@@ -68,6 +70,7 @@ from autogluon_dashboard.utils.dataset_utils import (
 )
 from autogluon_dashboard.utils.get_data import get_dataframes
 from autogluon_dashboard.utils.panel_utils import create_panel_object, get_error_tables_grid
+from autogluon_dashboard.widgets.checkbox_widget import CheckboxWidget
 from autogluon_dashboard.widgets.filedownload_widget import FileDownloadWidget
 from autogluon_dashboard.widgets.number_widget import NumberWidget
 from autogluon_dashboard.widgets.select_widget import SelectWidget
@@ -84,6 +87,7 @@ per_dataset_df, all_framework_df, hware_metrics_df = get_dataframes(dataset_path
 dataset_list = get_sorted_names_from_col(per_dataset_df, DATASET)
 new_framework_names = clean_up_framework_names(per_dataset_df)
 per_dataset_df[FRAMEWORK] = new_framework_names
+new_framework_names = clean_up_framework_names(all_framework_df)
 all_framework_df[FRAMEWORK] = new_framework_names
 
 frameworks_list = get_sorted_names_from_col(all_framework_df, FRAMEWORK)
@@ -111,6 +115,7 @@ if hware_metrics_df is not None:
     yaxis_widget4 = SelectWidget(
         name=HW_METRICS_WIDGET_NAME, options=list(hware_metrics_df.metric.unique())
     ).create_widget()
+log_scale = CheckboxWidget(name="log scale for y-axis").create_widget()
 
 per_dataset_df.to_csv(PER_DATASET_DOWNLOAD_TITLE)
 per_dataset_csv_widget = FileDownloadWidget(file=PER_DATASET_DOWNLOAD_TITLE).create_widget()
@@ -212,11 +217,19 @@ error_tables = [
 grid = get_error_tables_grid(error_tables=error_tables)
 create_panel_object(panel_objs, NO_ERROR_CNTS, plots=[framework_error], extra_plots=[grid])
 
-framework_box = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, "box", y_axis=yaxis_widget3)
-create_panel_object(panel_objs, FRAMEWORK_BOX_PLOT, widgets=[yaxis_widget3], plots=[framework_box])
+framework_box = FrameworkBoxPlot(FRAMEWORK_BOX_PLOT_TITLE, per_dataset_df, "box", y_axis=yaxis_widget3, logy=log_scale)
+create_panel_object(panel_objs, FRAMEWORK_BOX_PLOT, widgets=[yaxis_widget3, log_scale], plots=[framework_box])
 
-pareto_front = ParetoFront(PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis=TIME_INFER_S_RESCALED, y_axis=WINRATE)
-create_panel_object(panel_objs, PARETO_FRONT_PLOT, plots=[pareto_front])
+pareto_front = ParetoFront(PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis=TIME_INFER_S, y_axis=BESTDIFF)
+pareto_front2 = ParetoFront(PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis=TIME_INFER_S, y_axis=LOSS_RESCALED)
+pareto_front3 = ParetoFront(PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis=BESTDIFF, y_axis=LOSS_RESCALED)
+try:
+    pareto_front4 = ParetoFront(
+        PARETO_FRONT_PLOT, all_framework_df, "pareto", x_axis=TIME_INFER_S, y_axis=WINRATE
+    ).plot(maxY=True)
+except Exception:
+    pareto_front4 = None
+create_panel_object(panel_objs, PARETO_FRONT_PLOT, plots=[pareto_front, pareto_front2, pareto_front3, pareto_front4])
 
 hware_metrics_by_mode_plot, hware_metrics_by_dataset_plot = None, None
 if hware_metrics_idf:

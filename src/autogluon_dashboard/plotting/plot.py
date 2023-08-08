@@ -68,6 +68,7 @@ class Plot:
         table_cols: list = [],
         table_width: Optional[int] = None,
         by: str = "",
+        logy: bool = False,
     ) -> None:
         self.plot_title = plot_title
         self.df = dataset_to_plot
@@ -80,6 +81,7 @@ class Plot:
         self.label_rot = label_rot
         self.table_cols = table_cols
         self.table_width = table_width
+        self.logy = logy
 
         if plot_type == "table":
             self.plot = self._create_table
@@ -184,7 +186,7 @@ class Plot:
         return self.df.hvplot.table(title=self.plot_title, columns=self.table_cols, width=table_width)
 
     def _create_pareto_front(
-        self, maxY: bool = True, width: Union[int, float] = 900, size: int = 400
+        self, maxY: bool = False, width: Union[int, float] = 800, size: int = 300
     ) -> hvplot.hvPlot:
         """
         Create a Pareto frontier plot leveraging the hvplot library
@@ -200,6 +202,7 @@ class Plot:
         size: int, default = 400,
             Size of points in scatter plot -> represents framework
         """
+
         Xs, Ys = self.df[self.plot_x], self.df[self.plot_y]
         sorted_list = sorted([[Xs[i], Ys[i]] for i in range(len(Xs))], reverse=False)
         pareto_front = [sorted_list[0]]
@@ -221,7 +224,7 @@ class Plot:
             c=FRAMEWORK,
             kind="scatter",
             size=size,
-            height=800,
+            height=600,
             width=width,
             grid=True,
         ) * pareto_df.hvplot.step(x="col1", y="col2")
@@ -238,4 +241,6 @@ class Plot:
         width: int, default = 1000,
             width of the plot
         """
-        return self.df.hvplot.box(self.plot_y, by=FRAMEWORK, rot=self.label_rot, height=height, width=width)
+        return self.df.hvplot.box(
+            self.plot_y, by=FRAMEWORK, rot=self.label_rot, height=height, width=width, logy=self.logy
+        )
