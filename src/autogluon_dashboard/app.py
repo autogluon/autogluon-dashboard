@@ -101,6 +101,7 @@ hware_metrics_idf = hware_metrics_df.interactive() if hware_metrics_df is not No
 # Define Panel widgets
 frameworks_widget = SelectWidget(name=FRAMEWORK_LABEL, options=frameworks_list).create_widget()
 frameworks_widget2 = SelectWidget(name=FRAMEWORK_LABEL, options=frameworks_list).create_widget()
+frameworks_widget3 = SelectWidget(name=FRAMEWORK_LABEL, options=frameworks_list[1:]).create_widget()
 yaxis_widget = SelectWidget(name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
 yaxis_widget2 = SelectWidget(name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
 yaxis_widget3 = SelectWidget(name=YAXIS_LABEL, options=METRICS_TO_PLOT).create_widget()
@@ -192,14 +193,14 @@ create_panel_object(
 
 ag_rank_counts = FrameworkMetricCounts(
     AG_RANK_COUNTS_TITLE,
-    per_dataset_df,
+    per_dataset_idf,
     "hvplot",
     RANK,
-    "AutoGluon",
+    frameworks_widget3,
     xlabel=RANK_LABEL,
     label_rot=0,
 )
-create_panel_object(panel_objs, NO_RANK_COMP, widgets=[ag_pct_rank1], plots=[ag_rank_counts])
+create_panel_object(panel_objs, NO_RANK_COMP, widgets=[ag_pct_rank1, frameworks_widget3], plots=[ag_rank_counts])
 
 framework_error = FrameworkError(
     ERROR_COUNTS_TITLE,
