@@ -92,20 +92,6 @@ class Plot:
         elif plot_type == "box":
             self.plot = self._create_box_plot
 
-        def cleanup(self):
-            raise ValueError("YADDA")
-
-        def __del__(self):
-            # yes, a bare except clause and a pass...
-            # this is exactly what you're NOT supposed to do,
-            # never ever, because it's BAD... but here it's
-            # ok - provided you double-checked what the code
-            # in the `try` block really do, of course.
-            try:
-                self.cleanup()
-            except:
-                pass
-
     @abstractmethod
     def _preprocess(self, **kwargs):
         return
