@@ -130,6 +130,7 @@ def run_dashboard():
     os.environ["PER_DATASET_S3_PATH"] = CLOUDFRONT_DOMAIN + f"/{prefix}" + per_dataset_s3_loc
     os.environ["AGG_DATASET_S3_PATH"] = CLOUDFRONT_DOMAIN + f"/{prefix}" + aggregated_s3_loc
     os.environ["HWARE_METRICS_S3_PATH"] = CLOUDFRONT_DOMAIN + f"/{prefix}" + hware_s3_loc
+    os.environ["BOKEH_PY_LOG_LEVEL"] = "error"
 
     s3_client = boto3.client("s3")
 

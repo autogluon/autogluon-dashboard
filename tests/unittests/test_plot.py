@@ -271,11 +271,11 @@ class TestParetoFront(unittest.TestCase):
         mock_hvplot.assert_called_once_with(
             c="framework",
             kind="scatter",
-            size=400,
+            size=300,
             x="dataset",
             y="rank",
-            height=800,
-            width=900,
+            height=600,
+            width=800,
             grid=True,
         )
 

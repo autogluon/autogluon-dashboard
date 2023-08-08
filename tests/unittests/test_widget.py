@@ -3,6 +3,7 @@ from unittest import mock
 
 import pandas as pd
 
+from autogluon_dashboard.widgets.checkbox_widget import CheckboxWidget
 from autogluon_dashboard.widgets.filedownload_widget import FileDownloadWidget
 from autogluon_dashboard.widgets.number_widget import NumberWidget
 from autogluon_dashboard.widgets.select_widget import SelectWidget
@@ -98,6 +99,14 @@ class TestWidget(unittest.TestCase):
             embed=True,
         )
         self.assertEqual(widget, mock_create_widget.return_value)
+
+    @mock.patch("panel.widgets.Checkbox")
+    def test_create_sliderwidget(self, mock_checkbox_widget):
+        mock_checkbox_widget.return_value = "checkbox widget created"
+        test_widget = CheckboxWidget(name="test_checkbox")
+        widget = test_widget.create_widget()
+        mock_checkbox_widget.assert_called_once_with(name=test_widget.name)
+        self.assertEqual(widget, mock_checkbox_widget.return_value)
 
 
 if __name__ == "__main__":

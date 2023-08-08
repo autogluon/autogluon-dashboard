@@ -34,6 +34,8 @@ class FrameworkBoxPlot(Plot):
         label of y-axis
     label_rot: int,
         rotation value of labels on axes
+    logy: bool,
+        whether to use log scale for y-axis
 
     Methods
     -------
@@ -60,6 +62,7 @@ class FrameworkBoxPlot(Plot):
         xlabel: str = "",
         ylabel: str = "",
         label_rot: int = 90,
+        logy: bool = False,
     ) -> None:
         super(FrameworkBoxPlot, self).__init__(
             plot_title,
@@ -71,4 +74,5 @@ class FrameworkBoxPlot(Plot):
             xlabel,
             ylabel,
             label_rot,
+            logy=logy,
         )
