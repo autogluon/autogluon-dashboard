@@ -69,6 +69,8 @@ widget = WidgetClass(...).create_widget()
 
 Note: If you would like each plot to be linked to it's own individual widget, make sure you do not reuse widget objects for different plots - even if they have the same functionality. 
 
+Widgets can also be independent and not necessarily linked to a plot. For example, the download button for the csv files on the website. 
+
 
 ## Creating a plot
 Each “plot” is an object of a specific class that inherits from a common, parent `Plot` class. Refer to the [`plot.py`](https://github.com/autogluon/autogluon-dashboard/blob/main/src/autogluon_dashboard/plotting/plot.py) file for more details regarding the attributes and methods contained within the parent class. The plots leverage the python library - `hvplot`. `hvplot` documentation can be found [here](https://hvplot.holoviz.org/user_guide/index.html). 
