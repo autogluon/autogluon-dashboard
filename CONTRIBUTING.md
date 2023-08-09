@@ -82,6 +82,10 @@ idf = df.interactive()
 ```
 You can then call the `.hvplot()` function as you would call `.plot()` on a pandas dataframe.
 
+### Linking widgets to plots
+A widget is an independent object that gets linked to a plot when you pass it into the `hvplot` method
+<br> For example: Say you have a widget for changing the y-axis metric called `yaxis_widget`. To automatically bind the widget to a plot, you must pass this widget into the `hvplot` method as: `idf.hvplot(yaxis=yaxis_widget, ...)`
+
 
 ## Adding a plot (w or w/o widgets) to the dashboard
 To add the plot to the dashboard, follow the steps used in `app.py`. 
