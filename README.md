@@ -20,7 +20,7 @@ python -m pip install --upgrade pip
 
 3. Install the `autogluon_dashboard` package by running: `pip install -e .`. You can now interact with the dashboard through the CLI command `agdash`. 
 
-4. To convert a Panel app to WebAssembly,  Panel provides a script that will convert the code in `app.py` into an HTML file and JS file. This can be done in one line of code as: `panel convert app.py --to pyodide-worker --out web_files/`
+4. To convert a Panel app to WebAssembly (HTML and JavaScript),  Panel provides a script that will convert the code in `app.py` into an HTML file and JS file. This can be done in one line of code as: `panel convert app.py --to pyodide-worker --out web_files/`
 The generated HTML and JS files will be found in the `web_files` folder. These can be uploaded to the desired hosting service (eg: AWS S3). 
 <br> A wrapper script (`dashboard.py`) has been created to run all the necessary commands in the backend to set up the Python web app, create the WebAssembly files and upload them to an S3 bucket for hosting. You can interact with the wrapper using the CLI command - `agdash`, as follows:
 ```
