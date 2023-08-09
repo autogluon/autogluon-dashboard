@@ -45,6 +45,9 @@ Looking at the existing issues is a great way to find something to contribute on
 Additionally, we welcome contributions regarding additional plots and visualizations to the dashboard.
 
 
+# Dashboard Contribution
+
+
 ## Tips for Modifying the Source Code
 - Refer to the [`README`](https://github.com/autogluon/autogluon-dashboard/blob/main/README.md) for setup+install instructions. 
 - All code should adhere to the [PEP8 style](https://www.python.org/dev/peps/pep-0008/).
