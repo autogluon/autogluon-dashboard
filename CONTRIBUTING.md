@@ -125,10 +125,29 @@ optional arguments:
   --s3_region           S3 Region to deploy the dashboard website. Should be the same region as s3_bucket
 ```
 
+The `per_dataset_csv` file refers to the evaluation file that is comprised of metrics pertaining to every individual dataset+framework pair benchmark run. It should not contain the frameworks that errored our on a given dataset since the error counts are calculated by looking at the missing rows. 
+<br> Below is the schema for this csv:
+```
+dataset | framework | problem_type | time_train_s | metric_error | time_infer_s | bestdiff | loss_rescaled | time_train_s_rescaled | time_infer_s_rescaled | rank
+```
+The `agg_dataset_csv` is a much smaller file and refers to the metrics of all frameworks aggregated (or averaged) across all datasets in the benchmark run. 
+<br> Below is the schema for this csv:
+```
+framework | winrate | > | < | = | % Less Avg. Errors | Avg Inf Speed Diff | time_train_s | metric_error | time_infer_s | bestdiff | loss_rescaled | time_train_s_rescaled | time_infer_s_rescaled | rank | rank=1_count | rank=2_count | rank=3_count | rank>3_count | error_count
+```
+Both of these csv files are mandatory for the dashboard.
+
+
+Finally, the `hware_metrics_csv` file refers to the EC2 instance hardware metrics of the benchmark run. This is a part of the evaluation module and is an optional CSV file to provide to the dashboard. It includes hardware metrics like CPU & GPU Utilization, Memory, and Disk Usage for every given benchmark run (which corresponds to unique framework+dataset pairs).
+<br> Below is the schema for this csv:
+```
+framework | dataset | mode | fold | metric | statistic_type | statistic_value | unit
+```
+
 If a bucket and region is not specified, it will default to the AutoGluon bucket and region. You must have the requisite permissions to upload contents to the AutoGluon bucket. 
 <br> If you provide your own bucket and region, you will need to the following: 
-1. Make the bucket public so that the python web-app can access the csv files from it 
-2. Enable web hosting for the bucket (if you are an Amazon employee this may raise a SEV-2)
+1. Make the bucket public so that the python web-app can access the csv files from it **CAUTION: Making a bucket public will expose any sensitive data in it. Proceed with caution when making your bucket publicly accessible. You can consider making your bucket public for a short period of time to test the website.**
+2. Enable web hosting for the bucket
 3. If you do not want a public bucket, you will have to use a service like [CloudFront](https://aws.amazon.com/cloudfront/) (an AWS service) to host the website through the bucket. You can use the cloudfront link for the csv files as well. 
     - For the AutoGluon main dashboard, we use CloudFront to host the website through the AutoGluon bucket.
 
