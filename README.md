@@ -5,6 +5,7 @@
 # AutoGluon-Dashboard
 
 Welcome to AutoGluon-Dashboard, a tool for visualizing your metrics - one benchmark at a time!
+The latest version of the AutoGluon-Dashboard can be found [here](https://d24iwcyhf6yavw.cloudfront.net/out.html)! 
 
 ## Setup
 Follow the steps below to set up autogluon-dashboard::
@@ -34,6 +35,8 @@ If you would like to view the dashboards on your local machine, you can use a `l
 panel serve src/autogluon_dashboard/app.py --autoreload
 ```
 You can then open http://localhost:5006/app in your web browser.
+<br> The `--autoreload` flag will automatically reload the website when you make a change the source code (as long as the `localhost` server port is still open)
+
 
 ## Contributing to AutoGluon-Dashboard
 

@@ -10,7 +10,7 @@ information to effectively respond to your bug report or contribution.
 
 We welcome you to use the GitHub issue tracker to report bugs or suggest features.
 
-When filing an issue, please check [existing open](https://github.com/autogluon/autogluon/issues), or [recently closed](https://github.com/autogluon/autogluon/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aclosed%20), issues to make sure somebody else hasn't already
+When filing an issue, please check [existing open](https://github.com/autogluon/autogluon-dashboard/issues), or [recently closed](https://github.com/autogluon/autogluon-dashboard/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aclosed%20), issues to make sure somebody else hasn't already
 reported the issue. Please try to include as much information as you can. Details like these are incredibly useful:
 
 * A reproducible test case or series of steps
@@ -18,7 +18,8 @@ reported the issue. Please try to include as much information as you can. Detail
 * Any modifications you've made relevant to the bug
 * Anything unusual about your environment or deployment
 
-Ideally, you can install AutoGluon and its dependencies in a fresh virtualenv to reproduce the bug.
+Ideally, you can install AutoGluon-Dashboard and its dependencies in a fresh virtualenv to reproduce the bug.
+
 
 ## Contributing via Pull Requests
 Code contributions via pull requests are much appreciated. Before sending us a pull request, please ensure that:
@@ -43,11 +44,96 @@ GitHub provides additional document on [forking a repository](https://help.githu
 Looking at the existing issues is a great way to find something to contribute on. As the project uses the default GitHub issue labels (enhancement/bug/duplicate/help wanted/invalid/question/wontfix), looking at any ['help wanted'](https://github.com/autogluon/autogluon-dashboard/labels/help%20wanted) issues is a great place to start.
 Additionally, we welcome contributions regarding additional plots and visualizations to the dashboard.
 
+
 ## Tips for Modifying the Source Code
-- Refer to the `README` for setup+install instructions. 
+- Refer to the [`README`](https://github.com/autogluon/autogluon-dashboard/blob/main/README.md) for setup+install instructions. 
 - All code should adhere to the [PEP8 style](https://www.python.org/dev/peps/pep-0008/).
 - After you have edited the code, ensure your changes pass the unit tests via: `python -m pytest tests/unittests/`
 - Additionally, please test your changes by spinning up the dashboard website on your local server. Refer to the `README` for instructions. 
+
+
+## Creating a widget
+Widgets are tools to add interactivity to the plots by allowing the user to choose (select from, toggle between, etc.) what data to plot.
+<br> Look at the documentation for `panel` widgets [here](https://panel.holoviz.org/reference/index.html#widgets) for more information regarding the different types of widgets and how to use them.
+
+Each widget is an object of a specific class that inherits from a common, parent `Widget` class. Refer to the [`widget.py`](https://github.com/autogluon/autogluon-dashboard/blob/main/src/autogluon_dashboard/widgets/widget.py) file for more details regarding the parent class.
+<br> You can use one of the existing widgets classes or create a brand new widget from the list of `panel` widgets. If you create a new widget, make sure the class has a `create_widget` method
+
+To create a widget on the dashboard, use the following code: 
+```
+widget = WidgetClass(...).create_widget()
+```
+
+Note: If you would like each plot to be linked to it's own individual widget, make sure you do not reuse widget objects for different plots - even if they have the same functionality. 
+
+
+## Creating a plot
+Each “plot” is an object of a specific class that inherits from a common, parent `Plot` class. Refer to the [`plot.py`](https://github.com/autogluon/autogluon-dashboard/blob/main/src/autogluon_dashboard/plotting/plot.py) file for more details regarding the attributes and methods contained within the parent class. The plots leverage the python library - `hvplot`. `hvplot` documentation can be found [here](https://hvplot.holoviz.org/user_guide/index.html). 
+
+To add a new plot, create a new file under `src/autogluon_dashboard/plotting` with appropriate naming conventions. Make sure that it inherits the parent `Plot` class. For the `plot` method, you can either leverage the inherited `_create_hvplot` method in the `Plot` class, the additional plot methods provided, or define a brand new plot function.
+
+If you would like to have an interactive plot with `panel` widgets included, you will need to pass in an interactive dataframe (which is an hvPlot representation) into the `hvplot` function. This can be done by calling the `interactive()` method on your `pandas` dataframe as: 
+```
+df = pd.read_csv('somefile.csv')
+idf = df.interactive()
+```
+You can then call the `.hvplot()` function as you would call `.plot()` on a pandas dataframe.
+
+
+## Adding a plot (w or w/o widgets) to the dashboard
+To add the plot to the dashboard, follow the steps used in `app.py`. 
+```
+# Global list of panel objects to display on the website
+panel_objs = []
+
+# Create an object of the plot class
+plot_obj = PlotClass(...)
+
+# Create an object of the widget class
+widget = WidgetClass(...).create_widget()
+
+# Add the panel object to global list
+create_panel_object(panel_objs, "some title", widgets=[widget], plots=[plot_obj])
+```
+
+Note: If you would like to pass in custom arguments to the `plot` method, you can create the plot in `app.py` itself; before passing it into `create_panel_object` as:
+```
+try: 
+    plot_obj = PlotClass(...).plot(arg=arg)
+except Exception:
+    plot_obj = None
+create_panel_object(panel_objs, "some title", plots=[plot_obj])
+```
+
+
+## Using the Dashboard wrapper locally
+Once you have installed the package from source as per the instructions in the [`README`](https://github.com/autogluon/autogluon-dashboard/blob/main/README.md), you should have access to the `agdash` command. 
+```
+agdash --help
+usage: agdash [-h] --per_dataset_csv  --agg_dataset_csv  [--hware_metrics_csv]  [--s3_bucket ] [--s3_prefix ] [--s3_region ]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --per_dataset_csv     Location of csv file of all datasets+frameworks data to upload to S3 bucket 
+  --agg_dataset_csv     Location of csv file of aggregated data across all frameworks to upload to S3 bucket                   
+  --hware_metrics_csv   Location of csv file of hardware metrics to upload to S3 bucket
+  --s3_bucket           Name of S3 bucket to upload dashboard contents to
+  --s3_prefix           Prefix for S3 URL - subfolder
+  --s3_region           S3 Region to deploy the dashboard website. Should be the same region as s3_bucket
+```
+
+If a bucket and region is not specified, it will default to the AutoGluon bucket and region. You must have the requisite permissions to upload contents to the AutoGluon bucket. 
+<br> If you provide your own bucket and region, you will need to the following: 
+1. Make the bucket public so that the python web-app can access the csv files from it 
+2. Enable web hosting for the bucket (if you are an Amazon employee this may raise a SEV-2)
+3. If you do not want a public bucket, you will have to use a service like [CloudFront](https://aws.amazon.com/cloudfront/) (an AWS service) to host the website through the bucket. You can use the cloudfront link for the csv files as well. 
+    - For the AutoGluon main dashboard, we use CloudFront to host the website through the AutoGluon bucket.
+
+If you are able to run the wrapper successfully, you will see the link to your website in the terminal.
+
+
+## Simple Dashboard Tutorial
+Refer to this [tutorial](https://anaconda.cloud/easiest-interactive-dashboard) for a brief intro on how to use `panel` and `hvplot` to create and deploy a simple dashboard. 
 
 
 ## Code of Conduct
