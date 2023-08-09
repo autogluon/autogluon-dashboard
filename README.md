@@ -34,3 +34,7 @@ If you would like to view the dashboards on your local machine, you can use a `l
 panel serve src/autogluon_dashboard/app.py --autoreload
 ```
 You can then open http://localhost:5006/app in your web browser.
+
+## Contributing to AutoGluon-Dashboard
+
+We are actively accepting code contributions to the AutoGluon-Dashboard project. If you are interested in contributing to AutoGluon-Dashboard, please read the [Contributing Guide](https://github.com/autogluon/autogluon-dashboard/blob/main/CONTRIBUTING.md) to get started.
