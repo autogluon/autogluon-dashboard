@@ -149,6 +149,8 @@ framework | winrate | > | < | = | % Less Avg. Errors | Avg Inf Speed Diff | time
 ```
 Both of these csv files are mandatory for the dashboard.
 
+For more information on benchmarks and evaluation, refer to [`autogluon-bench`](https://github.com/autogluon/autogluon-bench) as well as the [evaluation section](https://github.com/autogluon/autogluon-bench#evaluating-benchmark-runs). 
+
 
 Finally, the `hware_metrics_csv` file refers to the EC2 instance hardware metrics of the benchmark run. This is a part of the evaluation module and is an optional CSV file to provide to the dashboard. It includes hardware metrics like CPU & GPU Utilization, Memory, and Disk Usage for every given benchmark run (which corresponds to unique framework+dataset pairs).
 <br> Below is the schema for this csv:
