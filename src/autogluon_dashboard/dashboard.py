@@ -107,18 +107,18 @@ def run_dashboard():
     per_dataset_s3_loc = CSV_FILES_DIR + "all_data.csv"
     aggregated_s3_loc = CSV_FILES_DIR + "autogluon.csv"
     hware_s3_loc = CSV_FILES_DIR + "hardware_metrics.csv"
-    PER_DATASET_DEFAULT_CSV_PATH = CLOUDFRONT_DOMAIN + f"/{prefix}" + per_dataset_s3_loc
-    AGG_FRAMEWORK_DEFAULT_CSV_PATH = CLOUDFRONT_DOMAIN + f"/{prefix}" + aggregated_s3_loc
-    HARDWARE_METRICS_DEFAULT_CSV_PATH = (
+    PER_DATASET_CSV_PATH = CLOUDFRONT_DOMAIN + f"/{prefix}" + per_dataset_s3_loc
+    AGG_FRAMEWORK_CSV_PATH = CLOUDFRONT_DOMAIN + f"/{prefix}" + aggregated_s3_loc
+    HARDWARE_METRICS_CSV_PATH = (
         CLOUDFRONT_DOMAIN + f"/{prefix}" + hware_s3_loc if hware_metrics_csv_path else ""
     )
     wrapper_dir = os.path.dirname(__file__)
     csv_path_file_location = os.path.join(wrapper_dir, "constants/csv_paths.py")
     f = open(csv_path_file_location, "w")
-    print(PER_DATASET_DEFAULT_CSV_PATH)
-    f.write(f"PER_DATASET_DEFAULT_CSV_PATH = " + '"' + PER_DATASET_DEFAULT_CSV_PATH + '"')
-    f.write(f"\nAGG_FRAMEWORK_DEFAULT_CSV_PATH = " + '"' + AGG_FRAMEWORK_DEFAULT_CSV_PATH + '"')
-    f.write(f"\nHARDWARE_METRICS_DEFAULT_CSV_PATH = " + '"' + HARDWARE_METRICS_DEFAULT_CSV_PATH + '"')
+    print(PER_DATASET_CSV_PATH)
+    f.write(f"PER_DATASET_CSV_PATH = " + '"' + PER_DATASET_CSV_PATH + '"')
+    f.write(f"\nAGG_FRAMEWORK_CSV_PATH = " + '"' + AGG_FRAMEWORK_CSV_PATH + '"')
+    f.write(f"\nHARDWARE_METRICS_CSV_PATH = " + '"' + HARDWARE_METRICS_CSV_PATH + '"')
     f.close()
 
     os.environ["BOKEH_PY_LOG_LEVEL"] = "error"

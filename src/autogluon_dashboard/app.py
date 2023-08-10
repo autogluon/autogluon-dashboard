@@ -17,9 +17,9 @@ from autogluon_dashboard.constants.app_layout_constants import (
     PER_DATASET_IDF,
 )
 from autogluon_dashboard.constants.csv_paths import (
-    AGG_FRAMEWORK_DEFAULT_CSV_PATH,
-    HARDWARE_METRICS_DEFAULT_CSV_PATH,
-    PER_DATASET_DEFAULT_CSV_PATH,
+    AGG_FRAMEWORK_CSV_PATH,
+    HARDWARE_METRICS_CSV_PATH,
+    PER_DATASET_CSV_PATH,
 )
 from autogluon_dashboard.constants.df_constants import (
     BESTDIFF,
@@ -77,9 +77,9 @@ from autogluon_dashboard.widgets.select_widget import SelectWidget
 from autogluon_dashboard.widgets.slider_widget import SliderWidget
 
 # Load Data
-dataset_file = PER_DATASET_DEFAULT_CSV_PATH
-aggregated_file = AGG_FRAMEWORK_DEFAULT_CSV_PATH
-hardware_metrics_file = HARDWARE_METRICS_DEFAULT_CSV_PATH
+dataset_file = PER_DATASET_CSV_PATH
+aggregated_file = AGG_FRAMEWORK_CSV_PATH
+hardware_metrics_file = HARDWARE_METRICS_CSV_PATH
 dataset_paths = [dataset_file, aggregated_file, hardware_metrics_file]
 per_dataset_df, all_framework_df, hware_metrics_df = get_dataframes(dataset_paths)
 
