@@ -112,6 +112,8 @@ def run_dashboard():
     HARDWARE_METRICS_CSV_PATH = CLOUDFRONT_DOMAIN + f"/{prefix}" + hware_s3_loc if hware_metrics_csv_path else ""
     wrapper_dir = os.path.dirname(__file__)
     csv_path_file_location = os.path.join(wrapper_dir, "constants/csv_paths.py")
+    # Write the CSV paths to a python file that can be accessed by app.py
+    # We do this instead of using an environment variable since the website runs in a separate web environment, which cannot be accessed preemptively using this code.
     f = open(csv_path_file_location, "w")
     f.write(f"PER_DATASET_CSV_PATH = " + '"' + PER_DATASET_CSV_PATH + '"')
     f.write(f"\nAGG_FRAMEWORK_CSV_PATH = " + '"' + AGG_FRAMEWORK_CSV_PATH + '"')
@@ -164,7 +166,8 @@ def run_dashboard():
     upload_to_s3(s3_client, os.path.join(web_files_dir, "out.js"), prefix + "out.js", bucket_name)
     logger.info("WebAssembly files have been successfully uploaded to bucket - %s", bucket_name)
 
-    # TODO: Change website link to https using CloudFront
+    logger.info("The dashboard website is: " + f"{CLOUDFRONT_DOMAIN}/{prefix}out.html")
+    # Use print so that the GitHub Actions bash script can pick up the URL from the CLI
     print("The dashboard website is: " + f"{CLOUDFRONT_DOMAIN}/{prefix}out.html")
 
 
