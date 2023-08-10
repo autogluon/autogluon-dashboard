@@ -113,7 +113,6 @@ def run_dashboard():
     wrapper_dir = os.path.dirname(__file__)
     csv_path_file_location = os.path.join(wrapper_dir, "constants/csv_paths.py")
     f = open(csv_path_file_location, "w")
-    print(PER_DATASET_CSV_PATH)
     f.write(f"PER_DATASET_CSV_PATH = " + '"' + PER_DATASET_CSV_PATH + '"')
     f.write(f"\nAGG_FRAMEWORK_CSV_PATH = " + '"' + AGG_FRAMEWORK_CSV_PATH + '"')
     f.write(f"\nHARDWARE_METRICS_CSV_PATH = " + '"' + HARDWARE_METRICS_CSV_PATH + '"')
