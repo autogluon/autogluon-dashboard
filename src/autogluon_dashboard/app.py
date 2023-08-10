@@ -16,7 +16,7 @@ from autogluon_dashboard.constants.app_layout_constants import (
     PER_DATA_COMP,
     PER_DATASET_IDF,
 )
-from autogluon_dashboard.constants.aws_s3_constants import (
+from autogluon_dashboard.constants.csv_paths import (
     AGG_FRAMEWORK_DEFAULT_CSV_PATH,
     HARDWARE_METRICS_DEFAULT_CSV_PATH,
     PER_DATASET_DEFAULT_CSV_PATH,
@@ -77,9 +77,9 @@ from autogluon_dashboard.widgets.select_widget import SelectWidget
 from autogluon_dashboard.widgets.slider_widget import SliderWidget
 
 # Load Data
-dataset_file = os.environ.get("PER_DATASET_S3_PATH", PER_DATASET_DEFAULT_CSV_PATH)
-aggregated_file = os.environ.get("AGG_DATASET_S3_PATH", AGG_FRAMEWORK_DEFAULT_CSV_PATH)
-hardware_metrics_file = os.environ.get("HWARE_METRICS_S3_PATH", HARDWARE_METRICS_DEFAULT_CSV_PATH)
+dataset_file = PER_DATASET_DEFAULT_CSV_PATH
+aggregated_file = AGG_FRAMEWORK_DEFAULT_CSV_PATH
+hardware_metrics_file = HARDWARE_METRICS_DEFAULT_CSV_PATH
 dataset_paths = [dataset_file, aggregated_file, hardware_metrics_file]
 per_dataset_df, all_framework_df, hware_metrics_df = get_dataframes(dataset_paths)
 
@@ -122,9 +122,10 @@ per_dataset_df.to_csv(PER_DATASET_DOWNLOAD_TITLE)
 per_dataset_csv_widget = FileDownloadWidget(file=PER_DATASET_DOWNLOAD_TITLE).create_widget()
 all_framework_df.to_csv(AGG_FRAMEWORKS_DOWNLOAD_TITLE)
 all_framework_csv_widget = FileDownloadWidget(file=AGG_FRAMEWORKS_DOWNLOAD_TITLE).create_widget()
+hware_metrics_csv_widget = None
 if hware_metrics_df is not None:
     hware_metrics_df.to_csv(HARDWARE_METRICS_DOWNLOAD_TITLE)
-hware_metrics_csv_widget = FileDownloadWidget(file=HARDWARE_METRICS_DOWNLOAD_TITLE).create_widget()
+    hware_metrics_csv_widget = FileDownloadWidget(file=HARDWARE_METRICS_DOWNLOAD_TITLE).create_widget()
 
 df_framework_only = get_df_filter_by_framework(per_dataset_idf, frameworks_widget3)
 prop_best = get_proportion_framework_rank1(df_framework_only, per_dataset_df, len(dataset_list))

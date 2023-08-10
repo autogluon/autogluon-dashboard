@@ -6,12 +6,7 @@ import subprocess
 import boto3
 import botocore
 
-from autogluon_dashboard.constants.aws_s3_constants import (
-    CLOUDFRONT_DOMAIN,
-    CSV_FILES_DIR,
-    DEFAULT_BUCKET_NAME,
-    S3_REGION,
-)
+from autogluon_dashboard.constants.aws_s3_constants import CLOUDFRONT_DOMAIN, CSV_FILES_DIR
 
 
 def upload_to_s3(s3_client: botocore.client, file_name: str, object_name: str, bucket_name: str, args: dict = None):
@@ -51,14 +46,15 @@ def get_args() -> argparse.Namespace:
     parser.add_argument(
         "--hware_metrics_csv",
         type=str,
-        required=True,
         help="Location of csv file of hardware metrics in local filesystem to upload to S3 bucket. Example: sub_folder/file_name.csv",
+        default="",
         metavar="",
     )
 
     parser.add_argument(
         "--s3_bucket",
         type=str,
+        required=True,
         help="Name of S3 bucket that results to aggregate get outputted to",
         nargs="?",
         metavar="",
@@ -74,6 +70,7 @@ def get_args() -> argparse.Namespace:
     parser.add_argument(
         "--s3_region",
         type=str,
+        required=True,
         help="S3 Region to deploy the dashboard website",
         nargs="?",
         metavar="",
@@ -85,7 +82,7 @@ def get_args() -> argparse.Namespace:
 
 def run_dashboard():
     args = get_args()
-    # Set variables to corrensponding command line args
+    # Set variables to corresponding command line args
     per_dataset_csv_path = args.per_dataset_csv
     aggregated_csv_path = args.agg_dataset_csv
     hware_metrics_csv_path = args.hware_metrics_csv
@@ -96,24 +93,7 @@ def run_dashboard():
     logger = logging.getLogger("dashboard-logger")
     logging.basicConfig(level=logging.INFO)
 
-    if not bucket_name:
-        if region:
-            logger.warning(
-                "Cannot specify region if no bucket has been provded. Defaulting to AutoGluon bucket and region (%s)",
-                S3_REGION,
-            )
-        else:
-            logger.info(
-                "No bucket or region has been provided. Defaulting to AutoGluon bucket and region (%s)",
-                S3_REGION,
-            )
-        region = S3_REGION
-        bucket_name = DEFAULT_BUCKET_NAME  # TODO: Change default bucket name
-    else:
-        if not region:
-            raise ValueError("You must specify a region if you provide a bucket")
-        else:
-            logger.info(f"You have specified Bucket {bucket_name} and Region {region}.")
+    logger.info(f"You have specified Bucket {bucket_name} and Region {region}.")
 
     # Set S3 URL with appropriate bucket, region, and prefix
     if prefix:
@@ -127,9 +107,20 @@ def run_dashboard():
     per_dataset_s3_loc = CSV_FILES_DIR + "all_data.csv"
     aggregated_s3_loc = CSV_FILES_DIR + "autogluon.csv"
     hware_s3_loc = CSV_FILES_DIR + "hardware_metrics.csv"
-    os.environ["PER_DATASET_S3_PATH"] = CLOUDFRONT_DOMAIN + f"/{prefix}" + per_dataset_s3_loc
-    os.environ["AGG_DATASET_S3_PATH"] = CLOUDFRONT_DOMAIN + f"/{prefix}" + aggregated_s3_loc
-    os.environ["HWARE_METRICS_S3_PATH"] = CLOUDFRONT_DOMAIN + f"/{prefix}" + hware_s3_loc
+    PER_DATASET_DEFAULT_CSV_PATH = CLOUDFRONT_DOMAIN + f"/{prefix}" + per_dataset_s3_loc
+    AGG_FRAMEWORK_DEFAULT_CSV_PATH = CLOUDFRONT_DOMAIN + f"/{prefix}" + aggregated_s3_loc
+    HARDWARE_METRICS_DEFAULT_CSV_PATH = (
+        CLOUDFRONT_DOMAIN + f"/{prefix}" + hware_s3_loc if hware_metrics_csv_path else ""
+    )
+    wrapper_dir = os.path.dirname(__file__)
+    csv_path_file_location = os.path.join(wrapper_dir, "constants/csv_paths.py")
+    f = open(csv_path_file_location, "w")
+    print(PER_DATASET_DEFAULT_CSV_PATH)
+    f.write(f"PER_DATASET_DEFAULT_CSV_PATH = " + '"' + PER_DATASET_DEFAULT_CSV_PATH + '"')
+    f.write(f"\nAGG_FRAMEWORK_DEFAULT_CSV_PATH = " + '"' + AGG_FRAMEWORK_DEFAULT_CSV_PATH + '"')
+    f.write(f"\nHARDWARE_METRICS_DEFAULT_CSV_PATH = " + '"' + HARDWARE_METRICS_DEFAULT_CSV_PATH + '"')
+    f.close()
+
     os.environ["BOKEH_PY_LOG_LEVEL"] = "error"
 
     s3_client = boto3.client("s3")
@@ -137,12 +128,12 @@ def run_dashboard():
     # Upload CSV files to S3
     upload_to_s3(s3_client, per_dataset_csv_path, prefix + per_dataset_s3_loc, bucket_name)
     upload_to_s3(s3_client, aggregated_csv_path, prefix + aggregated_s3_loc, bucket_name)
-    upload_to_s3(s3_client, hware_metrics_csv_path, prefix + hware_s3_loc, bucket_name)
+    if hware_metrics_csv_path:
+        upload_to_s3(s3_client, hware_metrics_csv_path, prefix + hware_s3_loc, bucket_name)
     logger.info(
         f"Evaluation CSV files have been successfully uploaded to bucket - {bucket_name}, at locations: {s3_url + per_dataset_s3_loc}, {s3_url + aggregated_s3_loc}, and {s3_url + hware_s3_loc}.",
     )
 
-    wrapper_dir = os.path.dirname(__file__)
     agg_script_location = os.path.join(wrapper_dir, "utils/aggregate_file.py")
     agg_file_location = os.path.join(wrapper_dir, "out.py")
     # Aggregate all code into output file
@@ -177,7 +168,7 @@ def run_dashboard():
     logger.info("WebAssembly files have been successfully uploaded to bucket - %s", bucket_name)
 
     # TODO: Change website link to https using CloudFront
-    logger.info("The dashboard website is: " + f"{CLOUDFRONT_DOMAIN}/{prefix}out.html")
+    print("The dashboard website is: " + f"{CLOUDFRONT_DOMAIN}/{prefix}out.html")
 
 
 if __name__ == "__main__":
