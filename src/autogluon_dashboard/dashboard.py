@@ -109,9 +109,7 @@ def run_dashboard():
     hware_s3_loc = CSV_FILES_DIR + "hardware_metrics.csv"
     PER_DATASET_CSV_PATH = CLOUDFRONT_DOMAIN + f"/{prefix}" + per_dataset_s3_loc
     AGG_FRAMEWORK_CSV_PATH = CLOUDFRONT_DOMAIN + f"/{prefix}" + aggregated_s3_loc
-    HARDWARE_METRICS_CSV_PATH = (
-        CLOUDFRONT_DOMAIN + f"/{prefix}" + hware_s3_loc if hware_metrics_csv_path else ""
-    )
+    HARDWARE_METRICS_CSV_PATH = CLOUDFRONT_DOMAIN + f"/{prefix}" + hware_s3_loc if hware_metrics_csv_path else ""
     wrapper_dir = os.path.dirname(__file__)
     csv_path_file_location = os.path.join(wrapper_dir, "constants/csv_paths.py")
     f = open(csv_path_file_location, "w")
