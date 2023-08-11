@@ -6,7 +6,7 @@ from autogluon_dashboard.utils.aggregate_file import create_merged_file, extract
 
 TEST_FILE_PATH = "tests/unittests/mock_python_files/mock_file.py"
 TEST_DIR_PATH = "tests/unittests/mock_python_files"
-AGG_OUT_FILE_PATH = "tests/unittests/out_file/out.py"
+AGG_OUT_FILE_PATH = "tests/unittests/out_file/index.py"
 
 
 class TestAggregate(unittest.TestCase):
@@ -38,7 +38,7 @@ def code():
 
     def test_aggregation(self):
         out_file = AGG_OUT_FILE_PATH
-        with open(os.path.join("tests/unittests/out_file", "out.py"), "w") as fp:
+        with open(os.path.join("tests/unittests/out_file", "index.py"), "w") as fp:
             pass
         create_merged_file(TEST_DIR_PATH, AGG_OUT_FILE_PATH)
         create_merged_file(TEST_DIR_PATH + "/sub_folder", AGG_OUT_FILE_PATH)

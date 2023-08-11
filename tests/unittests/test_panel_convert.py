@@ -12,7 +12,7 @@ class TestPanelConvert(unittest.TestCase):
         aggregate_file_dir = os.path.join(test_file_dir, f"{autogluon_dir}utils/")
         process = subprocess.run(["python3", f"{aggregate_file_dir}aggregate_file.py"], capture_output=True, text=True)
         self.assertEqual(process.returncode, 0, f"Aggregate Script did not run successfully. {process.stderr}")
-        agg_file_location = os.path.join(os.path.join(test_file_dir, f"{autogluon_dir}"), "out.py")
+        agg_file_location = os.path.join(os.path.join(test_file_dir, f"{autogluon_dir}"), "index.py")
         web_files_dir = os.path.join(f"{autogluon_dir}", "web_files/")
         per_dataset_test_loc = os.path.join(test_file_dir, "resources/all_data.csv")
         aggregated_test_loc = os.path.join(test_file_dir, "resources/aggregated.csv")
