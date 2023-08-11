@@ -46,6 +46,7 @@ def get_args() -> argparse.Namespace:
     parser.add_argument(
         "--hware_metrics_csv",
         type=str,
+        required=False,
         help="Location of csv file of hardware metrics in local filesystem to upload to S3 bucket. Example: sub_folder/file_name.csv",
         default="",
         metavar="",
@@ -56,14 +57,13 @@ def get_args() -> argparse.Namespace:
         type=str,
         required=True,
         help="Name of S3 bucket that results to aggregate get outputted to",
-        nargs="?",
         metavar="",
     )
     parser.add_argument(
         "--s3_prefix",
         type=str,
-        help="Prefix for S3 URL",
-        nargs="?",
+        required=False,
+        help="Prefix for S3 URL. Example: sub_folder/sub_sub_folder",
         default="",
         metavar="",
     )
@@ -71,8 +71,7 @@ def get_args() -> argparse.Namespace:
         "--s3_region",
         type=str,
         required=True,
-        help="S3 Region to deploy the dashboard website",
-        nargs="?",
+        help="S3 Region to deploy the dashboard website. This should be the same region as the S3 bucket",
         metavar="",
     )
 
@@ -120,6 +119,7 @@ def run_dashboard():
     f.write(f"\nHARDWARE_METRICS_CSV_PATH = " + '"' + HARDWARE_METRICS_CSV_PATH + '"')
     f.close()
 
+    # ignore bokeh warnings in the terminal
     os.environ["BOKEH_PY_LOG_LEVEL"] = "error"
 
     s3_client = boto3.client("s3")
@@ -129,12 +129,16 @@ def run_dashboard():
     upload_to_s3(s3_client, aggregated_csv_path, prefix + aggregated_s3_loc, bucket_name)
     if hware_metrics_csv_path:
         upload_to_s3(s3_client, hware_metrics_csv_path, prefix + hware_s3_loc, bucket_name)
-    logger.info(
-        f"Evaluation CSV files have been successfully uploaded to bucket - {bucket_name}, at locations: {s3_url + per_dataset_s3_loc}, {s3_url + aggregated_s3_loc}, and {s3_url + hware_s3_loc}.",
-    )
+        logger.info(
+            f"Evaluation CSV files have been successfully uploaded to bucket - {bucket_name}, at locations: {s3_url + per_dataset_s3_loc}, {s3_url + aggregated_s3_loc}, and {s3_url + hware_s3_loc}.",
+        )
+    else:
+        logger.info(
+            f"Evaluation CSV files have been successfully uploaded to bucket - {bucket_name}, at locations: {s3_url + per_dataset_s3_loc} and {s3_url + aggregated_s3_loc}.",
+        )
 
     agg_script_location = os.path.join(wrapper_dir, "utils/aggregate_file.py")
-    agg_file_location = os.path.join(wrapper_dir, "out.py")
+    agg_file_location = os.path.join(wrapper_dir, "index.py")
     # Aggregate all code into output file
     subprocess.run(["python3", f"{agg_script_location}"])
 
@@ -158,17 +162,17 @@ def run_dashboard():
     # Upload WebAssembly to S3 bucket
     upload_to_s3(
         s3_client,
-        os.path.join(web_files_dir, "out.html"),
-        prefix + "out.html",
+        os.path.join(web_files_dir, "index.html"),
+        prefix + "index.html",
         bucket_name,
         args={"ContentType": "text/html"},
     )
-    upload_to_s3(s3_client, os.path.join(web_files_dir, "out.js"), prefix + "out.js", bucket_name)
+    upload_to_s3(s3_client, os.path.join(web_files_dir, "index.js"), prefix + "index.js", bucket_name)
     logger.info("WebAssembly files have been successfully uploaded to bucket - %s", bucket_name)
 
-    logger.info("The dashboard website is: " + f"{CLOUDFRONT_DOMAIN}/{prefix}out.html")
+    logger.info("The dashboard website is: " + f"{CLOUDFRONT_DOMAIN}/{prefix}index.html")
     # Use print so that the GitHub Actions bash script can pick up the URL from the CLI
-    print("The dashboard website is: " + f"{CLOUDFRONT_DOMAIN}/{prefix}out.html")
+    print("The dashboard website is: " + f"{CLOUDFRONT_DOMAIN}/{prefix}index.html")
 
 
 if __name__ == "__main__":
