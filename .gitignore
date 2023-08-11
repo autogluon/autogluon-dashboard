@@ -2,11 +2,12 @@
 data_config.py
 pyodide
 out.py
+index.py
 web_files
 *.csv
 coverage.json
 results.xml
-csv_paths.py
+*csv_paths.py
 
 #Venv
 .venv*/

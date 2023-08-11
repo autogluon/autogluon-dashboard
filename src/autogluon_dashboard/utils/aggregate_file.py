@@ -190,7 +190,7 @@ def create_merged_file(path: str, output_file: str) -> None:
 
 if __name__ == "__main__":
     # Specify the directory containing the files and the desired output file name
-    out_file_path = "../out.py"
+    out_file_path = "../index.py"
     dirname = os.path.dirname(__file__)
     out_file_path = os.path.join(dirname, out_file_path)
 
