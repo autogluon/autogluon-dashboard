@@ -141,6 +141,7 @@ def run_dashboard():
     agg_file_location = os.path.join(wrapper_dir, "index.py")
     # Aggregate all code into output file
     subprocess.run(["python3", f"{agg_script_location}"])
+    logger.info("Ran aggregation script successfully")
 
     web_files_dir = os.path.join(wrapper_dir, "web_files/")
     # Run panel convert to generate WebAssembly
@@ -159,6 +160,7 @@ def run_dashboard():
             "hvplot",
         ]
     )
+    logger.info("Ran panel convert successfully")
     # Upload WebAssembly to S3 bucket
     upload_to_s3(
         s3_client,
