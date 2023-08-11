@@ -5,6 +5,7 @@
 # AutoGluon-Dashboard
 
 Welcome to AutoGluon-Dashboard, a tool for visualizing your metrics - one benchmark at a time!
+
 The latest version of the AutoGluon-Dashboard can be found [here](https://d24iwcyhf6yavw.cloudfront.net/out.html)! 
 
 ## Setup
