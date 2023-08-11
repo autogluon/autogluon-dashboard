@@ -4,6 +4,8 @@ import hvplot
 import pandas
 import panel as pn
 
+from autogluon_dashboard.constants.df_constants import FRAMEWORK, METRIC
+
 from .plot import Plot
 
 
@@ -90,7 +92,7 @@ class HardwareMetrics(Plot):
 
     def _preprocess(self, df, col_name_for_metrics, group_by, **kwargs) -> pandas.DataFrame:
         df = df[:]
-        df = df.groupby(["framework", "metric", group_by]).mean(numeric_only=True).reset_index()
+        df = df.groupby([FRAMEWORK, METRIC, group_by]).mean(numeric_only=True).reset_index()
         df.statistic_value = df.statistic_value.apply(lambda x: round(float(x), 2))
         df = df[df.metric.isin([col_name_for_metrics])]
         return df

@@ -26,3 +26,5 @@ RANK_1 = "rank=1_count"
 
 UTC = "utc"
 DATETIME = "datetime"
+
+STATISTIC_VALUE = "statistic_value"
