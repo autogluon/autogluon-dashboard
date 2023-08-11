@@ -210,10 +210,12 @@ if __name__ == "__main__":
     with open(out_file_path, "w") as fp:
         pass
 
-    create_merged_file("src/autogluon_dashboard/constants", out_file_path)
-    create_merged_file("src/autogluon_dashboard/utils", out_file_path)
-    create_merged_file("src/autogluon_dashboard/plotting/plot.py", out_file_path)
-    create_merged_file("src/autogluon_dashboard/plotting", out_file_path)
-    create_merged_file("src/autogluon_dashboard/widgets/widget.py", out_file_path)
-    create_merged_file("src/autogluon_dashboard/widgets", out_file_path)
-    create_merged_file("src/autogluon_dashboard/app.py", out_file_path)
+    base_dir = os.path.join(dirname, "../")
+
+    create_merged_file(os.path.join(base_dir, "constants"), out_file_path)
+    create_merged_file(os.path.join(base_dir, "utils"), out_file_path)
+    create_merged_file(os.path.join(base_dir, "plotting/plot.py"), out_file_path)
+    create_merged_file(os.path.join(base_dir, "plotting"), out_file_path)
+    create_merged_file(os.path.join(base_dir, "widgets/widget.py"), out_file_path)
+    create_merged_file(os.path.join(base_dir, "widgets"), out_file_path)
+    create_merged_file(os.path.join(base_dir, "app.py"), out_file_path)
