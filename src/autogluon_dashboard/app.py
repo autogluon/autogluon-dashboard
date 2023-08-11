@@ -1,5 +1,3 @@
-import os
-
 import panel as pn
 
 from autogluon_dashboard.constants.app_layout_constants import (
@@ -28,6 +26,7 @@ from autogluon_dashboard.constants.df_constants import (
     FRAMEWORK,
     LOSS_RESCALED,
     RANK,
+    STATISTIC_VALUE,
     TIME_INFER_S,
     WINRATE,
 )
@@ -45,7 +44,6 @@ from autogluon_dashboard.constants.plots_constants import (
     HW_METRICS_WIDGET_NAME,
     METRICS_PLOT_TITLE,
     PER_DATASET_DOWNLOAD_TITLE,
-    RANK1_TITLE,
     RANK_LABEL,
     TOP5_PERFORMERS_TITLE,
     YAXIS_LABEL,
@@ -236,8 +234,8 @@ if hware_metrics_idf:
         hware_metrics_idf,
         "hvplot",
         col_name=yaxis_widget4,
-        x_axis="framework",
-        y_axis="statistic_value",
+        x_axis=FRAMEWORK,
+        y_axis=STATISTIC_VALUE,
         ylabel=yaxis_widget4,
         by="mode",
     )
@@ -247,10 +245,10 @@ if hware_metrics_idf:
         hware_metrics_idf,
         "hvplot",
         col_name=yaxis_widget4,
-        x_axis="framework",
-        y_axis="statistic_value",
+        x_axis=FRAMEWORK,
+        y_axis=STATISTIC_VALUE,
         ylabel=yaxis_widget4,
-        by="dataset",
+        by=DATASET,
     )
 create_panel_object(
     panel_objs,
