@@ -106,9 +106,9 @@ def run_dashboard():
     per_dataset_s3_loc = CSV_FILES_DIR + "all_data.csv"
     aggregated_s3_loc = CSV_FILES_DIR + "autogluon.csv"
     hware_s3_loc = CSV_FILES_DIR + "hardware_metrics.csv"
-    PER_DATASET_CSV_PATH = s3_url + per_dataset_s3_loc 
+    PER_DATASET_CSV_PATH = s3_url + per_dataset_s3_loc
     AGG_FRAMEWORK_CSV_PATH = s3_url + aggregated_s3_loc
-    HARDWARE_METRICS_CSV_PATH =s3_url + hware_s3_loc if hware_metrics_csv_path else ""
+    HARDWARE_METRICS_CSV_PATH = s3_url + hware_s3_loc if hware_metrics_csv_path else ""
     wrapper_dir = os.path.dirname(__file__)
     csv_path_file_location = os.path.join(wrapper_dir, "constants/csv_paths.py")
     # Write the CSV paths to a python file that can be accessed by app.py
@@ -182,7 +182,9 @@ def run_dashboard():
     )
     logger.info("WebAssembly files have been successfully uploaded to bucket - %s", bucket_name)
 
-    logger.info("The dashboard website is: " + f"http://{bucket_name}.s3-website-{region}.amazonaws.com/{prefix}out.html")
+    logger.info(
+        "The dashboard website is: " + f"http://{bucket_name}.s3-website-{region}.amazonaws.com/{prefix}out.html"
+    )
     # Use print so that the GitHub Actions bash script can pick up the URL from the CLI
     print("The dashboard website is: " + f"http://{bucket_name}.s3-website-{region}.amazonaws.com/{prefix}out.html")
 
