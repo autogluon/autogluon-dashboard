@@ -183,10 +183,10 @@ def run_dashboard():
     logger.info("WebAssembly files have been successfully uploaded to bucket - %s", bucket_name)
 
     logger.info(
-        "The dashboard website is: " + f"http://{bucket_name}.s3-website-{region}.amazonaws.com/{prefix}out.html"
+        "The dashboard website is: " + f"http://{bucket_name}.s3-website-{region}.amazonaws.com/{prefix}index.html"
     )
     # Use print so that the GitHub Actions bash script can pick up the URL from the CLI
-    print("The dashboard website is: " + f"http://{bucket_name}.s3-website-{region}.amazonaws.com/{prefix}out.html")
+    print("The dashboard website is: " + f"http://{bucket_name}.s3-website-{region}.amazonaws.com/{prefix}index.html")
 
 
 if __name__ == "__main__":
