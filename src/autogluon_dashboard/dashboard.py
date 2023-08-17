@@ -125,10 +125,14 @@ def run_dashboard():
     s3_client = boto3.client("s3")
 
     # Upload CSV files to S3
-    upload_to_s3(s3_client, per_dataset_csv_path, prefix + per_dataset_s3_loc, bucket_name)
-    upload_to_s3(s3_client, aggregated_csv_path, prefix + aggregated_s3_loc, bucket_name)
+    upload_to_s3(
+        s3_client, per_dataset_csv_path, prefix + per_dataset_s3_loc, bucket_name, args={"ACL": "public-read"}
+    )
+    upload_to_s3(s3_client, aggregated_csv_path, prefix + aggregated_s3_loc, bucket_name, args={"ACL": "public-read"})
     if hware_metrics_csv_path:
-        upload_to_s3(s3_client, hware_metrics_csv_path, prefix + hware_s3_loc, bucket_name)
+        upload_to_s3(
+            s3_client, hware_metrics_csv_path, prefix + hware_s3_loc, bucket_name, args={"ACL": "public-read"}
+        )
         logger.info(
             f"Evaluation CSV files have been successfully uploaded to bucket - {bucket_name}, at locations: {s3_url + per_dataset_s3_loc}, {s3_url + aggregated_s3_loc}, and {s3_url + hware_s3_loc}.",
         )
@@ -167,9 +171,15 @@ def run_dashboard():
         os.path.join(web_files_dir, "index.html"),
         prefix + "index.html",
         bucket_name,
-        args={"ContentType": "text/html"},
+        args={"ContentType": "text/html", "ACL": "public-read"},
     )
-    upload_to_s3(s3_client, os.path.join(web_files_dir, "index.js"), prefix + "index.js", bucket_name)
+    upload_to_s3(
+        s3_client,
+        os.path.join(web_files_dir, "index.js"),
+        prefix + "index.js",
+        bucket_name,
+        args={"ACL": "public-read"},
+    )
     logger.info("WebAssembly files have been successfully uploaded to bucket - %s", bucket_name)
 
     logger.info("The dashboard website is: " + f"{CLOUDFRONT_DOMAIN}/{prefix}index.html")
