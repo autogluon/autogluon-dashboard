@@ -98,24 +98,11 @@ def get_name_before_first_underscore(df: pandas.DataFrame, col_name: str) -> pan
     col_name: str,
         Name of Column to perform filtering on.
     """
-    frame_dict = {}
-    for index, row in df.iterrows():
-        if (row[col_name].split('_')[-1] not in frame_dict) and ("AutoGluon" in row[col_name]): 
-            frame_dict[row[col_name].split('_')[-1]] = index
-
-    # If there are multiple framework names starting with AutoGluon then rename them in order of timestamp
-    # To handle benchmark integration case where comparison is between different versions of AutoGluon
-    if len(frame_dict) > 1:
-        sorted_items = sorted(frame_dict.items()) 
-        earliest_timestamp = sorted_items[0][0]
-
-        value_mapping = {earliest_timestamp: 'master'}
-        for i, (key, value) in enumerate(sorted_items[1:], start=1):
-            value_mapping[key] = f'PR_{i}'
-
-        df[col_name] = df[col_name].apply(lambda x: value_mapping.get(x.split('_')[-1], x))
-
-    return df[col_name]
+    # If not triggered with benchmark tests, then rename framework to AutoGluon
+    if not df[col_name].str.contains('master', case=False).any():
+        return df[col_name].str.extract(r"^(.*?)(?:_|$)")[0]
+    else:
+        return df[col_name]
 
 
 def clean_up_framework_names(df: pandas.DataFrame, dummy: bool = False) -> list:
