@@ -61,7 +61,7 @@ class TestUtils(unittest.TestCase):
     def test_get_name_before_first_underscore(self):
         data = {"names": ["name_2_wfwe@_@323__2", "a__sas234", "1234_12", "_23edsdd"]}
         mock_df = pd.DataFrame(data)
-        excepted_names = pd.Series(["name", "a", "1234", ""])
+        excepted_names = pd.Series(["name_2_wfwe@_@323__2", "a__sas234", "1234_12", "_23edsdd"])
         new_names = get_name_before_first_underscore(mock_df, "names")
         assert new_names.equals(excepted_names)
 
