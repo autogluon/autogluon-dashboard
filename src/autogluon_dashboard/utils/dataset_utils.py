@@ -98,7 +98,11 @@ def get_name_before_first_underscore(df: pandas.DataFrame, col_name: str) -> pan
     col_name: str,
         Name of Column to perform filtering on.
     """
-    return df[col_name]
+    # If not triggered with benchmark tests, then rename framework to AutoGluon
+    if not df[col_name].str.contains("master", case=False).any():
+        return df[col_name].str.extract(r"^(.*?)(?:_|$)")[0]
+    else:
+        return df[col_name]
 
 
 def clean_up_framework_names(df: pandas.DataFrame, dummy: bool = False) -> list:
