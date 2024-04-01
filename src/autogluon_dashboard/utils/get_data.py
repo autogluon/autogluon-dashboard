@@ -2,10 +2,12 @@ import logging
 
 import pandas as pd
 
+from typing import List
+
 logger = logging.getLogger("dashboard-logger")
 
 
-def get_dataframes(paths: list) -> list[pd.DataFrame]:
+def get_dataframes(paths: List) -> List[pd.DataFrame]:
     dfs = []
     for dataset_path in paths:
         try:
