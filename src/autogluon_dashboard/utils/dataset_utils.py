@@ -52,8 +52,12 @@ def get_col_metric_counts(df: pandas.DataFrame, metric: str) -> pandas.Series:
     metric: str,
         Name of Column to get counts from.
     """
-    df_sorted = df.sort_values(by=[metric])
-    return df_sorted[metric].value_counts()[df_sorted[metric].unique()]
+    counts = df[metric].value_counts().sort_index()
+
+    counts.name = metric
+    counts.index.name = None
+
+    return counts
 
 
 def get_proportion_framework_rank1(
