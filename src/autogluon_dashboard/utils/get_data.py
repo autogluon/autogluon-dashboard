@@ -1,8 +1,7 @@
 import logging
+from typing import List
 
 import pandas as pd
-
-from typing import List
 
 logger = logging.getLogger("dashboard-logger")
 
